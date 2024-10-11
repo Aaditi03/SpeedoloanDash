@@ -1,0 +1,28 @@
+header {
+    background: url('./images/footer_bg_2.jpg');
+    /* background-color: #000000f1; */
+    /* background-color: var(--black-color); */
+    background-color: black;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-size: cover;
+    /* background-position: center; */
+}
+
+@media screen and (min-width: 1950px) {
+    #root {
+        display: flex;
+        justify-content: center;
+    }
+
+    .wrapper {
+        max-width: 1950px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    header {
+        position: static !important;
+    }
+}
