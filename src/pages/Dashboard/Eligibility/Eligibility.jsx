@@ -24,7 +24,7 @@ const cardList = [
     heading: "Upload Your aadhar",
     desc: "Share your aadhar to verify your details",
     img: c4icon,
-    complate: false,
+    complate: true,
     link: "/my-dashboard/aadhar-upload",
   },
   {
@@ -73,7 +73,7 @@ const cardList = [
     heading: "Loan Calculator",
     desc: "Choose the loan amount and tenure.",
     img: c1icon,
-    complate: true,
+    complate: false,
     link: "/my-dashboard/calculate-loan",
   }
   
