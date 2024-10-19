@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './OtpInput.css';
 import { isEmpty } from '../../Utils/common';
+// import { regexPan } from '../../Utils/formValidation';
+
 
 const PanInput = ({
   type,
@@ -23,27 +25,23 @@ const PanInput = ({
 
   const handleOtpChange = (e, index) => {
     let value = e.target.value;
-
+  
     if (caseText === "upper") {
       value = value.toUpperCase();
     }
-    let pattern = /^[0-9]*$/;
-    if (!number) {
-      pattern = /^[a-zA-Z0-9]*$/;
-    }
-
+    const pattern = /^[a-zA-Z0-9]*$/;
+  
     if (pattern.test(value) && value.length <= 1) {
       const updatedOtp = [...otp];
       updatedOtp[index] = value;
-
-      setOtp(updatedOtp);
-
+        setOtp(updatedOtp);
       // Focus on the next input field
       if (value !== '' && index < otp.length - 1) {
         inputRefs.current[index + 1].focus();
       }
     }
   };
+  
 
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && isEmpty(otp[index])) {

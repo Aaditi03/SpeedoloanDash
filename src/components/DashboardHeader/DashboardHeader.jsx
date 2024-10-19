@@ -12,9 +12,9 @@ import Footer from "../../images/footer_bg_2.jpg";
 function DashboardHeader({ toggle, setToggle }) {
   const { message, setMessage, setProfileData, profileData, setSetps, getProfileDaital } = useContext(ContextDashboard);
 
-  useEffect(() => {
-    getProfileDaital();
-  }, []);
+  // useEffect(() => {
+  //   getProfileDaital();
+  // }, []);
 
   return (
     <HeaderWrapper
@@ -36,9 +36,9 @@ function DashboardHeader({ toggle, setToggle }) {
       </div>
       <div className="right flex">
         <div className="icon">
-          <img src={profileData.profile_pic_path || ""} alt="" />
+          <img src={getStorage("selfie")} alt="" />
         </div>
-        <div className="name"> Hi, {profileData.short_name || ""}</div>
+        <div className="name"> Hi, {getStorage("fullName") || ""}</div>
       </div>
     </HeaderWrapper>
   );

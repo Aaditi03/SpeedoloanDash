@@ -90,7 +90,7 @@ function PanUpload() {
         });
         getProfileDaital();
         navigate("/my-dashboard/bank-upload");
-      } else if (resp?.data?.Status === 5) {
+      } else if (resp?.data?.Status === 4) {
         logout();
       } else {
         setMessage({ type: "error", msg: resp?.data?.Message });

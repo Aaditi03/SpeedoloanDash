@@ -1,11 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ModalWrapper } from "./style";
 import ContextDashboard from '../../Context/ContextDashboard';
+import { getStorage } from "../../Utils/common";
 
-const Modal = ({ onClose, msg }) => {
+const Modal = ({ onClose, msg,state }) => {
   const navigate = useNavigate();
-  const { eligibilityStatus, usertype } = useContext(ContextDashboard);
+  const { usertype } = useContext(ContextDashboard);
+  const [eligibilityStatus, setEligibilityStatus] = useState(getStorage("eligibility"));
 
   // Function to handle the "Process" button click
   const handleProcessClick = () => {
@@ -14,18 +16,16 @@ const Modal = ({ onClose, msg }) => {
 
   // Function to handle the "OK" button click
   const handleOkClick = () => {
-    console.log('User type:', usertype); // Log usertype to the console
-    
-    if (eligibilityStatus === "ELIGIBLE") {
-      if (usertype === 'REPEAT' || usertype === 'UNPAID-REPEAT') {
-        console.log('Navigating to bank-upload...');
-        navigate('/my-dashboard/bank-upload'); // Redirect to bank upload URL
-      } else if (usertype === 'NEW') {
-        handleProcessClick(); // Redirect to eligibility if usertype is NEW
-      }
-    } else {
+    // if (eligibilityStatus === 1) {
+    //   if (usertype === 'REPEAT' || usertype === 'UNPAID-REPEAT') {
+    //     console.log('Navigating to bank-upload...');
+    //     navigate('/my-dashboard/bank-upload'); // Redirect to bank upload URL
+    //   } else if (usertype === 'NEW') {
+    //     handleProcessClick(); // Redirect to eligibility if usertype is NEW
+    //   }
+    // } else {
       onClose(); // Close modal if not eligible
-    }
+    // }
   };
 
   return (
@@ -33,9 +33,15 @@ const Modal = ({ onClose, msg }) => {
       <div className="modal-box">
         <h2>{msg}</h2>
         <div className="modal-buttons">
-          <button onClick={handleOkClick}>OK</button>
-          {msg === "You are eligible for loan" && (
+          {state === 1 ? (
             <button onClick={handleProcessClick}>Process</button>
+          ) : (
+            <>
+              
+              
+                <button onClick={handleOkClick}>OK</button>
+            
+            </>
           )}
         </div>
       </div>

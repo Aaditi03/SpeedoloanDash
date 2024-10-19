@@ -56,7 +56,7 @@ function LeadPreview() {
             email: userData.email || "NA",
           });
         }
-      } else if (resp?.data?.Status === 5) {
+      } else if (resp?.data?.Status === 4) {
         logout();
       }
     });

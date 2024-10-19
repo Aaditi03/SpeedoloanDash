@@ -7,7 +7,7 @@ import Button from '../../../components/ui/Button';
 import Alert from '../../../components/ui/Alert';
 
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getStorage, goBack, isEmpty } from '../../../Utils/common';
+import { getStorage, goBack, isEmpty,setStorage } from '../../../Utils/common';
 
 import { formValidation } from '../../../Utils/formValidation';
 import PictureUpload from '../../../components/PictureUpload/PictureUpload';
@@ -35,7 +35,7 @@ function UploadPicture() {
     const state = location.state;
     const [showSteps, setShowSteps] = useState(-1);
     const [toggle, setToggle] = useState(true);
-    const [progressBar, setProgressBar] = useState(0);
+    const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
 
 
   
@@ -85,16 +85,15 @@ function UploadPicture() {
         ext = extArr[extArr.length -1].toUpperCase();
       }
       
-      console.log('san');
-      console.log(base64);
+      
      
       const param = {
-        lead_id:getStorage("lead_id") || "",
-        token:getStorage("token") || "",
+        profile_id: getStorage("cust_profile_id") || "",
+        event_name:"selfie_upload",
         file:base64,
-        ext:ext,
-        password: "N/A",
-        docs_id:"33"
+        file_ext:ext,
+        // password: "N/A",
+        // docs_id:"33"
      
     }
 
@@ -105,6 +104,9 @@ function UploadPicture() {
       setLoading(false);
       
       if(resp?.data?.Status === 1){
+        setStorage("next_step",resp?.data?.Data?.next_step)
+        setStorage("step_percent",resp?.data?.Data?.step_percentage)
+        setStorage("selfie",resp?.data?.Data?.selfie_doc_url)
         setResponce(resp?.data);
         setMessage({ type: 'success', msg:resp?.data?.Message, place:"globle" });
   
@@ -114,7 +116,7 @@ function UploadPicture() {
           navigate("/my-dashboard/profile-preview")
         }
         
-      }else if(resp?.data?.Status === 5){
+      }else if(resp?.data?.Status === 4){
         logout();
       }else{
         setMessage({ type: 'error', msg: resp?.data?.Message, });
@@ -138,25 +140,25 @@ function UploadPicture() {
       },[profileData]);
 
 
-      useEffect(() => {
+    //   useEffect(() => {
 
-        const params = {
-            lead_id: getStorage("lead_id") || "",
-            token: getStorage("token") || "",
-            mobile: getStorage("mobile") || "",
-        };
+    //     const params = {
+    //         lead_id: getStorage("lead_id") || "",
+    //         token: getStorage("token") || "",
+    //         mobile: getStorage("mobile") || "",
+    //     };
 
-        getDashboardData(params).then(resp => {
-            if (resp?.data?.Status === 1) {
-                const dashboardData = resp?.data?.Steps?.data || {};
-                if (dashboardData) {
-                    setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
-                }
-            } else if (resp?.data?.Status === 5) {
-                logout();
-            }
-        });
-    }, [logout]);
+    //     getDashboardData(params).then(resp => {
+    //         if (resp?.data?.Status === 1) {
+    //             const dashboardData = resp?.data?.Steps?.data || {};
+    //             if (dashboardData) {
+    //                 setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
+    //             }
+    //         } else if (resp?.data?.Status === 5) {
+    //             logout();
+    //         }
+    //     });
+    // }, [logout]);
 
  
     useEffect(() => {

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { getStorage, goBack, isEmpty, setStorage } from "../../../Utils/common";
 
 import PictureUpload from "../../../components/PictureUpload/PictureUpload";
-import { uploadProfilePhoto, getDashboardData } from "../../../Utils/api";
+import { saveDocuments } from "../../../Utils/api";
 import ContextDashboard from "../../../Context/ContextDashboard";
 import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
@@ -38,7 +38,7 @@ function DocumentUpload() {
     const [utilityBase64, setUtilityBase64] = useState("");
     // Other states
     const [message, setMessage] = useState("");
-    const [progressBar, setProgressBar] = useState(0);
+    const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
 
     const navigate = useNavigate();
     const { logout, getProfileDaital } = useContext(ContextDashboard);
@@ -121,28 +121,28 @@ function DocumentUpload() {
         setLoading(true);
         try {
             // Upload Aadhar Front
-            await uploadDocument("1", aadharFront64, aadharFront);
+            await uploadDocument("aadhaar_upload","aadhaar_front", aadharFront64, aadharFront);
             // Upload Aadhar Back
-            await uploadDocument("2", aadharBack64, aadharBack);
+            await uploadDocument("aadhaar_upload","aadhaar_back", aadharBack64, aadharBack);
             // Upload PAN Card
-            await uploadDocument("4", panBase64, panImage);
+            await uploadDocument("pan_upload","", panBase64, panImage);
 
-            await uploadDocument("6", bankBase64, bankImage);
+            await uploadDocument("bank_statement_upload","", bankBase64, bankImage);
 
-            await uploadDocument("16", salaryBase64,salaryImage);
+            await uploadDocument("pay_slip_upload","", salaryBase64,salaryImage);
 
-            await uploadDocument("8", utilityBase64, utilityImage);
+            await uploadDocument("residence_proof_upload","electricity_bill", utilityBase64, utilityImage);
 
             // After both uploads succeed
-            getProfileDaital();
-            navigate("/my-dashboard/bank-upload");
+            // getProfileDaital();
+            navigate("/my-dashboard/bank-detail");
         } catch (error) {
             setMessage({ type: "error", msg: "An error occurred during upload. Please try again." });
         }
         setLoading(false);
     };
 
-    const uploadDocument = (docsId, fileBase64, fileObj) => {
+    const uploadDocument = (event,doc_type ,fileBase64, fileObj) => {
         return new Promise((resolve, reject) => {
             let ext = "JPEG";
             if (typeof fileObj === "object") {
@@ -150,20 +150,20 @@ function DocumentUpload() {
             }
 
             const param = {
-                lead_id: getStorage("lead_id") || "",
-                token: getStorage("token") || "",
-                ext: ext,
+                profile_id: getStorage("cust_profile_id") || "", 
+                file_ext: ext,
                 password: "N/A",
-                docs_id: docsId,
+                event_name: event,
+                doc_type:doc_type || "",
                 file: fileBase64,
             };
 
-            uploadProfilePhoto(param).then(resp => {
+            saveDocuments(param).then(resp => {
                 if (resp?.data?.Status === 1) {
                     setResponce(resp?.data);
                     setMessage({ type: 'success', msg: resp?.data?.Message, place: "global" });
                     resolve();
-                } else if (resp?.data?.Status === 5) {
+                } else if (resp?.data?.Status === 4) {
                     logout();
                     reject(new Error('Session expired.'));
                 } else {
@@ -177,24 +177,24 @@ function DocumentUpload() {
     };
 
     // Fetch progress bar data
-    useEffect(() => {
-        const params = {
-            lead_id: getStorage("lead_id") || "",
-            token: getStorage("token") || "",
-            mobile: getStorage("mobile") || "",
-        };
+    // useEffect(() => {
+    //     const params = {
+    //         lead_id: getStorage("lead_id") || "",
+    //         token: getStorage("token") || "",
+    //         mobile: getStorage("mobile") || "",
+    //     };
 
-        getDashboardData(params).then(resp => {
-            if (resp?.data?.Status === 1) {
-                const dashboardData = resp?.data?.Steps?.data || {};
-                if (dashboardData) {
-                    setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
-                }
-            } else if (resp?.data?.Status === 5) {
-                logout();
-            }
-        });
-    }, [logout]);
+    //     getDashboardData(params).then(resp => {
+    //         if (resp?.data?.Status === 1) {
+    //             const dashboardData = resp?.data?.Steps?.data || {};
+    //             if (dashboardData) {
+    //                 setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
+    //             }
+    //         } else if (resp?.data?.Status === 5) {
+    //             logout();
+    //         }
+    //     });
+    // }, [logout]);
 
     return (
         <>
@@ -203,7 +203,7 @@ function DocumentUpload() {
             <BoxWrapper className="w100">
                 <div className="formmainBox flex">
                     <div className="left">
-                        <div className='center gap4 pointer' onClick={() => goBack(navigate, "/my-dashboard/eligibility")}>
+                        <div className='center gap4 pointer' onClick={() => goBack(navigate, "/my-dashboard/about-your-company")}>
                             <img src={arrowIcon} alt="" /> <span>Back</span>
                         </div>
                     </div>

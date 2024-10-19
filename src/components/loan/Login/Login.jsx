@@ -25,7 +25,7 @@ function Login() {
   const [responce, setResponce] = useState({});
   const inputRefs = useRef([]);
   const navigate = useNavigate();
-  const [showMore, setShowMore] = useState(false); // State for managing "Read more" visibility
+  const [showMore, setShowMore] = useState(false); 
 
   useEffect(() => {
     if (screen === "getOtp") return;
@@ -62,27 +62,55 @@ function Login() {
       setAcceptError("Please check the checkbox to accept our terms and conditions");
       return;
     } else {
-      setAcceptError(""); // Clear error if accepted
+      setAcceptError(""); 
     }
 
     const param = {
       mobile: mobileNumber,
-      otpFor: "login",
+      event_name: "login"
     };
 
     setLoading(true);
     sendotpForLogin(param).then(resp => {
       setLoading(false);
       if (resp?.data?.Status === 1) {
+        setResponce(resp?.data);
         setStorage("mobile", mobileNumber);
+        setStorage("cust_profile_id", resp?.data?.Data?.cust_profile_id);
+        setScreen("otpScreen");
+        setSeconds(30);
+        setMessage({ type: 'success', msg: resp?.data?.Message, place: "globle" });
+      } else {
+        setMobile(["", "", "", "", "", "", "", "", "", ""]); 
+        if (inputRefs.current[0]) {
+          inputRefs.current[0].focus(); 
+        }
+        let msg = resp?.data?.Message || resp?.data?.error || "An error occurred";
+        setMessage({ type: 'error', msg: msg });
+      }
+    });
+  };
+
+  const resendOtp = () => {
+   
+
+    const param = {
+      profile_id: getStorage("cust_profile_id"),
+      event_name: "resend_otp"
+    };
+
+    setLoading(true);
+    sendotpForLogin(param).then(resp => {
+      setLoading(false);
+      if (resp?.data?.Status === 1) {
         setResponce(resp?.data);
         setScreen("otpScreen");
         setSeconds(30);
         setMessage({ type: 'success', msg: resp?.data?.Message, place: "globle" });
       } else {
-        setMobile(["", "", "", "", "", "", "", "", "", ""]); // Clear the mobile inputs
+        setMobile(["", "", "", "", "", "", "", "", "", ""]); 
         if (inputRefs.current[0]) {
-          inputRefs.current[0].focus(); // Focus on the first input field
+          inputRefs.current[0].focus(); 
         }
         let msg = resp?.data?.Message || resp?.data?.error || "An error occurred";
         setMessage({ type: 'error', msg: msg });
@@ -98,11 +126,11 @@ function Login() {
       return;
     }
 
-    let mobileNumber = mobile.join("");
+    
 
     const param = {
-      mobile: mobileNumber,
-      lead_id: responce?.lead_id,
+      event_name:"otp_verify",
+      profile_id: getStorage("cust_profile_id"),
       otp: otpNumber,
     };
 
@@ -112,8 +140,8 @@ function Login() {
 
       if (resp?.data?.Status === 1) {
         setResponce(resp?.data);
-        setStorage("lead_id", resp?.data?.lead_id);
-        setStorage("token", resp?.data?.token);
+        setStorage("next_step",resp?.data?.Data?.next_step)
+        setStorage("token", resp?.data?.Data?.app_login_token);
         navigate('/my-dashboard');
       } else {
         setOtp(["", "", "", ""]);
@@ -229,7 +257,7 @@ function Login() {
                   </p>
                 ) : (
                   <button
-                    onClick={!loading ? sendOtp : () => {}}
+                    onClick={!loading ? resendOtp : () => {}}
                     style={{
                       backgroundColor: 'transparent',
                       border: '1px solid #26b9db',

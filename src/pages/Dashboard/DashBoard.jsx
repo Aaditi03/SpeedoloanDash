@@ -22,7 +22,6 @@ const cardList = [
     complate: true,
     link: "/my-dashboard/pan-details"
   },
-  
   {
     heading: "Personal Information",
     desc: "Share with us a bit about yourself.",
@@ -56,19 +55,20 @@ const cardList = [
 function DashBoard() {
   const [cards, setCards] = useState(cardList);
   const [stepComplate, setStepComplate] = useState(false);
-  const [showSteps, setShowSteps] = useState(-1);
+  const [showSteps, setShowSteps] = useState(getStorage("next_step")-2);
   const [toggle, setToggle] = useState(true);
-  const [progressBar, setProgressBar] = useState("0");
-  const { message, setMessage, setProfileData, profileData, setps, eligibilityStatus, getProfileDaital, logout } = useContext(ContextDashboard);
+  const [progressBar, setProgressBar] = useState(0);
+  const { message, setMessage, setProfileData, profileData,  eligibilityStatus, getProfileDaital, logout } = useContext(ContextDashboard);
 
   const navigate = useNavigate();
+
+ 
 
   const redirect = (data) => {
     navigate(data.link);
   };
 
   const showSteps_ = () => {
-    // Redirect if eligible
     if (eligibilityStatus === 'ELIGIBLE') {
       navigate('/my-dashboard/eligibility'); 
     } else {
@@ -77,25 +77,31 @@ function DashBoard() {
   };
 
   useEffect(() => {
-    console.log("setps", setps);
-    if (!isEmpty(setps)) {
-      checkStep(setps);
+    // Set the progress bar based on the session data only if the active card index is not 0
+    if (showSteps > 0) {
+      setProgressBar(getStorage("step_percent"));
     }
-  }, [setps]);
+  }, [showSteps]);
 
-  useEffect(() => {
-    if (isEmpty(profileData)) return;
-    getProfileDaital();
-  }, []);
+  // useEffect(() => {
+  //   if (!isEmpty(setps)) {
+  //     checkStep(setps);
+  //   }
+  // }, [setps]);
 
-  function checkStep(data) {
-    setProgressBar(data?.step_complete_percent);
-    const steps = (data?.step_stage - 1);
-    if (data?.step_complete_percent === 100) {
-      setToggle(false);
-    }
-    setShowSteps(steps);
-  }
+  // useEffect(() => {
+  //   if (isEmpty(profileData)) return;
+  //   getProfileDaital();
+  // }, []);
+
+  // function checkStep(data) {
+  //   const nextStep = getStorage("next_step");
+  //   const steps = nextStep > 2 ? nextStep - 2 : 0; // Calculate showSteps based on next_step
+  //   if (data?.step_complete_percent === 100) {
+  //     setToggle(false);
+  //   }
+  //   setShowSteps(steps);
+  // }
 
   return (
     <DashboardWrapper>

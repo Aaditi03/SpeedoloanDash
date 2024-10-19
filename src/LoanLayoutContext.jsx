@@ -17,9 +17,7 @@ function LoanLayoutContext({children}) {
     const navigate = useNavigate();
 
     const logout = () =>{
-      sessionStorage.removeItem("lead_id");
-      sessionStorage.removeItem("mobile");
-      sessionStorage.removeItem("token");
+      sessionStorage.clear(); 
       navigate('/apply-now');
     }
     const getProfileDaital = ()=>{
@@ -42,7 +40,7 @@ function LoanLayoutContext({children}) {
               setEligibilityStatus(resp?.data?.Steps?.steps?.eligibility_status)
               setUserType(resp?.data?.Steps?.data.user_type)
             
-            }else if(resp?.data?.Status === 5){
+            }else if(resp?.data?.Status === 4){
               logout();
             }else{
               let msg = "";

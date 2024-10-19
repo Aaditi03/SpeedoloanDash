@@ -12,9 +12,9 @@ function ProfileHeader({ children }) {
   const handleClick = () => {
     navigate('/my-dashboard/repayment'); // Replace with your desired URL
   };
-  useEffect(() =>{
-      getProfileDaital();
-    },[]);
+  // useEffect(() =>{
+  //     getProfileDaital();
+  //   },[]);
 
     const navigate = useNavigate();
     const redirect = (link) =>{
@@ -25,7 +25,7 @@ function ProfileHeader({ children }) {
   return (
     <ProfileHeaderWrapper>
       <div className="imgBox">
-        <img src={profileData.profile_pic_path || ""} alt="" />
+        <img src={getStorage("selfie")} alt="" />
         <div className="editIcon center" onClick={redirect}>
           <img src={editIcon} alt="" />
         </div>
@@ -41,7 +41,7 @@ function ProfileHeader({ children }) {
             </div>
             <div className="flex">
                 <span className="title">Name:</span>
-                <span className="value">{profileData.short_name || ""}</span>
+                <span className="value">{getStorage("fullName") || ""}</span>
             </div>
             <div className="flex">
                 <span className="title">PAN Card:</span>

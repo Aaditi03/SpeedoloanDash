@@ -5,8 +5,8 @@ import DetailBox from "./DetailBox";
 import { ProfilePreviewWrapper } from "./style";
 import { useNavigate } from "react-router-dom";
 import ContextDashboard from "../../../Context/ContextDashboard";
-import { getStorage, isEmpty } from "../../../Utils/common";
-import { ckeckEligibility, getStateCityPincode } from "../../../Utils/api";
+import { getStorage, isEmpty, setStorage } from "../../../Utils/common";
+import { ckeckEligibility, getDashboardData, getStateCityPincode } from "../../../Utils/api";
 import Modal from "../../../components/Modal/Modal";
 import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
@@ -17,11 +17,13 @@ function ProfilePreview() {
   const [modelOpen,setModelOpen] = useState(false);
   const [loading,setLoading] = useState(false);
   const [responce,setResponce] = useState(false);
+  const[status,setStatus]=useState();
   const{eligibilityStatus}=useContext(ContextDashboard);
   const {setps} = useContext(ContextDashboard);
-  const [progressBar,setProgressBar] = useState("0")
+  const [progressBar,setProgressBar] = useState(getStorage("step_percent"))
   const [toggle, setToggle] = useState(true);
   const [showSteps, setShowSteps] = useState(-1);
+  const[dashboard,setDashboard]=useState([]);
 
   const { message, setMessage, profileData,logout,getProfileDaital } = useContext(ContextDashboard);
 
@@ -29,45 +31,59 @@ function ProfilePreview() {
     navigate(link);
   };
 
-  const StateCityList = (type="getstate",id=null)=>{
-    const param ={
-      apiname:type,
-    }
-    if(!isEmpty(id)){
-      param.id = id;
-    }
-    getStateCityPincode(param).then((resp) =>{
-  
-        if(resp?.data?.data){
-          
-           if(type === "getstate"){
-            const data = resp.data.data.map((value) =>{
-              if(value.id === profileData.state_id){
-                setState(value.name);
-                return;
-                  }
-            })
-       
-           }else if(type === "getcity"){
-            resp.data.data.map((value) =>{
-                if(value.m_city_id === profileData.city_id){
-              setCity(value.m_city_name);
-              return;
-                }
-              
-            })
-         
-           } 
-           
-        }
-    }) 
-  }
+  useEffect(()=>{
+    const params={
+      profile_id: getStorage("cust_profile_id") || "", 
+    };
 
-  useEffect(() =>{
-    if(isEmpty(profileData)) return;
-    StateCityList("getstate");
-    StateCityList("getcity",profileData.state_id);
-  },[profileData]);
+    getDashboardData(params).then(resp=>{
+      if(resp?.data?.Status===1){
+        setStorage("eligibility",resp?.data?.Data?.registration_successful)
+        const dashboardData=resp?.data || {};
+        setDashboard(dashboardData);
+      }
+    });
+  },[]);
+
+  // const StateCityList = (type="getstate",id=null)=>{
+  //   const param ={
+  //     apiname:type,
+  //   }
+  //   if(!isEmpty(id)){
+  //     param.id = id;
+  //   }
+  //   getStateCityPincode(param).then((resp) =>{
+  
+  //       if(resp?.data?.data){
+          
+  //          if(type === "getstate"){
+  //           const data = resp.data.data.map((value) =>{
+  //             if(value.id === profileData.state_id){
+  //               setState(value.name);
+  //               return;
+  //                 }
+  //           })
+       
+  //          }else if(type === "getcity"){
+  //           resp.data.data.map((value) =>{
+  //               if(value.m_city_id === profileData.city_id){
+  //             setCity(value.m_city_name);
+  //             return;
+  //               }
+              
+  //           })
+         
+  //          } 
+           
+  //       }
+  //   }) 
+  // }
+
+  // useEffect(() =>{
+  //   if(isEmpty(profileData)) return;
+  //   StateCityList("getstate");
+  //   StateCityList("getcity",profileData.state_id);
+  // },[profileData]);
 
 
   useEffect(()=>{
@@ -94,8 +110,8 @@ function ProfilePreview() {
   const submit = () =>{
      
     const param = {
-      lead_id:getStorage("lead_id") || "",
-      token:getStorage("token") || "",
+      "profile_id":getStorage("cust_profile_id") || "",
+      "event_name": "register_now"
   }
 
 
@@ -104,14 +120,16 @@ function ProfilePreview() {
     setLoading(false);
     if(resp?.data?.Status === 1){
       setModelOpen(true);
-      getProfileDaital();
+      // getProfileDaital();
       setResponce(resp?.data?.Message);
+      setStatus(resp?.data?.Status);
       
-    }else if(resp?.data?.Status === 5){
+    }else if(resp?.data?.Status === 4){
       logout();
     }else{
         setModelOpen(true);
         setResponce(resp?.data?.Message);
+        setStatus(resp?.data?.Status);
     //   setMessage({ type: 'error', msg: resp?.data?.Message, place:"globle" });
     }
     
@@ -125,10 +143,10 @@ function ProfilePreview() {
 }
 
 
-useEffect(() =>{
-    if(isEmpty(profileData)) return;
-    getProfileDaital()
-},[]);
+// useEffect(() =>{
+//     if(isEmpty(profileData)) return;
+//     getProfileDaital()
+// },[]);
 
 
   return (
@@ -156,11 +174,11 @@ useEffect(() =>{
           <table>
             <tr>
               <td>Your Name</td>
-              <td>{profileData.full_name || profileData.short_name || "NA"}</td>
+              <td>{dashboard?.Data?.full_name || "NA"}</td>
             </tr>
             <tr>
               <td>Gender</td>
-              <td>{profileData?.gender || "NA"}</td>
+              <td>{dashboard?.Data?.gender || "NA"}</td>
             </tr>
             <tr>
               <td>DOB</td>
@@ -250,7 +268,7 @@ useEffect(() =>{
           </table>
         </DetailBox>
       </div>
-     {modelOpen && <Modal onClose={()=>setModelOpen(false)} msg={responce} onConfirm={()=>navigate("/my-dashboard/eligibility")} />}
+     {modelOpen && <Modal onClose={()=>setModelOpen(false)} msg={responce} state={status} onConfirm={()=>navigate("/my-dashboard/eligibility")} />}
     </ProfilePreviewWrapper>
   );
 }

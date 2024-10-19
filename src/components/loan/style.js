@@ -97,6 +97,7 @@ export const Loginwrapper = styled.div`
     .right {
       margin-right: 10px !important;
       margin-left: 9px;
+      max-width:349px !important;
     }
   }
 `;

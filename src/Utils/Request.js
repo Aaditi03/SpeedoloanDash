@@ -1,6 +1,6 @@
-
-
 import axios from 'axios';
+import { getStorage } from './common';
+
 class Request {
 	constructor(dispatch, successFn, errorFn) {
 		this.successFn = typeof successFn === 'function' ? successFn : () => {};
@@ -11,14 +11,16 @@ class Request {
 	instance() {
 		const headers = {
 			"Content-Type": "application/json; charset=UTF-8",
-			"accept":"application/json",
-			"Auth":"Y2M0Nzk0OGYwNmQyMjdmZTlhY2E1ZWQ1Nzk5YTZmMWE=",
+			"Accept": "application/json",
 		};
-		// const headers = {
-		// 	Authorization: `Bearer ${sessionStorage.getItem('ID Token')}`,
-		// };
 
-		
+		const token = getStorage("token");
+		if (token) {
+			headers.Authtoken = token; 
+		} else {
+			headers.Auth = "ZTI4MTU1MzE4NWQ2MGQyZTFhNWM0NGU3M2UzMmM3MDM="; 
+		}
+
 		const instance = axios.create({
 			baseURL: '',
 			headers,
@@ -34,17 +36,15 @@ class Request {
 	 */
 	async get(url, params = {}) {
 		try {
-			const res = await this.instance().get(url, params);
+			const res = await this.instance().get(url, { params });
 			const data = res.data ? res.data : null;
 			const headers = res.headers ? res.headers : null;
 			this.successFn(data, headers);
 			return res;
 		} catch (error) {
-			
-
 			this.errorFn(error);
-			if(error?.response){
-				return error?.response;
+			if (error?.response) {
+				return error.response;
 			}
 		}
 	}
@@ -61,25 +61,28 @@ class Request {
 			this.successFn(data, status);
 			return res;
 		} catch (error) {
-			
 			this.errorFn(error);
-			if(error?.response){
-				return error?.response;
+			if (error?.response) {
+				return error.response;
 			}
-		
-		
 		}
 	}
+
+	/**
+	 * DELETE Requests
+	 * @param {string} url
+	 * @param {object} params
+	 */
 	async delete(url, params = {}) {
 		try {
-			const res = await this.instance().post(url, params);
+			const res = await this.instance().delete(url, { data: params });
 			const { data = {}, status } = res;
 			this.successFn(data, status);
 			return res;
 		} catch (error) {
 			this.errorFn(error);
-			if(error?.response){
-				return error?.response;
+			if (error?.response) {
+				return error.response;
 			}
 		}
 	}

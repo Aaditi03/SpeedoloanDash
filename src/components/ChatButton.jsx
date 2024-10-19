@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import "../css/Common.css";
 import { Link } from "react-router-dom";
-import { FaWhatsapp, FaFacebook, FaInstagram } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
 import { IoCall } from "react-icons/io5";
 
+// Import your chatbot icon here
+import { AiOutlineRobot } from "react-icons/ai"; // Example chatbot icon
+import Chatbot from "./Chatbot/Chatbot";
+
 const ChatButton = () => {
+  const [isChatbotVisible, setChatbotVisible] = useState(false);
+
+  const toggleChatbot = () => {
+    setChatbotVisible(!isChatbotVisible);
+  };
+
+  const closeChatbot = () => {
+    setChatbotVisible(false);
+  };
+
   return (
     <>
       <div className="chat_icon_link">
@@ -18,17 +32,13 @@ const ChatButton = () => {
             <IoCall className="call_icon" />
           </div>
         </Link>
-        {/* <Link to="https://www.facebook.com/salaryontime/" target="_blank" rel="noopener noreferrer" title="Visit us on Facebook">
+        <div onClick={toggleChatbot} title="Chat with us">
           <div className="chat_icon_container mt15">
-            <FaFacebook className="chat_icon" />
+            <AiOutlineRobot className="chat_icon" /> {/* Chatbot icon */}
           </div>
-        </Link>
-        <Link to="https://www.instagram.com/salaryontime/" target="_blank" rel="noopener noreferrer" title="Follow us on Instagram">
-          <div className="chat_icon_container mt15">
-            <FaInstagram className="chat_icon" />
-          </div>
-        </Link> */}
+        </div>
       </div>
+      {isChatbotVisible && <Chatbot onClose={closeChatbot} />}
     </>
   );
 };

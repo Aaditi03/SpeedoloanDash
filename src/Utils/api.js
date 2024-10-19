@@ -35,6 +35,9 @@ export const getIncomeDetails = (params) => {
 export const uploadProfilePhoto = (params) => {
 	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.UPLOAD_PROFILE_PIC}`, params);
 };
+export const saveDocuments = (params) => {
+	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.CUSTOMER_DOCUMENT}`, params);
+};
 export const ckeckEligibility = (params) => {
 	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.CHECK_ELIGIBILITY}`, params);
 };
@@ -43,6 +46,9 @@ export const aboutCompany = (params) => {
 };
 export const calculateLoan = (params) => {
 	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.CALCULATE_LOAN}`, params);
+};
+export const generateLoan = (params) => {
+	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.GENERATE_LOAN}`, params);
 };
 
 export const userdata = (params) => {

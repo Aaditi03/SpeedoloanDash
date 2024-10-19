@@ -4,9 +4,9 @@ import arrowIcon from "../../../images/arrow.png";
 import { FormWrapper } from '../../../components/loan/style';
 import Button from '../../../components/ui/Button';
 import Alert from '../../../components/ui/Alert';
-import { getStateCityPincode, getDashboardData, savePerssonalAddress } from '../../../Utils/api';
+import { getStateCityPincode, savePerssonalAddress } from '../../../Utils/api';
 import { useNavigate } from 'react-router-dom';
-import { getStorage, goBack, isEmpty } from '../../../Utils/common';
+import { getStorage, goBack, isEmpty,setStorage } from '../../../Utils/common';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import { formValidation } from '../../../Utils/formValidation';
@@ -16,8 +16,8 @@ import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
 const initialData = {
     pinCode: "",
-    city: "",
-    state: "",
+    // city: "",
+    // state: "",
     landmark: "",
     current_locality: "",
     address: "",
@@ -25,8 +25,8 @@ const initialData = {
 };
 
 const options = [
-    { label: "Owned", value: "OWNED" },
-    { label: "Rented", value: "RENTED" }
+    { label: "Owned", value: "1" },
+    { label: "Rented", value: "2" }
 ];
 
 function CapturPersonalInformation() {
@@ -39,7 +39,7 @@ function CapturPersonalInformation() {
     const [pinCodeList, setPinCodeList] = useState([]);
     const [showSteps, setShowSteps] = useState(-1);
     const [toggle, setToggle] = useState(true);
-    const [progressBar, setProgressBar] = useState(0);
+    const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
 
     // Accessing context values from ContextDashboard
 
@@ -50,15 +50,15 @@ function CapturPersonalInformation() {
         setFormDataError({ ...formDataError, ...error });
 
         const param = {
-            lead_id: getStorage("lead_id") || "",
-            token: getStorage("token") || "",
-            current_residence_type: formData.residenceType,
-            current_landmark: formData.landmark,
-            current_locality: formData.current_locality,
-            current_house: formData.address,
-            pincode: formData.pinCode,
-            city_id: formData.city,
-            state_id: formData.state
+            profile_id: getStorage("cust_profile_id") || "",
+            event_name:"residence_details",
+            residence_type_id: formData.residenceType,
+            residence_landmark: formData.landmark,
+            residence_address_2: formData.current_locality,
+            residence_address_1: formData.address,
+            residence_pincode: formData.pinCode
+            // city_id: formData.city,
+            // state_id: formData.state
         };
 
         if (isEmpty(error)) {
@@ -66,9 +66,11 @@ function CapturPersonalInformation() {
             savePerssonalAddress(param).then(resp => {
                 setLoading(false);
                 if (resp?.data?.Status === 1) {
+                    setStorage("next_step",resp?.data?.Data?.next_step)
+                    setStorage("step_percent",resp?.data?.Data?.step_percentage)
                     setMessage({ type: 'success', msg: resp?.data?.Message, place: "global" });
                     navigate("/my-dashboard/captur-income-details");
-                } else if (resp?.data?.Status === 5) {
+                } else if (resp?.data?.Status === 4) {
                     logout();
                 } else {
                     setMessage({ type: 'error', msg: resp?.data?.Message });
@@ -88,74 +90,74 @@ function CapturPersonalInformation() {
             [name]: ""
         }));
 
-        // Handle state and city change logic
-        if (name === "state") {
-            StateCityList("getcity", value);
-            setFormData(prev => ({ ...prev, city: "", pinCode: "" })); // Reset city and pin code
-        } else if (name === "city") {
-            StateCityList("getpincode", value);
-            setFormData(prev => ({ ...prev, pinCode: "" })); // Reset pin code
-        }
+        // // Handle state and city change logic
+        // if (name === "state") {
+        //     StateCityList("getcity", value);
+        //     setFormData(prev => ({ ...prev, city: "", pinCode: "" })); // Reset city and pin code
+        // } else if (name === "city") {
+        //     StateCityList("getpincode", value);
+        //     setFormData(prev => ({ ...prev, pinCode: "" })); // Reset pin code
+        // }
     };
 
-    const StateCityList = (type = "getstate", id = null) => {
-        const param = { apiname: type };
-        if (id) {
-            param.id = id;
-        }
-        getStateCityPincode(param).then((resp) => {
-            if (resp?.data?.data) {
-                if (type === "getstate") {
-                    const data = resp.data.data.map((value) => ({ label: value.name, value: value.id }));
-                    setStateList(data);
-                } else if (type === "getcity") {
-                    const data = resp.data.data.map((value) => ({ label: value.m_city_name, value: value.m_city_id }));
-                    setCityList(data);
-                } else {
-                    const data = resp.data.data.map((value) => ({ label: value.name, value: value.name }));
-                    setPinCodeList(data);
-                }
-            }
-        });
-    };
+    // const StateCityList = (type = "getstate", id = null) => {
+    //     const param = { apiname: type };
+    //     if (id) {
+    //         param.id = id;
+    //     }
+    //     getStateCityPincode(param).then((resp) => {
+    //         if (resp?.data?.data) {
+    //             if (type === "getstate") {
+    //                 const data = resp.data.data.map((value) => ({ label: value.name, value: value.id }));
+    //                 setStateList(data);
+    //             } else if (type === "getcity") {
+    //                 const data = resp.data.data.map((value) => ({ label: value.m_city_name, value: value.m_city_id }));
+    //                 setCityList(data);
+    //             } else {
+    //                 const data = resp.data.data.map((value) => ({ label: value.name, value: value.name }));
+    //                 setPinCodeList(data);
+    //             }
+    //         }
+    //     });
+    // };
 
-    useEffect(() => {
-        StateCityList(); // Fetch state list on mount
+    // useEffect(() => {
+    //     StateCityList(); // Fetch state list on mount
 
-        const params = {
-            lead_id: getStorage("lead_id") || "",
-            token: getStorage("token") || "",
-            mobile: getStorage("mobile") || "",
-        };
+        // const params = {
+        //     lead_id: getStorage("lead_id") || "",
+        //     token: getStorage("token") || "",
+        //     mobile: getStorage("mobile") || "",
+        // };
 
-        getDashboardData(params).then(resp => {
-            if (resp?.data?.Status === 1) {
-                const dashboardData = resp?.data?.Steps?.data || {};
-                if (dashboardData) {
-                    setFormData(prev => ({
-                        ...prev,
-                        address: dashboardData.current_house || "",
-                        current_locality: dashboardData.current_locality || "",
-                        landmark: dashboardData.current_landmark || "",
-                        pinCode: dashboardData.pincode || "",
-                        city: dashboardData.city_id || "",
-                        state: dashboardData.state_id || "",
-                        residenceType: dashboardData.current_residence_type || "",
-                    }));
+        // getDashboardData(params).then(resp => {
+        //     if (resp?.data?.Status === 1) {
+        //         const dashboardData = resp?.data?.Steps?.data || {};
+        //         if (dashboardData) {
+        //             setFormData(prev => ({
+        //                 ...prev,
+        //                 address: dashboardData.current_house || "",
+        //                 current_locality: dashboardData.current_locality || "",
+        //                 landmark: dashboardData.current_landmark || "",
+        //                 pinCode: dashboardData.pincode || "",
+        //                 city: dashboardData.city_id || "",
+        //                 state: dashboardData.state_id || "",
+        //                 residenceType: dashboardData.current_residence_type || "",
+        //             }));
 
-                    if (dashboardData.state) {
-                        StateCityList("getcity", dashboardData.state);
-                    }
-                    if (dashboardData.city) {
-                        StateCityList("getpincode", dashboardData.city);
-                    }
-                    setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
-                }
-            } else if (resp?.data?.Status === 5) {
-                logout();
-            }
-        });
-    }, [logout]);
+        //             if (dashboardData.state) {
+        //                 StateCityList("getcity", dashboardData.state);
+        //             }
+        //             if (dashboardData.city) {
+        //                 StateCityList("getpincode", dashboardData.city);
+        //             }
+        //             setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
+        //         }
+        //     } else if (resp?.data?.Status === 5) {
+        //         logout();
+        //     }
+        // });
+    // }, [logout]);
 
     useEffect(() => {
         if (!isEmpty(setps)) {
@@ -204,7 +206,7 @@ function CapturPersonalInformation() {
                                     required={true}
                                 />
                                 <Input
-                                    label="Address"
+                                    label="Address1"
                                     name="address"
                                     error={formDataError?.address}
                                     onChange={onChange}
@@ -212,7 +214,7 @@ function CapturPersonalInformation() {
                                     required={true}
                                 />
                                 <Input
-                                    label="Current Locality"
+                                    label="Address2"
                                     name="current_locality"
                                     error={formDataError?.current_locality}
                                     onChange={onChange}
@@ -227,7 +229,7 @@ function CapturPersonalInformation() {
                                     value={formData?.landmark}
                                     required={true}
                                 />
-                                <Select
+                                {/* <Select
                                     label="State"
                                     name="state"
                                     placeholder="Select state"
@@ -248,8 +250,17 @@ function CapturPersonalInformation() {
                                     options={cityList}
                                     disabled={isEmpty(stateList) || isEmpty(cityList)}
                                     required={true}
+                                /> */}
+
+                                <Input
+                                    label="Pin Code"
+                                    name="pinCode"
+                                    error={formDataError?.pinCode}
+                                    onChange={onChange}
+                                    value={formData?.pinCode}
+                                    required={true}
                                 />
-                                <Select
+                                {/* <Select
                                     label="Pin Code"
                                     name="pinCode"
                                     placeholder="Select Pin Code"
@@ -259,7 +270,7 @@ function CapturPersonalInformation() {
                                     options={pinCodeList}
                                     disabled={isEmpty(stateList) || isEmpty(cityList) || isEmpty(pinCodeList)}
                                     required={true}
-                                />
+                                /> */}
                             </div>
 
                             <div className="button">

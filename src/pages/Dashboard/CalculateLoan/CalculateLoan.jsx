@@ -15,7 +15,7 @@ function CalculateLoan() {
     <BoxWrapper  className="w100 gray" >
         <div className="formmainBox flex">
           <div className="left">
-            <div className='center gap4 pointer' onClick={()=>goBack(navigate,"/my-dashboard/about-your-company")}>
+            <div className='center gap4 pointer' onClick={()=>goBack(navigate,"/my-dashboard/eligibility")}>
                 <img src={arrowIcon} alt="" /> <span>Back</span>
             </div>
           </div>

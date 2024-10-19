@@ -7,6 +7,7 @@ import icon4 from "../../images/document.svg";
 import icon5 from "../../images/logoutIcon.svg";
 import { useLocation, useNavigate } from 'react-router-dom';
 import ContextDashboard from '../../Context/ContextDashboard';
+import { getStorage } from '../../Utils/common';
 
 const linkList = [
    {
@@ -45,20 +46,22 @@ const linkList = [
 function SideBar({ toggle, setToggle }) {
    const navigate = useNavigate();
    const location = useLocation();
-   const { logout, eligibilityStatus, setps } = useContext(ContextDashboard);
+   const { logout, setps } = useContext(ContextDashboard);
+   const [eligibilityStatus, setEligibilityStatus] = useState(getStorage("eligibility"));
+
 
    // Log profileData to console
    console.log("Profile Data:", setps);
 
    const redirect = (link) => {
       if (link === "/my-dashboard/") {
-          if (eligibilityStatus === 'ELIGIBLE') {
+          if (eligibilityStatus === 1) {
             link = '/my-dashboard/eligibility'; 
          }
       }
 
       if (link === "/my-dashboard/profile-preview") {
-          if (eligibilityStatus === 'ELIGIBLE') {
+          if (eligibilityStatus === 1) {
             link = '/my-dashboard/lead-preview'; 
          }
       }

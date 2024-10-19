@@ -49,6 +49,7 @@ import LeadPreview from "./pages/Dashboard/ProfilePage/LeadPreview";
 import LoanHistory from "./pages/LoanHistory/LoanHistory";
 import LoanDetail from "./pages/LoanHistory/LoanDetail"
 import RepayPage from "./pages/Dashboard/ProfilePage/RepayPage";
+import BankDetail from "./pages/Dashboard/BankDetail/BankDetail";
 
 const showmessage = async (message) => {
   try {
@@ -103,7 +104,8 @@ function Router() {
           <Route path="/my-dashboard/user-profile" element={<ProfilePage />} />
           <Route path="/my-dashboard/profile-preview" element={<ProfilePreview />} />
           <Route path="/my-dashboard/calculate-loan" element={<CalculateLoan />} />
-          <Route path="/my-dashboard/about-your-company" element={<AboutCompany />} />
+          <Route path="/my-dashboard/about-your-company" element={<AboutCompany />}/>
+          <Route path="/my-dashboard/bank-detail" element={<BankDetail />} />
           <Route path="/my-dashboard/kyc" element={<Ekyc />} />
           <Route path="/my-dashboard/bank-upload" element={<UploadBankStatement />} />
           <Route path="/my-dashboard/pan-upload" element={<PanUpload />} />
@@ -115,6 +117,7 @@ function Router() {
           <Route path="/my-dashboard/leads" element={<LoanHistory />} />
           <Route path="/my-dashboard/repayment" element={<RepayPage />} />
           <Route path="/my-dashboard/details/:lead_id" element={<LoanDetail />} />
+          {/* <Route path="/my-dashboard/eligibility" element={<Eligibility />} /> */}
 
           
           <Route

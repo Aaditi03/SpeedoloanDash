@@ -8,9 +8,9 @@ import arrowIcon from "../../../images/arrow.png"
 import { FormWrapper } from '../../../components/loan/style';
 import Button from '../../../components/ui/Button';
 import Alert from '../../../components/ui/Alert';
-import {getDashboardData, getIncomeDetails, verifyPan } from '../../../Utils/api';
+import {getIncomeDetails} from '../../../Utils/api';
 import { useNavigate } from 'react-router-dom';
-import { getStorage, goBack, isAlphabet, isEmpty, isNumber } from '../../../Utils/common';
+import { getStorage, goBack, isAlphabet, isEmpty, isNumber,setStorage } from '../../../Utils/common';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import { formValidation } from '../../../Utils/formValidation';
@@ -20,22 +20,22 @@ import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
 const initialData = {
     employmentType:"",
-    // monthlyIncome:"",
-    organization:"",
+    monthlyIncome:"",
+    // organization:"",
     nextSalaryDate:"",
     ModeIncomeReceived:"",
-    obligations:"",
+    // obligations:"",
 }
 
 const options =[
     {
         label:"Salaried",
-        value:"salaried",
+        value:"1",
         name:"employmentType",
     },
     {
       label:"Self-Employed",
-      value:"selfemployee",
+      value:"2",
       name:"employmentType",
   }
 
@@ -44,17 +44,17 @@ const options =[
 const options2 =[
     {
         label:"Bank",
-        value:"BANK",
+        value:"bank",
         name:"ModeIncomeReceived",
     },
     {
-        label:"NEFT",
-        value:"NEFT",
+        label:"Cheque",
+        value:"cheque",
         name:"ModeIncomeReceived",
     },
     {
         label:"Cash",
-        value:"CASH",
+        value:"cash",
         name:"ModeIncomeReceived",
     },
      
@@ -67,7 +67,7 @@ function CapturIncomeDetails() {
     const [formDataError, setFormDataError] = useState(initialData);
     const [showSteps, setShowSteps] = useState(-1);
     const [toggle, setToggle] = useState(true);
-    const [progressBar, setProgressBar] = useState(0);
+    const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
 
     const navigate = useNavigate();
 
@@ -83,14 +83,12 @@ function CapturIncomeDetails() {
         console.log("error",error)
         setFormDataError({...formDataError,...error});
         const param = {
-          lead_id:getStorage("lead_id") || "",
-          token:getStorage("token") || "",
-          employee_type:formData.employmentType,
-          salary_mode:formData.ModeIncomeReceived,
-          company_name:formData.organization,
-          nextSalaryDate:formData.nextSalaryDate,
-          // monthly_salary:formData.monthlyIncome,
-          obligations:formData.obligations,
+          profile_id: getStorage("cust_profile_id") || "",
+          event_name:"income_details",
+          income_type_id:formData.employmentType,
+          salary_mode_id:formData.ModeIncomeReceived=="bank"?"1":formData.ModeIncomeReceived=="cheque"?"2":formData.ModeIncomeReceived=="cash"?"3":"",
+          salary_date:formData.nextSalaryDate,
+          monthly_income:formData.monthlyIncome
        
       }
   
@@ -98,12 +96,13 @@ function CapturIncomeDetails() {
            setLoading(true);
            getIncomeDetails(param).then(resp=>{
         setLoading(false);
-        console.log(resp?.data)
         if(resp?.data?.Status === 1){
+          setStorage("next_step",resp?.data?.Data?.next_step)
+          setStorage("step_percent",resp?.data?.Data?.step_percentage)
           setResponce(resp?.data);
           setMessage({ type: 'success', msg:resp?.data?.Message, place:"globle" });
           navigate("/my-dashboard/upload-picture")
-        }else if(resp?.data?.Status === 5){
+        }else if(resp?.data?.Status === 4){
           logout();
         }else{
           setMessage({ type: 'error', msg: resp?.data?.Message, });
@@ -129,38 +128,38 @@ const onChangeDate = (date) =>{
     setFormDataError({...formDataError,nextSalaryDate:""});
 }
 
-useEffect(() => {
+// useEffect(() => {
 
-  // Fetch dashboard data on mount
-  const params = {
-      lead_id: getStorage("lead_id") || "",
-      token: getStorage("token") || "",
-      mobile: getStorage("mobile") || "",
-  };
+//   // Fetch dashboard data on mount
+//   const params = {
+//       lead_id: getStorage("lead_id") || "",
+//       token: getStorage("token") || "",
+//       mobile: getStorage("mobile") || "",
+//   };
 
-  getDashboardData(params).then(resp => {
-      if (resp?.data?.Status === 1) {
-          const dashboardData = resp?.data?.Steps?.data || {};
-          if (dashboardData) {
-              // Update form data with fetched dashboard data
-              setFormData(prev => ({
-                  ...prev,
-                  employmentType: dashboardData.employee_type || "",
-                  // monthlyIncome: dashboardData.monthly_salary || "",
-                  organization: dashboardData.company_name || "",
-                  ModeIncomeReceived: dashboardData.salary_mode || "", 
-                  nextSalaryDate:dashboardData.nextSalaryDate || "",
-                  obligations: dashboardData.obligations || "", 
+//   getDashboardData(params).then(resp => {
+//       if (resp?.data?.Status === 1) {
+//           const dashboardData = resp?.data?.Steps?.data || {};
+//           if (dashboardData) {
+//               // Update form data with fetched dashboard data
+//               setFormData(prev => ({
+//                   ...prev,
+//                   employmentType: dashboardData.employee_type || "",
+//                   // monthlyIncome: dashboardData.monthly_salary || "",
+//                   organization: dashboardData.company_name || "",
+//                   ModeIncomeReceived: dashboardData.salary_mode || "", 
+//                   nextSalaryDate:dashboardData.nextSalaryDate || "",
+//                   obligations: dashboardData.obligations || "", 
             
-              }));
+//               }));
 
-              setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent); 
-          }
-      } else if (resp?.data?.Status === 5) {
-          logout();
-      }
-  });
-}, [logout]);
+//               setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent); 
+//           }
+//       } else if (resp?.data?.Status === 5) {
+//           logout();
+//       }
+//   });
+// }, [logout]);
 
 useEffect(() => {
   if (!isEmpty(setps)) {
@@ -200,8 +199,8 @@ const checkStep = (data) => {
             <div className="inputBox" style={{marginBottom:"25px"}}>
             <RadioButtons  title='Select Employment Type' options={options} className="flex 5" cls={"margin-25"} value={formData.employmentType} error={formDataError.employmentType} onChange={onChange} required={true} />
            
-            {/* <Input
-                  label="Net Monthly Income *"
+            <Input
+                  label="Monthly Income *"
                   name="monthlyIncome"
                   error={formDataError?.monthlyIncome}
                   onChange={onChange}
@@ -209,10 +208,10 @@ const checkStep = (data) => {
                   required={true}
                   type='number'
                   
-                /> */}
+                />
 
 
-            <Input
+            {/* <Input
                   label="Organization Name"
                   name="organization"
                    className='min-w100'
@@ -221,7 +220,7 @@ const checkStep = (data) => {
                   value={formData?.organization}
                   required={true}
                   
-                />
+                /> */}
 
                 
             <Input
@@ -235,7 +234,7 @@ const checkStep = (data) => {
                   
                 />
                
-               <Input
+               {/* <Input
                   label="Obligations"
                   name="obligations"
                   placeholder="Please enter your monthly rent, bills"
@@ -243,9 +242,9 @@ const checkStep = (data) => {
                   error={formDataError?.obligations}
                   onChange={onChange}
                   value={formData?.obligations}
-                  required={true}
+                
                   
-                />
+                /> */}
                 
 
            <RadioButtons  title='Mode of Salary Received' options={options2} className="flex "  value={formData.ModeIncomeReceived} error={formDataError.ModeIncomeReceived} onChange={onChange} required={true}/>
