@@ -42,19 +42,19 @@ const Home = () => {
   const advantages = [
     {
       title: "Easy Application",
-      content: "Gone are the days when the loan application process was itself a headache. Now, you need not visit a bank and sign a bundle of documents because we allow online paperless loan applications with minimum documentation. Don’t stand in the long queue at your nearest bank, instead open the SalaryOnTime app and complete the application process in the blink of an eye."
+      content: "Gone are the days when the loan application process was itself a headache. Now, you need not visit a bank and sign a bundle of documents because we allow online paperless loan applications with minimum documentation. Don’t stand in the long queue at your nearest bank, instead open the Speedoloan app and complete the application process in the blink of an eye."
     },
     {
       title: "Prompt Approval",
-      content: "As soon as we receive a loan application, we immediately swing into action. We meticulously review the loan application and if everything is good to go, we instantly approve it in a flash. SalaryOnTime understands how important your time is, which is why we believe in prompt approval and super-fast bank transfers."
+      content: "As soon as we receive a loan application, we immediately swing into action. We meticulously review the loan application and if everything is good to go, we instantly approve it in a flash. Speedoloan understands how important your time is, which is why we believe in prompt approval and super-fast bank transfers."
     },
     {
       title: "Ultrafast Loan Disbursal",
-      content: "The reason why SalaryOnTime has made a special name for itself is its ultrafast loan disbursal feature. We are as fast as a lightning bolt in transferring the loan amount directly to your bank account. Once the loan is approved by our team, we waste no time in disbursing the amount."
+      content: "The reason why Speedoloan has made a special name for itself is its ultrafast loan disbursal feature. We are as fast as a lightning bolt in transferring the loan amount directly to your bank account. Once the loan is approved by our team, we waste no time in disbursing the amount."
     },
     {
       title: "No Hidden Charges",
-      content: "Hidden charges may come as a shock, making you sceptical about whether to take the loan or not. At SalaryOnTime, we aim to simplify your financial complications with our 'No Hidden Charges' policy that makes things transparent."
+      content: "Hidden charges may come as a shock, making you sceptical about whether to take the loan or not. At Speedoloan, we aim to simplify your financial complications with our 'No Hidden Charges' policy that makes things transparent."
     },
     {
       title: "Easy-to-Repay Options",
@@ -81,22 +81,22 @@ const Home = () => {
                     style={{ marginBottom: "-2px" }}
                   />
                 </span>
-                <span>About SalaryOnTime</span>
+                <span>About Speedoloan</span>
               </p>
               <h2 className="mt20">
-                SalaryOnTime: Your Trusted <span>Finance Company</span>
+                Speedoloan: Your Trusted <span>Finance Company</span>
               </h2>
             </div>
             <div className="about_para">
               <p style={{textAlign:"justify"}}>
               We are an RBI-registered non-banking financial company(NBFC), offering instant personal loans without CIBIL checks to help you deal with urgent financial situations effectively. Whether you seek an instant personal loan online to pay medical bills, credit card repayment, travel expenses, monthly expenses, instant school/college fees, etc, we are always there to help you escape such tricky financial circumstances with ease. Apply to a variety of loans, such as emergency loans, short-term loans, long-term loans, etc from our website and get the loan amount disbursed in your account in 10 minutes. {" "}
                 <span className="hide_content">
-                  At SalaryOnTime, our goal is to offer seamless financial
+                  At Speedoloan, our goal is to offer seamless financial
                   solutions that cater to your urgent requirements. Experience
                   the convenience and reliability of our services as we strive
                   to be your go-to finance company for all your cash loan needs.
                 </span>
-                <Link to="/about">Read More</Link>
+                <Link to="/about-us">Read More</Link>
               </p>
             </div>
           </div>
@@ -142,7 +142,7 @@ const Home = () => {
                 </p>
 
                 <div className="btn_container mt30">
-                  <Link to="/instantloan">Read More</Link>
+                  <Link to="/instant-loan">Read More</Link>
                 </div>
               </div>
 
@@ -159,14 +159,14 @@ const Home = () => {
               </div>
               <div className="card_content">
                 <p>
-                  Discover the convenience of short loans at SalaryOnTime,
+                  Discover the convenience of short loans at Speedoloan,
                   designed to meet your immediate financial needs with ease. Our
                   quick approval process ensures that you can access the funds
                   you need.
                 </p>
 
                 <div className="btn_container mt30">
-                  <Link to="/shortloan">Read More</Link>
+                  <Link to="/short-term-loan">Read More</Link>
                 </div>
               </div>
 
@@ -222,14 +222,14 @@ const Home = () => {
 
               <div className="features_section_content_description mt20">
                 <p>
-                  Choosing SalaryOnTime as your finance company ensures that you
+                  Choosing Speedoloan as your finance company ensures that you
                   receive exceptional service tailored to your financial needs.
                   Specializing in personal loans, we offer a seamless process
                   for obtaining cash loans online, allowing you to secure funds
                   quickly and efficiently. Whether you need an urgent loan
-                  online or an urgent money loan, SalaryOnTime provides reliable
+                  online or an urgent money loan, Speedoloan provides reliable
                   and fast solutions to help you manage your financial
-                  challenges with ease. Trust SalaryOnTime for your personal
+                  challenges with ease. Trust Speedoloan for your personal
                   loan requirements and experience the convenience, peace of
                   mind that comes with our expert financial services.
                 </p>
@@ -280,7 +280,7 @@ const Home = () => {
                   <div className="process_card_number">02</div>
                   <h2 className="mb10">Application Review</h2>
                   <p className="full-width text-center">
-                    SalaryOnTime reviews your application, conducts credit
+                    Speedoloan reviews your application, conducts credit
                     checks, and verifies your documents.
                   </p>
                 </div>
@@ -313,10 +313,10 @@ const Home = () => {
           <div className="advantages_wrapper">
       <div className="title_section">
         <h2 className="mt20 full-width text-center">
-          Why Should You Choose <span>SalaryOnTime</span>
+          Why Should You Choose <span>Speedoloan</span>
         </h2>
         <p className="mt5 text-center">
-          Multiple features make SalaryOnTime stand out from the rest. Let’s have a look at the features in detail.
+          Multiple features make Speedoloan stand out from the rest. Let’s have a look at the features in detail.
         </p>
       </div>
       <div className="advantages_section">
@@ -359,7 +359,7 @@ const Home = () => {
               Get Started <span>Instantly</span>
             </h2>
             <p className="full-width text-center mt5">
-              Download the SalaryOnTime app and get moving
+              Download the Speedoloan app and get moving
             </p>
           </div>
           <div className="get_started_row">
@@ -461,11 +461,11 @@ const Home = () => {
               <div className="app_download_button_container ml70">
                 <p className="mb10">Download the app now</p>
                 <div className="flex flex-center button_wrapper">
-                  <Link to="https://apps.apple.com/in/app/salaryontime/id6503283983">
+                  <Link to="https://apps.apple.com/in/app/salaryontime/id6503283983" target="_blank">
                     <FaApple className="app_download_icon" />
                   </Link>
                   <Link
-                    to="https://play.google.com/store/apps/details?id=com.salaryontime.salaryontime"
+                    to="https://play.google.com/store/apps/details?id=com.salaryontime.Speedoloan"
                     target="_blank"
                   >
                     <DiAndroid className="app_download_icon" />

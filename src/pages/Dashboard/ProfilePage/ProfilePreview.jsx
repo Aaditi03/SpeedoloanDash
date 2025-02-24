@@ -10,167 +10,86 @@ import { ckeckEligibility, getDashboardData, getStateCityPincode } from "../../.
 import Modal from "../../../components/Modal/Modal";
 import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
+// Helper function to format date to dd-mm-yyyy
+const formatDate = (dateString) => {
+  if (!dateString) return "NA"; // Return "NA" if there's no date
+  const date = new Date(dateString);
+  const day = ("0" + date.getDate()).slice(-2); // Pad single digit days
+  const month = ("0" + (date.getMonth() + 1)).slice(-2); // Pad single digit months
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
+};
+
 function ProfilePreview() {
   const navigate = useNavigate();
-  const [state,setState] = useState("");
-  const [city,setCity] = useState("");
-  const [modelOpen,setModelOpen] = useState(false);
-  const [loading,setLoading] = useState(false);
-  const [responce,setResponce] = useState(false);
-  const[status,setStatus]=useState();
-  const{eligibilityStatus}=useContext(ContextDashboard);
-  const {setps} = useContext(ContextDashboard);
-  const [progressBar,setProgressBar] = useState(getStorage("step_percent"))
-  const [toggle, setToggle] = useState(true);
-  const [showSteps, setShowSteps] = useState(-1);
-  const[dashboard,setDashboard]=useState([]);
-
-  const { message, setMessage, profileData,logout,getProfileDaital } = useContext(ContextDashboard);
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
+  const [modelOpen, setModelOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [responce, setResponce] = useState(false);
+  const [status, setStatus] = useState();
+  const { eligibilityStatus } = useContext(ContextDashboard);
+  const { setps } = useContext(ContextDashboard);
+  const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
+  const [dashboard, setDashboard] = useState([]);
+  const { logout } = useContext(ContextDashboard);
 
   const redirect = (link) => {
     navigate(link);
   };
 
-  useEffect(()=>{
-    const params={
-      profile_id: getStorage("cust_profile_id") || "", 
+  useEffect(() => {
+    const params = {
+      profile_id: getStorage("cust_profile_id") || "",
     };
 
-    getDashboardData(params).then(resp=>{
-      if(resp?.data?.Status===1){
-        setStorage("eligibility",resp?.data?.Data?.registration_successful)
-        const dashboardData=resp?.data || {};
+    getDashboardData(params).then((resp) => {
+      if (resp?.data?.Status === 1) {
+        setStorage("percent", resp?.data?.Data?.application_filled_percent);
+        const dashboardData = resp?.data || {};
         setDashboard(dashboardData);
       }
     });
-  },[]);
+  }, []);
 
-  // const StateCityList = (type="getstate",id=null)=>{
-  //   const param ={
-  //     apiname:type,
-  //   }
-  //   if(!isEmpty(id)){
-  //     param.id = id;
-  //   }
-  //   getStateCityPincode(param).then((resp) =>{
-  
-  //       if(resp?.data?.data){
-          
-  //          if(type === "getstate"){
-  //           const data = resp.data.data.map((value) =>{
-  //             if(value.id === profileData.state_id){
-  //               setState(value.name);
-  //               return;
-  //                 }
-  //           })
-       
-  //          }else if(type === "getcity"){
-  //           resp.data.data.map((value) =>{
-  //               if(value.m_city_id === profileData.city_id){
-  //             setCity(value.m_city_name);
-  //             return;
-  //               }
-              
-  //           })
-         
-  //          } 
-           
-  //       }
-  //   }) 
-  // }
-
-  // useEffect(() =>{
-  //   if(isEmpty(profileData)) return;
-  //   StateCityList("getstate");
-  //   StateCityList("getcity",profileData.state_id);
-  // },[profileData]);
-
-
-  useEffect(()=>{
-    console.log("setps",setps)
-    if(!isEmpty(setps)){
-      checkStep(setps);
-    }
-   
-  },[setps]);
-
-  function checkStep(data){
- 
-    setProgressBar(data?.step_complete_percent);
-    const steps = (data?.step_stage - 1) ;
-    if(data?.step_complete_percent === 100){
-      setToggle(false)
-    }
-    setShowSteps(steps);
-    
-   
-
-}
-
-  const submit = () =>{
-     
+  const submit = () => {
     const param = {
-      "profile_id":getStorage("cust_profile_id") || "",
-      "event_name": "register_now"
-  }
+      "profile_id": getStorage("cust_profile_id") || "",
+      "event_name": "register_now",
+    };
 
-
-       setLoading(true);
-       ckeckEligibility(param).then(resp=>{
-    setLoading(false);
-    if(resp?.data?.Status === 1){
-      setModelOpen(true);
-      // getProfileDaital();
-      setResponce(resp?.data?.Message);
-      setStatus(resp?.data?.Status);
-      
-    }else if(resp?.data?.Status === 4){
-      logout();
-    }else{
+    setLoading(true);
+    ckeckEligibility(param).then((resp) => {
+      setLoading(false);
+      if (resp?.data?.Status === 1) {
+        setModelOpen(true);
+        setStorage("next_step", resp?.data?.Data?.next_step);
+        setStorage("eligibility", 1);
+        setResponce(resp?.data?.Message);
+        setStatus(resp?.data?.Status);
+      } else if (resp?.data?.Status === 4) {
+        logout();
+      } else {
         setModelOpen(true);
         setResponce(resp?.data?.Message);
         setStatus(resp?.data?.Status);
-    //   setMessage({ type: 'error', msg: resp?.data?.Message, place:"globle" });
-    }
-    
-    
-})
-
-
-    
-
-
-}
-
-
-// useEffect(() =>{
-//     if(isEmpty(profileData)) return;
-//     getProfileDaital()
-// },[]);
-
+      }
+    });
+  };
 
   return (
-    
     <ProfilePreviewWrapper>
-      <h2 style={{marginLeft:'20px'}}>Check Eligibility for Further Process</h2><br/>
-      <ProgressBar value={`${progressBar}%`}>
-        
-          <div >
-           
-          </div>
-        <></>
-      </ProgressBar><br/>
+      <h2 style={{ marginLeft: '20px' }}>Check Eligibility for Further Process</h2><br />
+      {progressBar !== 100 && progressBar !== undefined && (
+  <ProgressBar value={`${progressBar}%`} />
+)}
+
+      <br />
       <ProfileHeader>
-        <Button title="Check Eligibility" onClick={submit} loading={loading}/>
+        <Button title="Check Eligibility" onClick={submit} loading={loading} />
       </ProfileHeader>
       <div className="detailBox">
-        
-        <DetailBox
-          heading="Basic Details"
-          onClock={() => navigate("/my-dashboard/captur-personal-information", { state: { action: 'update' } })
-          
-          }
-        >
+        <DetailBox heading="Basic Details">
           <table>
             <tr>
               <td>Your Name</td>
@@ -178,97 +97,101 @@ function ProfilePreview() {
             </tr>
             <tr>
               <td>Gender</td>
-              <td>{dashboard?.Data?.gender || "NA"}</td>
+              <td>{dashboard?.Data?.profile_details?.gender
+                ? dashboard?.Data?.profile_details?.gender === "1"
+                  ? "Male"
+                  : "Female"
+                : "NA"}</td>
             </tr>
             <tr>
               <td>DOB</td>
-              <td>{profileData?.dob || "NA"}</td>
+              <td>{formatDate(dashboard?.Data?.profile_details?.dob)}</td>
             </tr>
             <tr>
               <td>Marital Status</td>
               <td>
-                {profileData?.marital_status
-                  ? profileData?.marital_status === "1"
+                {dashboard?.Data?.profile_details?.marital_status_id === null || dashboard?.Data?.profile_details?.marital_status_id === undefined
+                  ? "NA"
+                  : dashboard?.Data?.profile_details?.marital_status_id === "1"
                     ? "Single"
-                    : "Married"
-                  : "Divorced"}
+                    : dashboard?.Data?.profile_details?.marital_status_id === "2"
+                      ? "Married"
+                      : "Divorced"}
               </td>
             </tr>
             <tr>
               <td>Personal Email</td>
               <td>
-                {profileData?.email ? profileData?.email.toLowerCase() : "NA"}
+                {dashboard?.Data?.profile_details?.personal_email ? dashboard?.Data?.profile_details?.personal_email.toLowerCase() : "NA"}
               </td>
             </tr>
           </table>
         </DetailBox>
 
-        <DetailBox
-          heading="Residence Address"
-          onClock={() => {
-            navigate("/my-dashboard/captur-address",{ state: { action: 'update' }});
-          }}
-        >
+        <DetailBox heading="Residence Address">
           <table>
             <tr>
-              <td>Address</td>
-              <td>{profileData?.current_house || "NA"}</td>
+              <td>Address 1</td>
+              <td>{dashboard?.Data?.profile_details?.residence_address_1 || "NA"}</td>
+            </tr>
+            <tr>
+              <td>Address 2</td>
+              <td>{dashboard?.Data?.profile_details?.residence_address_2 || "NA"}</td>
             </tr>
             <tr>
               <td>Residence Type</td>
-              <td>{profileData?.current_residence_type || "NA"}</td>
-            </tr>
-            <tr>
-              <td>Current Locality</td>
-              <td>{profileData?.current_locality || "NA"}</td>
+              <td>{dashboard?.Data?.profile_details?.residence_type_id
+                ? dashboard?.Data?.profile_details?.gender === "1"
+                  ? "Owned"
+                  : "Rented"
+                : "NA"}</td>
             </tr>
             <tr>
               <td>Landmark</td>
-              <td>{profileData?.current_landmark || "NA"}</td>
-            </tr>
-            <tr>
-              <td>State</td>
-              <td>{state || "NA"}</td>
-            </tr>
-            <tr>
-              <td>City</td>
-              <td>{city || "NA"}</td>
+              <td>{dashboard?.Data?.profile_details?.residence_landmark || "NA"}</td>
             </tr>
             <tr>
               <td>Pincode</td>
-              <td>{profileData?.pincode || "NA"}</td>
+              <td>{dashboard?.Data?.profile_details?.residence_pincode || "NA"}</td>
             </tr>
           </table>
         </DetailBox>
 
-        <DetailBox
-          heading="Income Details"
-          onClock={() => {
-            navigate("/my-dashboard/captur-income-details",{ state: { action: 'update' }});
-          }}
-        >
-    
+        <DetailBox heading="Income Details">
           <table>
             <tr>
               <td>Employment Type</td>
-              <td>{profileData?.employee_type || "NA" }</td>
+              <td>{dashboard?.Data?.profile_details?.income_type_id
+                ? dashboard?.Data?.profile_details?.income_type_id === "1"
+                  ? "Salaried"
+                  : "Self-Employed"
+                : "NA"
+              }</td>
             </tr>
             <tr>
-              <td>Organization Name</td>
-              <td>{profileData?.company_name || "NA"}</td>
+              <td>Salary Date</td>
+              <td>{formatDate(dashboard?.Data?.profile_details?.salary_date)}</td>
             </tr>
             <tr>
               <td>Monthy Income</td>
-              <td>{profileData?.monthly_salary || "NA"}</td>
+              <td>{dashboard?.Data?.profile_details?.monthly_income || "NA"}</td>
             </tr>
             <tr>
               <td>Mode Income Received</td>
-              <td>{profileData?.salary_mode || "NA"}</td>
+              <td>
+                {dashboard?.Data?.profile_details?.income_type_id === null || dashboard?.Data?.profile_details?.marital_status_id === undefined
+                  ? "NA"
+                  : dashboard?.Data?.profile_details?.income_type_id === "1"
+                    ? "Bank"
+                    : dashboard?.Data?.profile_details?.income_type_id === "2"
+                      ? "Cheque"
+                      : "Cash"}
+              </td>
             </tr>
           </table>
         </DetailBox>
       </div>
-     {modelOpen && <Modal onClose={()=>setModelOpen(false)} msg={responce} state={status} onConfirm={()=>navigate("/my-dashboard/eligibility")} />}
+      {modelOpen && <Modal onClose={() => setModelOpen(false)} msg={responce} state={status} onConfirm={() => navigate("/my-dashboard/eligibility")} />}
     </ProfilePreviewWrapper>
   );
 }

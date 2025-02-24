@@ -8,15 +8,17 @@ import { getStorage, isEmpty } from "../../../Utils/common";
 import { userdata } from "../../../Utils/api";
 import Modal from "../../../components/Modal/Modal";
 import LeadBox from "./LeadBox";
+import { getDashboardData } from "../../../Utils/api";
 
-function formatDate(dateString) {
-  if (!dateString) return "NA";
+// Helper function to format date to dd-mm-yyyy
+const formatDate = (dateString) => {
+  if (!dateString || isNaN(new Date(dateString))) return "NA"; // Check if the date is invalid or empty
   const date = new Date(dateString);
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+  const day = ("0" + date.getDate()).slice(-2); // Pad single digit days
+  const month = ("0" + (date.getMonth() + 1)).slice(-2); // Pad single digit months
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
-}
+};
 
 function LeadPreview() {
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ function LeadPreview() {
   const [modelOpen, setModelOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [responce, setResponce] = useState(false);
+  const[dashboard,setDashboard]=useState([]);
 
   const { profileData, logout, getProfileDaital } = useContext(ContextDashboard);
   const [lead, setLead] = useState(getStorage("lead_id") || "");
@@ -37,30 +40,17 @@ function LeadPreview() {
   };
 
   useEffect(() => {
-    if (isEmpty(profileData)) return;
-    getProfileDaital();
-  }, []);
-
-  useEffect(() => {
     const params = {
-      user_id: profileData?.user_id || "",
+      profile_id: getStorage("cust_profile_id") || "", 
     };
 
-    userdata(params).then((resp) => {
+    getDashboardData(params).then(resp => {
       if (resp?.data?.Status === 1) {
-        const userData = resp?.data?.data; // Accessing the 'data' field directly
-        if (userData) {
-          setUser({
-            name: userData.name || "NA",
-            number: userData.mobile || "NA", // Correcting 'mobile' field usage
-            email: userData.email || "NA",
-          });
-        }
-      } else if (resp?.data?.Status === 4) {
-        logout();
+        const dashboardData = resp?.data || {};
+        setDashboard(dashboardData);
       }
     });
-  }, [profileData?.user_id, logout]);
+  }, []);
 
   return (
     <ProfilePreviewWrapper>
@@ -70,81 +60,82 @@ function LeadPreview() {
           <table>
             <tbody>
               <tr>
-                <td>Lead Id</td>
-                <td>{lead || "NA"}</td>
-              </tr>
-              <tr>
                 <td>Your Name</td>
-                <td>{profileData?.full_name || profileData?.short_name || "NA"}</td>
+                <td>{dashboard?.Data?.full_name || "NA"}</td>
               </tr>
               <tr>
                 <td>Gender</td>
-                <td>{profileData?.gender || "NA"}</td>
+                <td>{dashboard?.Data?.profile_details?.gender 
+              ? dashboard?.Data?.profile_details?.gender === "1"
+              ? "Male"
+              : "Female" 
+              : "NA" }</td>
               </tr>
               <tr>
                 <td>DOB</td>
-                <td>{formatDate(profileData?.dob)}</td>
+                <td>{formatDate(dashboard?.Data?.profile_details?.dob || "NA")}</td>
               </tr>
               <tr>
                 <td>Marital Status</td>
                 <td>
-                  {profileData?.marital_status
-                    ? profileData?.marital_status === "1"
-                      ? "Single"
-                      : "Married"
+                  {dashboard?.Data?.profile_details?.marital_status_id === null || dashboard?.Data?.profile_details?.marital_status_id === undefined
+                    ? "NA"
+                    : dashboard?.Data?.profile_details?.marital_status_id === "1"
+                    ? "Single"
+                    : dashboard?.Data?.profile_details?.marital_status_id === "2"
+                    ? "Married"
                     : "Divorced"}
                 </td>
               </tr>
               <tr>
                 <td>Personal Email</td>
-                <td>{profileData?.email ? profileData?.email.toLowerCase() : "NA"}</td>
+                <td>{dashboard?.Data?.profile_details?.personal_email.toLowerCase() || "NA"}</td>
               </tr>
             </tbody>
           </table>
         </LeadBox>
 
         <LeadBox heading="Credit Manager">
-  <table>
-    <tbody>
-      <tr>
-        <td>Executive Name</td>
-        <td>{user.name || "NA"}</td>
-      </tr>
-      <tr>
-        <td>Executive Number</td>
-        <td>
-          <a style={{color:"#26b9db"}} href={`tel:${user.number || ""}`} onClick={(e) => !user.number && e.preventDefault()}>
-            {user.number || "NA"}
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td>Executive Email</td>
-        <td>
-          <a style={{color:"#26b9db"}} href={`mailto:${user.email || ""}`} onClick={(e) => !user.email && e.preventDefault()}>
-            {user.email || "NA"}
-          </a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</LeadBox>
-
+          <table>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>{dashboard?.Data?.excutive_details?.name || "NA"}</td>
+              </tr>
+              <tr>
+                <td>Number</td>
+                <td>
+                  <a style={{ color: "#26b9db" }} target="_blank" href={`https://wa.me/${dashboard?.Data?.excutive_details?.mobile}`} onClick={(e) => !dashboard?.Data?.excutive_details?.mobile && e.preventDefault()}>
+                    {dashboard?.Data?.excutive_details?.mobile || "NA"}
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <td>Email</td>
+                <td>
+                  <a style={{ color: "#26b9db" }} target="_blank" href={`mailto:${dashboard?.Data?.excutive_details?.email || ""}`} onClick={(e) => !dashboard?.Data?.excutive_details?.email && e.preventDefault()}>
+                    {dashboard?.Data?.excutive_details?.email || "NA"}
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </LeadBox>
 
         <LeadBox heading="Application Status">
           <table>
             <tbody>
               <tr>
                 <td>Status</td>
-                <td>{profileData?.status || "NA"}</td>
+                <td>{dashboard?.Data?.lead_details?.status || "NA"}</td>
               </tr>
               <tr>
                 <td>Repayment Amount</td>
-                <td>{profileData?.repayment_amount || "NA"}</td>
+                <td>{dashboard?.Data?.active_loan_details?.total_due || "NA"}</td>
               </tr>
               <tr>
                 <td>Repayment Date</td>
-                <td>{formatDate(profileData?.repayment_date)}</td>
+                <td>{formatDate(dashboard?.Data?.active_loan_details?.repayment_date) || "NA"}</td>
               </tr>
             </tbody>
           </table>

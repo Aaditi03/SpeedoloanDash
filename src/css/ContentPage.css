@@ -6,6 +6,7 @@
     width: 100%;
     background: url('../images/content_banner.jpg');
     min-height: 40vh;
+    padding-top: 100px;
 }
 
 .content_page_wrapper .ahmedabad_banner {
@@ -19,6 +20,51 @@
 
 .content_page_wrapper .hyderabad_banner {
     background: url('../images/hyderabad.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+    min-height: 50vh;
+}
+
+.content_page_wrapper .gurgaon_banner {
+    background: url('../images/gurgaon.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+    min-height: 50vh;
+}
+
+.content_page_wrapper .noida_banner {
+    background: url('../images/noida.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+    min-height: 50vh;
+}
+
+.content_page_wrapper .faridabad_banner {
+    background: url('../images/faridabad.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+    min-height: 50vh;
+}
+
+.content_page_wrapper .greaternoida_banner {
+    background: url('../images/greaternoida.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center center;
+    min-height: 50vh;
+}
+
+.content_page_wrapper .ghaziabad_banner {
+    background: url('../images/ghaziabad.jpg');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -115,6 +161,7 @@
     width: 100%;
     text-align: center;
     font-size: var(--title-font-size);
+    line-height: 3rem;
 }
 
 .content_page_wrapper .text_content_wrapper .text_content h3 {

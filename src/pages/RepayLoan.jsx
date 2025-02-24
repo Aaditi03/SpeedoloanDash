@@ -1,175 +1,320 @@
 import React, { useState, useEffect } from "react";
 import "../css/Common.css";
-import "../pages/Dashboard/ProfilePage/Repayment.css"; // Assuming the CSS is defined here
+import "../css/RepaymentDetails.css"; // Assuming the CSS is defined here
 import qr_image from "../images/qr_company.jpg";
 import qr2 from "../images/qr2.png";
 import ChatButton from "../components/ChatButton";
 import { useNavigate } from "react-router-dom";
+import PaymentModal from "../components/Payment/PaymentModal";
+import CryptoJS from "crypto-js"; // Importing the crypto-js library
 
 const RepayLoan = (props) => {
-  const [content, setContent] = useState("pannumber");
-  const [getLoading, setLoading] = useState(false);
-  const [getPancard, setPancard] = useState("");
-  const [getOtp, setOtp] = useState("");
-  const [repaymentData, setRepaymentData] = useState(null); // New state to store repayment data
-  const [orderId, setOrderId] = useState("");
-  const [paymentStatus, setPaymentStatus] = useState(""); // To store payment status
-  const navigate = useNavigate();
+    const [content, setContent] = useState("pannumber");
+    const [getLoading, setLoading] = useState(false);
+    const [getPancard, setPancard] = useState("");
+    const [getOtp, setOtp] = useState("");
+    const [repaymentData, setRepaymentData] = useState(null);
+    const [orderId, setOrderId] = useState("");
+    const [paymentStatus, setPaymentStatus] = useState("");
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [paymentAmount, setPaymentAmount] = useState(); // New state for part payment
+    const navigate = useNavigate();
 
-  const sendOtp = async () => {
-    setLoading(true);
-    try {
-      const resp = await fetch("https://api.salaryontime.in/Api/CustomerDetails/Sendotp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-          Auth: "Y2M0Nzk0OGYwNmQyMjdmZTlhY2E1ZWQ1Nzk5YTZmMWE=",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ pancard: getPancard }),
-      });
-
-      if (resp.status === 200) {
-        const dataset = await resp.json();
-        props.showmessage(dataset.Message);
-        if (dataset.Status === 1) {
-          setContent("panotp");
-        }
-      }
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const verifyOtp = async () => {
-    setLoading(true);
-    try {
-      const resp = await fetch("https://api.salaryontime.in/Api/CustomerDetails/verifyOtp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json; charset=UTF-8",
-          Auth: "Y2M0Nzk0OGYwNmQyMjdmZTlhY2E1ZWQ1Nzk5YTZmMWE=",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          panNumber: getPancard,
-          otp: getOtp,
-        }),
-      });
-
-      if (resp.status === 200) {
-        const dataset = await resp.json();
-        props.showmessage(dataset.Message);
-
-        if (dataset.Status === 1) {
-          const repaymentData = dataset.repayment_data;
-          setRepaymentData(repaymentData); // Store repayment data
-          setOrderId(dataset.order_id); // Store order_id for Razorpay
-          setContent("amountfetched");
-        }
-      }
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const payHere = async () => {
-    setLoading(true);
-    try {
-      const total_due_amount = repaymentData.total_due_amount;
-      const options = {
-        key: "rzp_live_3XXwpvgLtdYIh3",
-        amount: (total_due_amount * 100).toString(),
-        currency: "INR",
-        name: "SalaryOnTime",
-        description: getPancard,
-        image: "https://web.salaryontime.in/public/images/final_logo.png",
-        order_id: orderId,
-        // callback_url: "https://salaryontime.in/thankyou",
-        prefill: {
-          name: "Hidden",
-          email: repaymentData.email,
-          contact: repaymentData.mobile,
-        },
-        theme: { color: "#8180e0" },
-        handler: function (response) {
-          // Callback function when payment is successful
-          const paymentDetails = {
-            razorpay_payment_id: response.razorpay_payment_id,
-            razorpay_order_id: response.razorpay_order_id,
-            razorpay_signature: response.razorpay_signature,
-          };
-
-          // Verify payment on the server
-          fetch("https://api.salaryontime.in/Api/CustomerDetails/verifyRazorPayCheckPaymentStatus", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json; charset=UTF-8",
-              Auth: "Y2M0Nzk0OGYwNmQyMjdmZTlhY2E1ZWQ1Nzk5YTZmMWE=",
-              Accept: "application/json",
-            },
-            body: JSON.stringify(paymentDetails),
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data.status === "success") {
-                navigate("/thankyou");
-
-                setPaymentStatus("Payment Successful");
-                setContent("paymentSuccess");
-              } else {
-                setPaymentStatus("Payment Verification Failed");
-              }
-              setLoading(false);
-            })
-            .catch((error) => {
-              console.error("Error verifying payment:", error);
-              setPaymentStatus("Payment Verification Failed");
-              setLoading(false);
+    const sendOtp = async () => {
+        setLoading(true);
+        try {
+            const resp = await fetch("https://api.salaryontime.in/Api/CustomerDetails/Sendotp", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8",
+                    Auth: "Y2M0Nzk0OGYwNmQyMjdmZTlhY2E1ZWQ1Nzk5YTZmMWE=",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({ pancard: getPancard }),
             });
-        },
-      };
 
-      const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
-      if (res) {
-        const paymentObject = new window.Razorpay(options);
-        paymentObject.open();
-      } else {
-        alert("Razorpay SDK failed to load. Are you online?");
+            if (resp.status === 200) {
+                const dataset = await resp.json();
+                props.showmessage(dataset.Message);
+                if (dataset.Status === 1) {
+                    setContent("panotp");
+                }
+            }else{
+              const dataset=await resp.json();
+              props.showmessage(dataset.Message);
+            }
+        } catch (error) {
+          
+            console.error("Error sending OTP:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const verifyOtp = async () => {  
+        setLoading(true);
+        try {
+            const resp = await fetch("https://api.salaryontime.in/Api/CustomerDetails/verifyOtp", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=UTF-8",
+                    Auth: "Y2M0Nzk0OGYwNmQyMjdmZTlhY2E1ZWQ1Nzk5YTZmMWE=",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    panNumber: getPancard,
+                    otp: getOtp,
+                }),
+            });
+
+            if (resp.status === 200) {
+                const dataset = await resp.json();
+                props.showmessage(dataset.Message);
+
+                if (dataset.Status === 1) {
+                    const repaymentData = dataset.repayment_data;
+                    setRepaymentData(repaymentData);
+                    setOrderId(dataset.order_id);
+                    setContent("amountfetched");
+                }
+            }
+        } catch (error) {
+            console.error("Error verifying OTP:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const payHere = async () => {
+      setLoading(true);
+      try {
+          var total_due_amount = repaymentData.total_due_amount;
+          if (paymentAmount < repaymentData.total_due_amount) {
+              total_due_amount = paymentAmount; // Use part payment amount if provided
+          }
+  
+          const options = {
+              key: "rzp_live_3XXwpvgLtdYIh3",
+              amount: (total_due_amount * 100).toString(),
+              currency: "INR",
+              name: "SalaryOnTime",
+              description: getPancard,
+              image: "https://web.salaryontime.in/public/images/final_logo.png",
+              order_id: orderId,
+              prefill: {
+                  name: "Hidden",
+                  email: repaymentData.email,
+                  contact: repaymentData.mobile,
+              },
+              theme: { color: "#8180e0" },
+              handler: function (response) {
+                  const paymentDetails = {
+                      razorpay_payment_id: response.razorpay_payment_id,
+                      razorpay_order_id: response.razorpay_order_id,
+                      razorpay_signature: response.razorpay_signature,
+                  };
+  
+                  fetch("https://api.salaryontime.in/Api/CustomerDetails/verifyRazorPayCheckPaymentStatus", {
+                      method: "POST",
+                      headers: {
+                          "Content-Type": "application/json; charset=UTF-8",
+                          Auth: "Y2M0Nzk0OGYwNmQyMjdmZTlhY2E1ZWQ1Nzk5YTZmMWE=",
+                          Accept: "application/json",
+                      },
+                      body: JSON.stringify(paymentDetails),
+                  })
+                      .then((res) => res.json())
+                      .then((data) => {
+                          let txnStatus = data.status
+                          let txnId = data.txnId || "N/A";  // Get txnId from response if available
+  
+                          // Pass txnStatus and txnId to the thank you page using navigate
+                          navigate("/thanku", {
+                              state: {
+                                  txnStatus: txnStatus,
+                                  txnId: txnId,
+                              },
+                          });
+  
+                          setPaymentStatus(txnStatus === 'SUCCESS' ? "Payment Successful" : "Payment Verification Failed");
+                          setContent(txnStatus === 'SUCCESS' ? "paymentSuccess" : "paymentFailure");
+                          setLoading(false);
+                      })
+                      .catch((error) => {
+                          console.error("Error verifying payment:", error);
+                          setPaymentStatus("Payment Verification Failed");
+                          setLoading(false);
+                      });
+              },
+          };
+  
+          const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
+          if (res) {
+              const paymentObject = new window.Razorpay(options);
+              paymentObject.open();
+          } else {
+              alert("Razorpay SDK failed to load. Are you online?");
+          }
+      } catch (error) {
+          console.error("Error during payment:", error);
+          setLoading(false);
       }
-    } catch (error) {
-      console.error("Error during payment:", error);
-      setLoading(false);
-    }
   };
+  
 
-  const handlePAN = (e) => {
-    const value = e.target.value.toUpperCase();
-    if (/^[A-Z]{0,5}$/.test(value.slice(0, 5)) && /^[\d]{0,4}$/.test(value.slice(5, 9)) && /^[A-Z]{0,1}$/.test(value.slice(9))) {
-      setPancard(value);
-    }
+    let processing = false; 
+    const payWithPayU = async () => {
+      if (processing) return;
+      processing = true;
+  
+      setLoading(true);
+      try {
+          const total_due_amount = paymentAmount || repaymentData.total_due_amount; // Use part payment amount if provided
+          const MERCHANT_KEY = "LrvBUp"; 
+          const productinfo = "Loan repayment for Loan No"; 
+          const fullname = repaymentData.full_name;
+          const email = repaymentData.email;
+          const phone = repaymentData.mobile;
+  
+          const response = await fetch("https://api.salaryontime.in/Api/RepayLoanApi/payuOrders", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json; charset=UTF-8",
+                  Accept: "application/json",
+                  "Auth":"MjFmMTdiYjE0MTM3Y2YxODQxYjhiMGEwNTY4M2I1ZDE="
+              },
+              body: JSON.stringify({
+                  amount: total_due_amount,
+                  productinfo: productinfo,
+                  firstname: fullname,
+                  email: email,
+                  mobile: phone,
+                  udf5: repaymentData.lead_id
+              }),
+          });
+  
+          const data = await response.json();
+  
+          if (data.Status === 1) {
+              const hashData = data.data.parameters;
+  
+              const payuOptions = {
+                  key: MERCHANT_KEY,
+                  txnid: hashData.txnid,
+                  amount: total_due_amount,
+                  productinfo: productinfo,
+                  firstname: fullname,
+                  email: email,
+                  phone: phone,
+                  surl: "https://salaryontime.com/thanku",
+                  furl: "https://salaryontime.com/fail",
+                  hash: hashData.hash,
+                  udf5:repaymentData.lead_id
+              };
+  
+              const scriptLoaded = await loadScript("https://jssdk.payu.in/bolt/bolt.min.js");
+  
+              if (scriptLoaded) {
+                  if (typeof window.bolt !== 'undefined') {
+                      window.bolt.launch(payuOptions, {
+                          responseHandler: function (BOLT) {
+                              if (BOLT.response.txnStatus === "SUCCESS") {
+                                  // Pass the transaction status to the Thank You page via React Router's state
+                                  navigate("/thanku", { state: { txnStatus: BOLT.response.txnStatus, txnId: BOLT.response.txnid } });
+                              }
+                              if (BOLT.response.txnStatus === "FAILED" || BOLT.response.txnStatus === "CANCEL") {
+                                  navigate("/thanku", { state: { txnStatus: BOLT.response.txnStatus, txnId: BOLT.response.txnid } });
+                              }
+                          },
+                          catchException: function (BOLT) {
+                              console.log('Payment failed. Please try again.');
+                          }
+                      });
+                  } else {
+                      console.error("PayU SDK not initialized correctly after loading.");
+                  }
+              } else {
+                  console.error("Failed to load PayU script.");
+              }
+          } else {
+              console.error("Failed to get valid response from PayU API.");
+          }
+      } catch (error) {
+          console.error("Error during PayU payment:", error);
+      } finally {
+          setLoading(false);
+          processing = false;
+      }
   };
+  
 
-  const handleOTP = (e) => {
-    const value = e.target.value;
-    if (/^\d*$/.test(value) && value.length <= 4) {
-      setOtp(value);
-    }
-  };
 
-  const loadScript = (src) => {
-    return new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = src;
-      script.onload = () => resolve(true);
-      script.onerror = () => resolve(false);
-      document.body.appendChild(script);
-    });
-  };
+    const handlePAN = (e) => {
+        const value = e.target.value.toUpperCase();
+        if (/^[A-Z]{0,5}$/.test(value.slice(0, 5)) && /^[\d]{0,4}$/.test(value.slice(5, 9)) && /^[A-Z]{0,1}$/.test(value.slice(9))) {
+            setPancard(value);
+        }
+    };
+
+    const handleOTP = (e) => {
+        const value = e.target.value;
+        if (/^\d*$/.test(value) && value.length <= 4) {
+            setOtp(value);
+        }
+    };
+
+    const loadScript = (src) => {
+      return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = () => resolve(true);
+        script.onerror = () => resolve(false);
+        document.body.appendChild(script);
+      });
+    };
+    
+  
+  
+
+    const handlePaymentClick = () => {
+        setModalOpen(true);
+        setLoading(false);
+    };
+
+    const handleCloseModal = () => {
+        setModalOpen(false);
+    };
+
+    const handleRazorpay = () => {
+        setModalOpen(false);
+        payHere();
+        setLoading(false);
+    };
+
+    const handlePayU = () => {
+        setModalOpen(false);
+        payWithPayU();
+        setLoading(false);
+    };
+    const handlePaymentAmountChange = (e) => {
+      let value = e.target.value;
+    
+      // Prevent the value from starting with 0, but allow decimal numbers
+      if (value.length === 1 && value === '0') {
+        // Do nothing if the input is just "0"
+        return;
+      }
+    
+      // Regex to ensure the input doesn't start with a "0" unless it's "0." (i.e., decimal number like 0.50 is allowed)
+      const regex = /^(?!0(\.\d+)?)(\d*\.?\d*)$/;
+    
+      // Only update if the value matches the regex pattern
+      if (regex.test(value) || value === "") {
+        setPaymentAmount(value);
+      }
+    };
+    
+    
 
   return (
     <>
@@ -217,52 +362,72 @@ const RepayLoan = (props) => {
                   </button>
                 </div>
               </div>
-            ) : content === "amountfetched" && repaymentData ? (
+            )  : content === "amountfetched" && repaymentData ? (
               <div className="repayment-card">
                 <div className="repayment-header">
                   <h2>Loan Repayment Details</h2>
                 </div>
 
                 <div className="repayment-info">
-                  <div className="info-item">
-                    <span className="label">Loan Number:</span>
-                    <span className="value">{repaymentData.loan_no}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="label">Disbursal Date:</span>
-                    <span className="value">{repaymentData.disbursal_date}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="label">Repayment Date:</span>
-                    <span className="value">{repaymentData.repayment_date}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="label">Repayment Amount:</span>
-                    <span className="value">₹{repaymentData.repayment_amount.toLocaleString()}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="label">Loan Amount:</span>
-                    <span className="value">₹{repaymentData.loan_recommended.toLocaleString()}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="label">Real Interest:</span>
-                    <span className="value">₹{repaymentData.real_interest.toLocaleString()}</span>
-                  </div>
-                  <div className="info-item">
-                    <span className="label">Repayment With Interest:</span>
-                    <span className="value">₹{repaymentData.total_due_amount.toLocaleString()}</span>
-                  </div>
-                  <div className="info-item due-amount">
-                    <span className="label">Total Due Amount:</span>
-                    <span className="value">₹{repaymentData.total_due_amount.toLocaleString()}</span>
-                  </div>
-                </div>
+  <div className="info-item">
+    <span className="label">Loan Number:</span>
+    <span className="value">{repaymentData.loan_no}</span>
+  </div>
+  <div className="info-item">
+    <span className="label">Disbursal Date:</span>
+    <span className="value">{repaymentData.disbursal_date}</span>
+  </div>
+  <div className="info-item">
+    <span className="label">Repayment Date:</span>
+    <span className="value">{repaymentData.repayment_date}</span>
+  </div>
+  <div className="info-item">
+    <span className="label">Repayment Amount:</span>
+    <span className="value">₹{repaymentData.repayment_amount.toLocaleString()}</span>
+  </div>
+  <div className="info-item">
+    <span className="label">Loan Amount:</span>
+    <span className="value">₹{repaymentData.loan_recommended.toLocaleString()}</span>
+  </div>
+  <div className="info-item">
+    <span className="label">Real Interest:</span>
+    <span className="value">₹{repaymentData.real_interest.toLocaleString()}</span>
+  </div>
+  <div className="info-item">
+    <span className="label">Repayment With Interest:</span>
+    <span className="value">₹{repaymentData.total_due_amount.toLocaleString()}</span>
+  </div>
+  <div className="info-item due-amount">
+    <span className="label">Total Due Amount:</span>
+    <span className="value">₹{repaymentData.total_due_amount.toLocaleString()}</span>
+  </div>
+  <div className="info-item part-amount">
+    <span className="label">Amount To Pay</span>
+    {/* Make the Amount To Pay field editable */}
+    <input
+                            type="text"
+                            value={paymentAmount}
+                            onChange={handlePaymentAmountChange}
+                            placeholder="Enter payment amount"
+                        />
+  </div>
+</div>
+
 
                 <div className="repayment-button-container">
-                  <button className="repayment-button" onClick={payHere}>
+                  <button className="repayment-button" onClick={handlePaymentClick}>
                     {getLoading ? <div className="loadinganim"></div> : "Proceed to Pay"}
                   </button>
                 </div>
+
+                {isModalOpen && (
+                  <PaymentModal 
+                    onClose={handleCloseModal} 
+                    onRazorpay={handleRazorpay} 
+                    onPayU={handlePayU} 
+                    isLoading={getLoading} 
+                  />
+                )}
               </div>
             ) : content === "paymentSuccess" ? (
               <div className="payment-success">
@@ -335,7 +500,7 @@ const RepayLoan = (props) => {
               <img src={qr2} alt="QR Code" />
             </div>
           </div>
-
+           <br/>
           <div className="repay_loan_section">
             <div className="pan_number">
               <h2>Here's how our loan repayment works:</h2><br />
@@ -348,8 +513,8 @@ const RepayLoan = (props) => {
             </div>
 
             <div className="pan_number">
-              <h2>What is the maximum and minimum repayment period at SalaryOnTime?</h2><br />
-              <p>At SalaryOnTime, we allow you enough time and flexibility to repay your loan. This is done to ensure that repayments don’t feel like a burden. However, when it comes to the precise duration, the minimum repayment period is 60 days, and the maximum repayment period is 90 days.</p>
+              <h2>What is the maximum and minimum repayment period at Speedoloan?</h2><br />
+              <p>At Speedoloan, we allow you enough time and flexibility to repay your loan. This is done to ensure that repayments don’t feel like a burden. However, when it comes to the precise duration, the minimum repayment period is 60 days, and the maximum repayment period is 90 days.</p>
             </div>
           </div>
 

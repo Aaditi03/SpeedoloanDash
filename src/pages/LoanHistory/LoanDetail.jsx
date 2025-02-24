@@ -1,38 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import './LoanHistory.css'; 
 import { ProfilePreviewWrapper } from "../Dashboard/ProfilePage/style";
 import ProfileHeader from "../Dashboard/ProfilePage/ProfileHeader";
 import { loanDetail } from "../../Utils/api";
 
-function LoanHistory() {
-  const { lead_id } = useParams();
+function LoanDetail() {
+  const location = useLocation();
+  const { leadId } = location.state || {};
   const [loan, setLoan] = useState(null);
   const [collection, setCollection] = useState([]);
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchLoanDetails = async () => {
-      try {
-        const response = await loanDetail(lead_id);
-        const loanData = response?.data?.data[0]; 
-        const collectionData = response?.data?.collection; // Get all collection data
-        setLoan(loanData);
-        setCollection(collectionData);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+  useEffect(()=>{
+    const params={
+      lead_id: leadId, 
     };
 
-    fetchLoanDetails();
-  }, [lead_id]);
+    loanDetail(params).then(resp=>{
+      if(resp?.data?.Status===1){
+        // setStorage("eligibility",resp?.data?.Data?.registration_successful)
+        const loanData=resp?.data?.data[0] || {};
+        const collectionData=resp?.data?.collection[0] || {};
+        setLoan(loanData);
+        setCollection(collectionData);
+      }
+    });
+  },[]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  // if (loading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error}</div>;
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -49,13 +48,20 @@ function LoanHistory() {
         {loan ? (
           <>
             <h2>Loan Details</h2>
-            <p><strong>Lead ID:</strong> {loan.lead_id}</p>
-            <p><strong>Customer Name:</strong> {loan.cust_full_name.trim()}</p>
+            <p><strong>Loan Number:</strong> {loan.loan_no}</p>
+            <p><strong>Customer Name:</strong> {loan.first_name}</p>
+            <p><strong>Monthly Salary:</strong> {loan.monthly_salary_amount}</p>
             <p><strong>Loan Amount:</strong> {loan.loan_amount}</p>
+            <p><strong>Tenure:</strong> {loan.tenure}</p>
+            <p><strong>Purpose:</strong> {loan.purpose}</p>
             <p><strong>Mobile:</strong> {loan.mobile}</p>
+            <p><strong>Email:</strong> {loan.email}</p>
             <p><strong>Application Status:</strong> {loan.status}</p>
+            <p><strong>Pancard:</strong> {loan.pancard}</p>
+            <p><strong>Current City:</strong> {loan.m_city_name}</p>
+            <p><strong>Current State:</strong> {loan.m_state_name}</p>
             <p><strong>Loan Date:</strong> {loan.lead_final_disbursed_date}</p>
-             <br/>
+             {/* <br/>
             <h2>Payment History</h2>
             <div className="collection-container">
               {collection.length > 0 ? (
@@ -69,7 +75,7 @@ function LoanHistory() {
               ) : (
                 <p>No Payment History available.</p>
               )}
-            </div>
+            </div> */}
           </>
         ) : (
           <p>No loan details available.</p>
@@ -79,4 +85,4 @@ function LoanHistory() {
   );
 }
 
-export default LoanHistory;
+export default LoanDetail;

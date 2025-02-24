@@ -229,11 +229,8 @@ white-space: nowrap;
   }
 `
 
-
-
-
 export const AlertWrapper = styled.div`
-	padding: 10px 25px;
+    padding: 10px 25px;
     position: fixed;
     border: 1px solid transparent;
     border-radius: 5px;
@@ -242,89 +239,99 @@ export const AlertWrapper = styled.div`
     width: 100%;
     max-width: 600px;
     z-index: 99999;
-    top: 10px; /* Changed from bottom to top */
+    top: 130px; /* Position the alert at the top */
     opacity: 1; /* Start fully visible */
     transition: opacity 0.1s ease;
 
-	&.error {
-		color: #a94442;
-		background-color: #f2dede;
-		border-color: #ebccd1;
-	}
+    /* Error style */
+    &.error {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
+    }
 
-	&.success {
-		color: #303130;
-		background-color: #aef7ae;
-		border-color: #d6e9c6;
-	}
-	&.globle {
-		position: fixed;
-		//width: 50%;
-		max-width: 70%;
-    width: auto;
-    min-width: 300px;
-		left: 50%;
-		transform: translateX(-50%);
-		//top: 0;
-		//z-index: 11111;
-		font-size: 14px;
-		//animation: mymove 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    margin-left: auto;
-    margin-right: auto;
+    /* Success style */
+    &.success {
+        color: #303130;
+        background-color: #aef7ae;
+        border-color: #d6e9c6;
+    }
 
-		.close {
-			font-size: 18px;
-			position: absolute;
-			top: 50%;
-			right: 6px;
-			transform: translateY(-50%);
-		}
-	}
-	&.error.globle {
-		background-color: #fee;
-		border: 1px solid #ffb8b8;
-		color: #a66;
-	}
-	&.success.globle {
-		//background-color: #efe;
-		border: 1px solid #ded;
-		color: #303130;
-		background-color: #aef7ae;
-	}
-	.close {
-		position: absolute;
-		top: 50%;
-		right: 6px;
-		transform: translateY(-50%);
-		font-size: 18px;
-		font-weight: 700;
-		line-height: 1;
-		color: #000;
-		text-shadow: 0 1px 0 #fff;
-		filter: alpha(opacity=20);
-		opacity: 0.6;
-		&:hover {
-			color: #000;
-			text-decoration: none;
-			cursor: pointer;
-			filter: alpha(opacity=50);
-			opacity: 0.5;
-		}
-	}
-	@keyframes mymove {
-		from {
-			top: 0px;
-		}
-		to {
-			top: 50px;
-		}
-	}
-	@media only screen and (max-width: 767px) {
-		&.globle {
-			width: calc(100% - 50px);
-		}
-	}
+    /* Global style for alerts */
+    &.globle {
+        max-width: 70%;
+        min-width: 300px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 14px;
+        margin-left: auto;
+        margin-right: auto;
+
+        /* Close button inside global alerts */
+        .close {
+            font-size: 18px;
+            position: absolute;
+            top: 50%;
+            right: 6px;
+            transform: translateY(-50%);
+        }
+    }
+
+    /* Error style with global class */
+    &.error.globle {
+        background-color: #fee;
+        border: 1px solid #ffb8b8;
+        color: #a66;
+    }
+
+    /* Success style with global class */
+    &.success.globle {
+        border: 1px solid #ded;
+        color: #303130;
+        background-color: #aef7ae;
+    }
+
+    /* Close button style */
+    .close {
+        position: absolute;
+        top: 50%;
+        right: 6px;
+        transform: translateY(-50%);
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1;
+        color: #000;
+        text-shadow: 0 1px 0 #fff;
+        opacity: 0.6;
+        filter: alpha(opacity=20);
+
+        &:hover {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+        }
+    }
+
+    /* Animation for alert entry (if needed) */
+    @keyframes mymove {
+        from {
+            top: 0px;
+        }
+        to {
+            top: 50px;
+        }
+    }
+
+    /* Responsive design for small screens */
+    @media only screen and (max-width: 767px) {
+        &.globle {
+            width: calc(100% - 50px); /* Adjust width for smaller screens */
+        }
+    }
 `;
+
 
 export const RadioButtonsWrapper = styled.div`
 &.margin-25{

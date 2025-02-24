@@ -21,7 +21,7 @@ const InstantLoan = () => {
               </div>
               <h1 className="page_title mt30 mb20">Instant Loan</h1>
               <p>
-                At SalaryOnTime, we understand that urgent financial needs can arise
+                At Speedoloan, we understand that urgent financial needs can arise
                 unexpectedly, requiring immediate solutions. That's why we offer
                 a range of small instant loans designed to provide you with
                 quick access to funds when you need them the most. Whether
@@ -50,7 +50,7 @@ const InstantLoan = () => {
               </p>
               <br />
               <p>
-              At SalaryOnTime, we are committed to providing instant loan urgent solutions that cater to your specific needs. Whether you're dealing with an unexpected expense or need extra cash quickly, our instant loan options offer the flexibility and speed you require. Trust SalaryOnTime for reliable and fast financial support, and experience the convenience of our small instant loans and instant personal loans online today.
+              At Speedoloan, we are committed to providing instant loan urgent solutions that cater to your specific needs. Whether you're dealing with an unexpected expense or need extra cash quickly, our instant loan options offer the flexibility and speed you require. Trust Speedoloan for reliable and fast financial support, and experience the convenience of our small instant loans and instant personal loans online today.
               </p>
               <br />
               <div className="button_container flex justify-center">

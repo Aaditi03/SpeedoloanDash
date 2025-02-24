@@ -29,14 +29,20 @@ function BankDetail() {
     const [response, setResponse] = useState({});
     const [formData, setFormData] = useState(initialData);
     const [formDataError, setFormDataError] = useState(initialData);
-    const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
+    const [progressBar, setProgressBar] = useState(getStorage("percent"));
     const [showSteps, setShowSteps] = useState(-1);
     const [toggle, setToggle] = useState(true);
     const navigate = useNavigate();
-    const { message, setMessage, logout, setps } = useContext(ContextDashboard);
+    const { message, setMessage, logout, handleEvent } = useContext(ContextDashboard);
 
     const submit = () => {
         const error = formValidation(formData);
+        
+        // Check if Account Number and Confirm Account Number match
+        if (formData.acc1 !== formData.acc2) {
+            error.acc2 = "Account numbers do not match"; // Set error if they don't match
+        }
+
         setFormDataError({ ...formDataError, ...error });
 
         const param = {
@@ -61,10 +67,10 @@ function BankDetail() {
                 setLoading(false);
                 if (resp?.data?.Status === 1) {
                     setResponse(resp?.data);
-                    // setStorage("next_step",resp?.data?.Data?.next_step)
-                    // setStorage("step_percent",resp?.data?.Data?.step_percentage)
+                    setStorage("next_step",resp?.data?.Data?.next_step)
+                    setStorage('percent',resp?.data?.Data?.step_percentage)
                     setMessage({ type: 'success', msg: resp?.data?.Message, place: "global" });
-                    navigate("/my-dashboard/congratulations");
+                    handleEvent(getStorage('next_step'));
                 } else if (resp?.data?.Status === 4) {
                     logout();
                 } else {
@@ -73,8 +79,6 @@ function BankDetail() {
             });
         }
     };
-
-   
 
     const onChange = (e) => {
         let { name, value } = e.target;
@@ -85,61 +89,14 @@ function BankDetail() {
         }
     };
 
-    
-
-    // useEffect(() => {
-    //     const params = {
-    //         lead_id: getStorage("lead_id") || "",
-    //         token: getStorage("token") || "",
-    //         mobile: getStorage("mobile") || "",
-    //     };
-
-    //     getDashboardData(params).then(resp => {
-    //         if (resp?.data?.Status === 1) {
-    //             const dashboardData = resp?.data?.Steps?.data || {};
-    //             if (dashboardData) {
-    //                 setFullName(dashboardData.full_name); // Set the full name for display
-    //                 setFormData(prev => ({
-    //                     ...prev,
-    //                     dob: dashboardData.dob || "",
-    //                     maritalStatus: dashboardData.marital_status || "",
-    //                     email: dashboardData.email || "",
-    //                     gender: dashboardData.gender || "",
-    //                 }));
-
-    //                 setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
-    //             }
-    //         } else if (resp?.data?.Status === 5) {
-    //             logout();
-    //         }
-    //     });
-    // }, [logout]);
-
-    // useEffect(() => {
-    //     if (!isEmpty(setps)) {
-    //         checkStep(setps);
-    //     }
-    // }, [setps]);
-
-    // const checkStep = (data) => {
-    //     const steps = (data?.step_stage - 1);
-    //     if (data?.step_complete_percent === 100) {
-    //         setToggle(false);
-    //     }
-    //     setShowSteps(steps);
-    // };
-
     return (
         <>
-            <ProgressBar value={`${progressBar}%`}>
-                <div></div>
-            </ProgressBar><br />
             <BoxWrapper className="w100">
                 <div className="formmainBox flex">
                     <div className="left">
-                        <div className='center gap4 pointer' onClick={() => goBack(navigate, "/my-dashboard/adhar-upload")}>
+                        {/* <div className='center gap4 pointer' onClick={() => goBack(navigate, "/my-dashboard/adhar-upload")}>
                             <img src={arrowIcon} alt="" /> <span>Back</span>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="right">
                         <h2>Banking Details *</h2>
@@ -172,26 +129,24 @@ function BankDetail() {
                                     required={true}
                                 />
                 
-                    <Input
-                        label="Confirm Account Number"
-                        name="acc2"
-                        error={formDataError?.acc2}
-                        onChange={onChange}
-                        value={formData.acc2}
-                        required={true}
-                        onPaste={(e) => e.preventDefault()} 
-                    />
+                                <Input
+                                    label="Confirm Account Number"
+                                    name="acc2"
+                                    error={formDataError?.acc2}
+                                    onChange={onChange}
+                                    value={formData.acc2}
+                                    required={true}
+                                    onPaste={(e) => e.preventDefault()} 
+                                />
 
-                                    <Input
-                                        label="IFSC Code"
-                                        name="ifsc"
-                                        error={formDataError?.ifsc}
-                                        onChange={onChange}
-                                        value={formData.ifsc}
-                                        required={true}
-                                    />
-                             
-                                
+                                <Input
+                                    label="IFSC Code"
+                                    name="ifsc"
+                                    error={formDataError?.ifsc}
+                                    onChange={onChange}
+                                    value={formData.ifsc}
+                                    required={true}
+                                />
                             </div>
                             <div className="button">
                                 <Button title="Continue" onClick={submit} loading={loading} />

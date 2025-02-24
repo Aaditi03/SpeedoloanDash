@@ -47,12 +47,12 @@
     white-space: nowrap; /* Prevent wrapping */
     width: 100%; /* Full width */
     position: relative; /* For positioning */
-    background-color: #eee;
+    background-color: #ff4848;
     
         text-align: center;
 
         float: left;
-        padding: 13px 0;
+        padding: 8px 0;
         position: fixed;
         z-index: 26;
         bottom: -20px;
@@ -61,9 +61,9 @@
 
 .marquee {
     display: inline-block; /* Inline block for width */
-    animation: marquee 30s linear infinite;
-    font-size: 25px; /* Adjust duration as needed */
-    color: rgb(8, 38, 84);
+    animation: marquee 50s linear infinite;
+    font-size: 22px; /* Adjust duration as needed */
+    color: #fff;
     margin-bottom: 16px;
    
 }
@@ -83,6 +83,13 @@
 .header_wrapper {
     width: 100%;
     padding: 26px 16px;
+    position: fixed; /* Make the header fixed at the top */
+    top: 0;
+    left: 0;
+    /* z-index: 0; */
+    background-color: black;
+    background-image: url("../images/footer_bg_2.jpg");
+    background-size: cover;
 }
 
 .header_wrapper nav {
@@ -92,7 +99,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
+    position: reltive;
 }
 
 .header_wrapper nav .burger {
@@ -207,9 +214,12 @@
 
 .page_wrapper {
     width: 100%;
+    top: 100px;
+    position: relative;
+    z-index: 1;
 }
 
-/* **************************** Banner CSS ****************************  */
+/***************************** Banner CSS ****************************  */
 
   .banner_wrapper {
     width: 100%;
@@ -585,11 +595,12 @@ button {
     width: 80%;
     justify-content: space-evenly;
     padding: 40px 0px;
-    margin: 20px auto 0px auto;
+    margin: 20px auto 50px auto;
 }
 
 .get_started_section .get_started_row .image_section {
     position: relative;
+    border-radius: 50px;
 }
 
 .get_started_section .get_started_row .image_section .underlay_img {
@@ -1173,6 +1184,7 @@ button {
     justify-content: center;
     background: var(--theme-color);
     padding: 10px 0px;
+    margin-bottom: 18px;
 }
 
 .footer_wrapper .copyright_section p {
@@ -1263,19 +1275,19 @@ button {
 
 .page_banner_wrapper .page_banner_wrapper_overlay {
     min-height: 50vh;
-    padding: 196px 0 43px;
+    /* padding: 196px 0 43px; */
     background-size: cover;
     width: 100%;
     float: left;
     text-align: center;
-    margin-top: -121px;
+    margin-top: 45px;
     
 }
 
 .page_banner_wrapper .repay_loan_banner_overlay {
-    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8));
+    /* background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)); */
     width: 100%;
-    min-height: 50vh;
+    min-height: 27vh;
 }
 
 .page_banner_wrapper .page_banner_wrapper_overlay h2 {
@@ -1347,6 +1359,7 @@ button {
 .page_wrapper .bank_details_section {
     width: 80%;
     margin: 80px auto 0px auto;
+    gap: 10%;
 }
 
 .page_wrapper .bank_details_section .details_table tr {
@@ -1523,7 +1536,7 @@ button {
 /* ************************** Contact Page CSS ******************************  */
 .contact_page_details {
     width: 100%;
-    padding: 60px 40px;
+    padding: 110px 40px;
 }
 
 .contact_page_details .contact_page_details_row {
@@ -2229,7 +2242,7 @@ button {
     display: none !important;
 }
 
-/* *************************** Loan Calculator CSS ************************************/
+/**************************** Loan Calculator CSS ************************************/
 .loan_calculator h2 {
     color: var(--title-color);
     margin-bottom: 20px;
@@ -2355,6 +2368,7 @@ input[type=range]::-webkit-slider-thumb {
 @media screen and (max-width: 1200px) {
     .header_wrapper nav {
         width: 100%;
+        /* z-index: 0; */
     }
 
     .features_section {
@@ -2476,6 +2490,7 @@ input[type=range]::-webkit-slider-thumb {
         justify-content: center;
         transition: all .7s ease-out;
         height: 470px;
+        /* z-index: 0; */
     }
 
     .header_wrapper nav .burger {
@@ -3322,3 +3337,81 @@ input[type=range]::-webkit-slider-thumb {
         opacity: 0;
     }
 }
+
+
+/* Common.css */
+
+.thank-you-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f9f9f9;
+    margin: 0;
+  }
+  
+  .thank-you-content {
+    text-align: center;
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .thank-you-image-container {
+    margin-bottom: 20px;
+  }
+  
+  .thank-you-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .thank-you-message h2 {
+    font-size: 24px;
+    color: #4caf50;
+    margin-bottom: 10px;
+  }
+  
+  .thank-you-message p {
+    font-size: 16px;
+    color: #666;
+  }
+  
+  .redirect-info p {
+    font-size: 14px;
+    color: #999;
+  }
+  
+  .thank-you-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #8cd9a2;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .thank-you-button:hover {
+    background-color: #79c48d;
+  }
+  
+
+
+
+  /* .message-banner {
+    background-color: #797575;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    width: 30%;
+    margin-top: 10px;
+    margin-left: 10px;
+    transition: opacity 0.1s ease;
+} */

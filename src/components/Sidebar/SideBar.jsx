@@ -47,21 +47,17 @@ function SideBar({ toggle, setToggle }) {
    const navigate = useNavigate();
    const location = useLocation();
    const { logout, setps } = useContext(ContextDashboard);
-   const [eligibilityStatus, setEligibilityStatus] = useState(getStorage("eligibility"));
-
-
-   // Log profileData to console
-   console.log("Profile Data:", setps);
+   // const [eligibilityStatus, setEligibilityStatus] = useState(getStorage("eligibility"));
 
    const redirect = (link) => {
       if (link === "/my-dashboard/") {
-          if (eligibilityStatus === 1) {
+          if (getStorage('eligibility') === 1) {
             link = '/my-dashboard/eligibility'; 
          }
       }
 
       if (link === "/my-dashboard/profile-preview") {
-          if (eligibilityStatus === 1) {
+          if (getStorage('eligibility') === 1) {
             link = '/my-dashboard/lead-preview'; 
          }
       }

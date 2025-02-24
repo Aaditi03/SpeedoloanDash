@@ -9,10 +9,10 @@ function DetailBox({children,heading="", onClock=()=>{}}) {
     <DetailBoxWrapper>
         <div className="header">
             <h2>{heading}</h2>
-            <div className="icons center" onClick={onClock}>
+            {/* <div className="icons center" onClick={onClock}>
                 <img src={editIcon} alt="" />
                 <span>Edit</span>
-            </div>
+            </div> */}
         </div>
         <div className="main">
             {children}

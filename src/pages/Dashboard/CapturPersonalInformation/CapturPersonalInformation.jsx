@@ -4,7 +4,7 @@ import arrowIcon from "../../../images/arrow.png";
 import { FormWrapper } from '../../../components/loan/style';
 import Button from '../../../components/ui/Button';
 import Alert from '../../../components/ui/Alert';
-import {  savePerssonalDetails } from '../../../Utils/api';
+import {  getDashboardData, savePerssonalDetails } from '../../../Utils/api';
 import { useNavigate } from 'react-router-dom';
 import { formateDate, getStorage, goBack, isEmpty, setStorage } from '../../../Utils/common';
 import Input from '../../../components/ui/Input';
@@ -13,6 +13,8 @@ import { formValidation } from '../../../Utils/formValidation';
 import RadioButtons from '../../../components/ui/RadioButtons';
 import ContextDashboard from '../../../Context/ContextDashboard';
 import ProgressBar from "../../../components/ProgressBar/ProgressBar";
+
+
 
 const initialData = {
     dob: "",
@@ -37,50 +39,59 @@ function CapturPersonalInformation() {
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState({});
     const [formData, setFormData] = useState(initialData);
+    const [fullName, setFullName] = useState();
     const [formDataError, setFormDataError] = useState(initialData);
     const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
     const [showSteps, setShowSteps] = useState(-1);
     const [toggle, setToggle] = useState(true);
     const navigate = useNavigate();
-    const { message, setMessage, logout, setps } = useContext(ContextDashboard);
+    const { message, setMessage, logout, setps,handleEvent } = useContext(ContextDashboard);
 
-    const submit = () => {
+    const submit = async () => { // Add async here
         const error = formValidation(formData);
         setFormDataError({ ...formDataError, ...error });
-
+    
         const param = {
             profile_id: getStorage("cust_profile_id") || "", 
-            event_name:"personal_details",
+            event_name: "personal_details",
             gender: formData.gender,
             personal_email: formData.email,
             dob: formateDate(formData.dob),
             marital_status_id: formData.maritalStatus,
             spouse_name: formData.maritalStatus === "2" ? formData.spouseName : undefined,
         };
-
+    
         if (formData.maritalStatus !== "2") {
             delete error.spouseName;
         }
-
+    
         if (isEmpty(error)) {
             setLoading(true);
-            savePerssonalDetails(param).then(resp => {
+            try {
+                const resp = await savePerssonalDetails(param); // Await the promise returned by savePerssonalDetails
                 setLoading(false);
+    
                 if (resp?.data?.Status === 1) {
                     setResponse(resp?.data);
-                    setStorage("next_step",resp?.data?.Data?.next_step)
-                    setStorage("step_percent",resp?.data?.Data?.step_percentage)
+                    setStorage("next_step", resp?.data?.Data?.next_step);
+                    setStorage("step_percent", resp?.data?.Data?.step_percentage);
                     setMessage({ type: 'success', msg: resp?.data?.Message, place: "global" });
-                    navigate("/my-dashboard/captur-address");
+                    handleEvent(getStorage('next_step'));
+    
+                    
                 } else if (resp?.data?.Status === 4) {
                     logout();
                 } else {
                     setMessage({ type: 'error', msg: resp?.data?.Message });
                 }
-            });
+            } catch (err) {
+                setLoading(false);
+                console.error('Error saving personal details:', err);
+                setMessage({ type: 'error', msg: "Error saving personal details" });
+            }
         }
     };
-
+    
     // Helper function to calculate age based on DOB
     const calculateAge = (dob) => {
         const today = new Date();
@@ -114,33 +125,26 @@ function CapturPersonalInformation() {
         }
     };
 
-    // useEffect(() => {
-    //     const params = {
-    //         lead_id: getStorage("lead_id") || "",
-    //         token: getStorage("token") || "",
-    //         mobile: getStorage("mobile") || "",
-    //     };
-
-    //     getDashboardData(params).then(resp => {
-    //         if (resp?.data?.Status === 1) {
-    //             const dashboardData = resp?.data?.Steps?.data || {};
-    //             if (dashboardData) {
-    //                 setFullName(dashboardData.full_name); // Set the full name for display
-    //                 setFormData(prev => ({
-    //                     ...prev,
-    //                     dob: dashboardData.dob || "",
-    //                     maritalStatus: dashboardData.marital_status || "",
-    //                     email: dashboardData.email || "",
-    //                     gender: dashboardData.gender || "",
-    //                 }));
-
-    //                 setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
-    //             }
-    //         } else if (resp?.data?.Status === 5) {
-    //             logout();
-    //         }
-    //     });
-    // }, [logout]);
+    useEffect(() => {
+        const params={
+            profile_id: getStorage("cust_profile_id") || "", 
+          };
+          getDashboardData(params).then(resp=>{
+            if (resp?.data?.Status===1){
+        const dashboardData = resp?.data || {};
+        if (dashboardData) {
+            setFullName(dashboardData?.Data?.profile_details?.first_name); // Set the full name for display
+            setFormData(prev => ({
+                ...prev,
+                dob: dashboardData?.Data?.profile_details?.dob || "",
+                maritalStatus: dashboardData?.Data?.profile_details?.marital_status_id || "",
+                email: dashboardData?.Data?.profile_details?.personal_email || "",
+                gender: dashboardData?.Data?.profile_details?.gender || "",
+            }));
+        }
+    }
+});
+    }, [logout]);
 
     useEffect(() => {
         if (!isEmpty(setps)) {
@@ -158,6 +162,7 @@ function CapturPersonalInformation() {
 
     return (
         <>
+         
             <ProgressBar value={`${progressBar}%`}>
                 <div></div>
             </ProgressBar><br />
@@ -177,7 +182,7 @@ function CapturPersonalInformation() {
                                 <Input
                                     label="Your Full Name"
                                     name="full_name"
-                                    value={getStorage("fullName")}
+                                    value={getStorage("fullName") || fullName}
                                     readOnly
                                 />
                                 <Input
@@ -213,8 +218,20 @@ function CapturPersonalInformation() {
                                         name="spouseName"
                                         onChange={onChange}
                                         value={formData.spouseName}
+                                        error={formDataError?.spouseName}
                                     />
+                                    
                                 )}
+                                {/* {formData.maritalStatus === "2" && (
+                                    <Input
+                                        label="Spouse Name"
+                                        name="spouseName"
+                                        onChange={onChange}
+                                        value={formData.spouseName}
+                                        error={formDataError?.spouseName}
+                                    />
+                                    
+                                )} */}
                                 <RadioButtons title='Select Gender' options={options} className="flex" value={formData.gender} error={formDataError.gender} onChange={onChange} required={true} />
                             </div>
                             <div className="button">

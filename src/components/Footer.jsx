@@ -16,7 +16,7 @@ const Footer = () => {
           <div className="footer_tab">
             <h2 className="tab_title">Quick Links</h2>
             <li>
-              <Link to="/home">
+              <Link to="/">
                 <FaChevronRight className="footer_icon" />
                 Home
               </Link>
@@ -69,8 +69,8 @@ const Footer = () => {
           </div>
           <div className="footer_tab">
             <h2 className="tab_title">Contact Us</h2>
-            <a className="call_info" style={{ marginTop: "0px",color:"white" }} href="mailto: info@salaryontime.com">
-              Email: info@salaryontime.com
+            <a className="call_info" style={{ marginTop: "0px",color:"white" }} href="mailto: info@speedoloan.com">
+              Email: info@speedoloan.com
             </a><br/>
             <a style={{color:"white"}} href="tel:+919289877932" className="call_info">Phone: +91-8800002890</a><br/>
             <p style={{color:"white"}} className="call_info">
@@ -107,13 +107,13 @@ const Footer = () => {
                     <Link to="/flexibility">Flexible Personal Loan</Link>
                   </li>
                   <li>
-                    <Link to="/shortloan">Short Term Loan</Link>
+                    <Link to="/short-term-loan">Short Term Loan</Link>
                   </li>
                   <li>
-                    <Link to="/instantloan">Instant Loan</Link>
+                    <Link to="/instant-loan">Instant Loan</Link>
                   </li>
                   <li>
-                    <Link to="/debtconsolidation">Debt Consolidation</Link>
+                    <Link to="/debt-consolidation-loan">Debt Consolidation</Link>
                   </li>
                 </ul>
               </div>
@@ -141,22 +141,37 @@ const Footer = () => {
                 }
               >
                 <ul className="submenu_list">
-                  <li>
-                    <Link to="/ahmedabad">Personal Loan in Ahmedabad</Link>
-                  </li>
-                  <li>
-                    <Link to="/hyderabad">Personal Loans in Hyderabad</Link>
-                  </li>
-                  <li>
-                    <Link to="/mumbai">Instant Loan in Mumbai</Link>
-                  </li>
-                  <li>
-                    <Link to="/banglore">Personal loan in Bangalore</Link>
-                  </li>
-                  <li>
-                    <Link to="/delhi">Personal Loans in New Delhi</Link>
-                  </li>
-                </ul>
+                <li>
+                  <Link to="/instant-personal-loan-in-ahmedabad"> Ahmedabad</Link>
+                </li>
+                <li>
+                  <Link to="/instant-personal-loan-online-in-hyderabad"> Hyderabad</Link>
+                </li>
+                <li>
+                  <Link to="/loan-agency-in-mumbai">Mumbai</Link>
+                </li>
+                <li>
+                  <Link to="/advance-loans-Online-in-Bangalore">Bangalore</Link>
+                </li>
+                <li>
+                  <Link to="/Instant-Personal-Loan-for-Salaried-in-Delhi">New Delhi</Link>
+                </li>
+                <li>
+                  <Link to="/personal-loan-in-Gurgaon">Gurgaon</Link>
+                </li>
+                <li>
+                  <Link to="/Personal-loan-in-Noida">Noida</Link>
+                </li>
+                <li>
+                  <Link to="/personal-loan-in-faridabad">Faridabad</Link>
+                </li>
+                <li>
+                  <Link to="/instant-personal-loan-in-greater-noida">Greater Noida</Link>
+                </li>
+                <li>
+                  <Link to="/Instant-Personal-Loan-in-Ghaziabad">Ghaziabad</Link>
+                </li>
+              </ul>
               </div>
             </div>
             <div className="dropdown_item_title">
@@ -181,7 +196,7 @@ const Footer = () => {
             >
               <ul className="submenu_list">
                 <li>
-                  <Link to="">5k - 1Lakh</Link>
+                  <Link>5k - 1Lakh</Link>
                 </li>
               </ul>
             </div>
@@ -196,13 +211,13 @@ const Footer = () => {
                   <Link to="/flexibility">Flexible Personal Loan</Link>
                 </li>
                 <li>
-                  <Link to="/shortloan">Short Term Loan</Link>
+                  <Link to="/short-term-loan">Short Term Loan</Link>
                 </li>
                 <li>
-                  <Link to="/instantloan">Instant Loan</Link>
+                  <Link to="/instant-loan">Instant Loan</Link>
                 </li>
                 <li>
-                  <Link to="/debtconsolidation">Debt Consolidation</Link>
+                  <Link to="/debt-consolidation-loan">Debt Consolidation</Link>
                 </li>
               </ul>
             </div>
@@ -211,19 +226,34 @@ const Footer = () => {
             >
               <ul className="submenu_list">
                 <li>
-                  <Link to="/ahmedabad">Personal Loan in Ahmedabad</Link>
+                  <Link to="/instant-personal-loan-in-ahmedabad"> Ahmedabad</Link>
                 </li>
                 <li>
-                  <Link to="/hyderabad">Personal Loans in Hyderabad</Link>
+                  <Link to="/instant-personal-loan-online-in-hyderabad"> Hyderabad</Link>
                 </li>
                 <li>
-                  <Link to="/mumbai">Instant Loan in Mumbai</Link>
+                  <Link to="/loan-agency-in-mumbai">Mumbai</Link>
                 </li>
                 <li>
-                  <Link to="/banglore">Personal loan in Bangalore</Link>
+                  <Link to="/advance-loans-Online-in-Bangalore">Bangalore</Link>
                 </li>
                 <li>
-                  <Link to="/delhi">Personal Loans in New Delhi</Link>
+                  <Link to="/Instant-Personal-Loan-for-Salaried-in-Delhi">New Delhi</Link>
+                </li>
+                <li>
+                  <Link to="/personal-loan-in-Gurgaon">Gurgaon</Link>
+                </li>
+                <li>
+                  <Link to="/Personal-loan-in-Noida">Noida</Link>
+                </li>
+                <li>
+                  <Link to="/personal-loan-in-faridabad">Faridabad</Link>
+                </li>
+                <li>
+                  <Link to="/instant-personal-loan-in-greater-noida">Greater Noida</Link>
+                </li>
+                <li>
+                  <Link to="/Instant-Personal-Loan-in-Ghaziabad">Ghaziabad</Link>
                 </li>
               </ul>
             </div>
@@ -232,7 +262,7 @@ const Footer = () => {
             >
               <ul className="submenu_list">
                 <li>
-                  <Link to="">5k - 1Lakh</Link>
+                  <Link>5k - 1Lakh</Link>
                 </li>
               </ul>
             </div>

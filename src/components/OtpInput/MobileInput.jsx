@@ -15,12 +15,14 @@ const MobileInput = ({
 }) => {
   const [focus, setFocus] = useState(null);
 
+  // Focus the first input field when the component is mounted or refreshed
   useEffect(() => {
     if (inputRefs.current[0]) {
       inputRefs.current[0].focus();
     }
   }, [inputRefs]);
 
+  // Handle changes in OTP inputs
   const handleOtpChange = (e, index) => {
     let value = e.target.value;
 
@@ -38,12 +40,18 @@ const MobileInput = ({
 
       setOtp(updatedOtp);
 
-      if (value !== "" && index < otp.length - 1) {
-        inputRefs.current[index + 1].focus();
-      }
+      focusNextInput(value, index);
     }
   };
 
+  // Focus the next input field if the current input is filled
+  const focusNextInput = (value, index) => {
+    if (value !== "" && index < otp.length - 1) {
+      inputRefs.current[index + 1].focus();
+    }
+  };
+
+  // Handle the backspace key to move focus to the previous input field
   const handleKeyDown = (e, index) => {
     if (e.key === "Backspace" && isEmpty(otp[index])) {
       if (index > 0) {
@@ -59,6 +67,7 @@ const MobileInput = ({
     }
   };
 
+  // Focus on the clicked input
   const onfocusInput = (e) => {
     e.target?.children[0]?.focus();
   };
@@ -67,7 +76,7 @@ const MobileInput = ({
     <div className="otp-input flex">
       {otp.map((digit, index) => (
         <div
-          className={'box ${focus === index ? "focus" : ""}'}
+          className={`box ${focus === index ? "focus" : ""}`}
           key={index}
           onClick={onfocusInput}
         >
@@ -82,6 +91,7 @@ const MobileInput = ({
             onFocus={() => setFocus(index)}
             onBlur={() => setFocus(null)}
             onKeyDown={(e) => handleKeyDown(e, index)}
+            inputMode="numeric"
           />
         </div>
       ))}

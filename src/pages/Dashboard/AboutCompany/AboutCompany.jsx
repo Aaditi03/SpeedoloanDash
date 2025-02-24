@@ -1,18 +1,13 @@
-
-
-
 import React, { useContext, useEffect, useState } from 'react';
-
 import { BoxWrapper } from '../../../style';
 import arrowIcon from "../../../images/arrow.png"
 import { FormWrapper } from '../../../components/loan/style';
 import Button from '../../../components/ui/Button';
 import Alert from '../../../components/ui/Alert';
-import { aboutCompany, getStateCityPincode } from '../../../Utils/api';
+import { aboutCompany, getDashboardData } from '../../../Utils/api';
 import { useNavigate } from 'react-router-dom';
-import {formateDate, getStorage, goBack, isAlphabet, isEmpty, isNumber } from '../../../Utils/common';
+import {formateDate, getStorage, goBack, isAlphabet, isEmpty, isNumber,setStorage } from '../../../Utils/common';
 import Input from '../../../components/ui/Input';
-
 import Select from '../../../components/ui/Select';
 import { formValidation } from '../../../Utils/formValidation';
 import RadioButtons from '../../../components/ui/RadioButtons';
@@ -28,14 +23,12 @@ const initialData = {
     designation:"",
     address1:"",
     address2:"",
-    // service_tenure:"",
-    // emp_since:"",
+    email:"",
+    emp_since:"",
     // state:"",
     // city:"",
     pinCode:"",
 }
-
-
 
 const options =[
     {
@@ -157,19 +150,14 @@ function AboutCompany() {
     const [pinCodeList, setPinCodeList] = useState([]);
     const [showSteps, setShowSteps] = useState(-1);
     const [toggle, setToggle] = useState(true);
-    const [progressBar, setProgressBar] = useState(getStorage('step_percent'));
+    const [progressBar, setProgressBar] = useState(getStorage('percent'));
 
-    const navigate = useNavigate();
-
-
-  
-
-    const {message,setMessage,logout} = useContext(ContextDashboard);
+    const {message,setMessage,logout,handleEvent} = useContext(ContextDashboard);
 
     const submit = () =>{
      
 
-        const error = formValidation(formData,["address2"]);
+        const error = formValidation(formData,["landmark","email"]);
 
         setFormDataError({...formDataError,...error});
         const param = {
@@ -183,23 +171,24 @@ function AboutCompany() {
           // department:formData.department,
           company_type_id:formData.company_type,
           company_name:formData.companyName,
-          landmark:formData.landmark,
+          landmark:formData.landmark || "",
           work_mode:formData.workingType,
-          designation:formData.designation
-          // emp_since:formateDate(formData.emp_since),
-          // service_tenure:formData.service_tenure,
+          designation:formData.designation,
+          emp_since:formateDate(formData.emp_since),
+          office_email:formData.email,
       }
 
         if(isEmpty(error)){
            setLoading(true);
            aboutCompany(param).then(resp=>{
-        setLoading(false);
+           setLoading(false);
         console.log(resp?.data)
         if(resp?.data?.Status === 1){
+          setStorage("next_step",resp?.data?.Data?.next_step)
+          setStorage('percent',resp?.data?.Data?.step_percentage)
           setResponce(resp?.data);
           setMessage({ type: 'success', msg:resp?.data?.Message, place:"globle" });
-          // getProfileDaital()
-          navigate("/my-dashboard/adhar-upload")
+          handleEvent(getStorage('next_step'));
           
         }else if(resp?.data?.Status === 4){
           logout();
@@ -239,11 +228,20 @@ const onChange = (e)=>{
  
 }
 
-const onChangeDate = (date) =>{
-  console.log("date",date)
-  setFormData({...formData,emp_since:date});
-  setFormDataError({...formDataError,emp_since:""});
-}
+const onChangeDate = (date) => {
+  const currentDate = new Date();
+  const selectedDate = new Date(date);
+  
+  // Check if the selected date is in the future
+  if (selectedDate > currentDate) {
+    setFormData({...formData, emp_since: ""});  // Reset the value
+    setFormDataError({...formDataError, emp_since: "Date cannot be in the future."});
+  } else {
+    setFormData({...formData, emp_since: date});
+    setFormDataError({...formDataError, emp_since: ""});
+  }
+};
+
 // const StateCityList = (type="getstate",id=null)=>{
 //   const param ={
 //     apiname:type,
@@ -300,43 +298,41 @@ const onChangeDate = (date) =>{
 // }, [formData.state]);
 
 
-// useEffect(() => {
+useEffect(() => {
 
-//   const params = {
-//       lead_id: getStorage("lead_id") || "",
-//       token: getStorage("token") || "",
-//       mobile: getStorage("mobile") || "",
-//   };
+  const params={
+    profile_id: getStorage("cust_profile_id") || "", 
+  };
 
-//   getDashboardData(params).then(resp => {
-//       if (resp?.data?.Status === 1) {
-//           const dashboardData = resp?.data?.Steps?.data || {};
-//           if (dashboardData) {
-//               setFormData(prev => ({
-//                   ...prev,
-//                   workingType: dashboardData.work_mode || "",
-//                   email: dashboardData.ce_email || "",
-//                   companyName: dashboardData.company_name || "",
-//                   department: dashboardData.department || "",
-//                   company_type: dashboardData.company_type || "",
-//                   designation: dashboardData.designation || "",
-//                   address1: dashboardData.address1 || "",
-//                   address2: dashboardData.address2 || "",
-//                   // service_tenure: dashboardData.service_tenure || "",
-//                   emp_since: dashboardData.emp_since || "",
-//                   state: dashboardData.ce_state_id || "",
-//                   city: dashboardData.ce_city_id || "",
-//                   pinCode: dashboardData.ce_pincode || "", 
+  getDashboardData(params).then(resp => {
+      if (resp?.data?.Status === 1) {
+          const dashboardData = resp?.data?.Data?.customer_employment_details || {};
+          if (dashboardData) {
+              setFormData(prev => ({
+                  ...prev,
+                  workingType: dashboardData?.emp_work_mode || "",
+                  // email: dashboardData?.emp_email || "",
+                  companyName: dashboardData?.employer_name || "",
+                  department: dashboardData?.emp_department || "",
+                  company_type: dashboardData?.companyid || "",
+                  designation: dashboardData?.emp_designation || "",
+                  address1: dashboardData?.emp_house || "",
+                  address2: dashboardData?.emp_street || "",
+                  // service_tenure: dashboardData.service_tenure || "",
+                  // emp_since: dashboardData.emp_since || "",
+                  landmark: dashboardData?.emp_landmark || "",
+                  // city: dashboardData.ce_city_id || "",
+                  pinCode: dashboardData?.emp_pincode || "", 
             
-//               }));
+              }));
 
-//               setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
-//           }
-//       } else if (resp?.data?.Status === 5) {
-//           logout();
-//       }
-//   });
-// }, [logout]);
+              setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
+          }
+      } else if (resp?.data?.Status === 5) {
+          logout();
+      }
+  });
+}, [logout]);
  
 // useEffect(() => {
 //   if (!isEmpty(setps)) {
@@ -352,18 +348,19 @@ const onChangeDate = (date) =>{
 //   setShowSteps(steps);
 // };
   return (
-    <><ProgressBar value={`${progressBar}%`}>
+    <>
+    {/* <ProgressBar value={`${progressBar}%`}>
       <div >
       </div>
 
-  </ProgressBar>
+  </ProgressBar> */}
     <br />
        <BoxWrapper  className="w100" >
         <div className="formmainBox flex">
           <div className="left">
-            <div className='center gap4 pointer' onClick={()=>goBack(navigate,"/my-dashboard/calculate-loan")} >
+            {/* <div className='center gap4 pointer' onClick={()=>goBack(navigate,"/my-dashboard/calculate-loan")} >
                 <img src={arrowIcon} alt="" /> <span>Back</span>
-            </div>
+            </div> */}
           </div>
           <div className="right">
             <h2>Employment Details</h2>
@@ -416,26 +413,28 @@ const onChangeDate = (date) =>{
                   required={true}
                   
                 />
-                {/* <Input
-                  label="Service Tenure *"
-                  name="service_tenure"
-                  error={formDataError?.service_tenure}
+                <Input
+                  label="Official Email"
+                  name="email"
+                  error={formDataError?.email}
                   onChange={onChange}
-                  value={formData?.service_tenure}
-                  required={true}
+                  value={formData?.email}
+                  // required={true}
                   
-                /> */}
+                /> 
 
-                {/* <Input
-                  label="Employment Since"
-                  name="emp_since"
-                  type='date'
-                  error={formDataError?.emp_since}
-                  onChange={onChangeDate}
-                  value={formData?.emp_since}
-                  required={true}
-                  
-                /> */}
+              <Input
+                label="Employment Since"
+                name="emp_since"
+                type="date"
+                error={formDataError?.emp_since}
+                onChange={onChangeDate}
+                value={formData?.emp_since}
+                required={true}
+                max={new Date().toISOString().split('T')[0]}  // Disable future date selection
+              />
+
+
                 <div className='subheading min-w100'>
                 ALSO, WHERE'S YOUR OFFICE?
                 </div>
@@ -455,7 +454,7 @@ const onChangeDate = (date) =>{
                   error={formDataError?.address2}
                   onChange={onChange}
                   value={formData?.address2}
-                  // required={true}
+                  required={true}
                   
                 />
                 <Input
@@ -464,7 +463,7 @@ const onChangeDate = (date) =>{
                   error={formDataError?.landmark}
                   onChange={onChange}
                   value={formData?.landmark}
-                  required={false}
+                  // required={true}
                   
                   
                 />

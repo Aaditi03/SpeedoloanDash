@@ -7,7 +7,7 @@ header {
     top: 0;
     z-index: 2;
     background-size: cover;
-    /* background-position: center; */
+  
 }
 
 @media screen and (min-width: 1950px) {

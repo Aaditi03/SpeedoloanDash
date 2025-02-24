@@ -31,14 +31,14 @@ const Locations = () => {
                 <ul className="locations_list">
                   <div className="location_container">
                     <li>
-                      <Link to="/delhi">
+                      <Link to="/Instant-Personal-Loan-for-Salaried-in-Delhi">
                         {" "}
                         <FaArrowAltCircleRight className="content_right_icon" />{" "}
                         New Delhi / Delhi
                       </Link>
                     </li>
                     <li>
-                      <Link to="/hyderabad">
+                      <Link to="/instant-personal-loan-online-in-hyderabad">
                         {" "}
                         <FaArrowAltCircleRight className="content_right_icon" />{" "}
                         Hyderababad
@@ -47,14 +47,14 @@ const Locations = () => {
                   </div>
                   <div className="location_container">
                     <li>
-                      <Link to="/ahmedabad">
+                      <Link to="/instant-personal-loan-in-ahmedabad">
                         {" "}
                         <FaArrowAltCircleRight className="content_right_icon" />{" "}
                         Ahmedabad
                       </Link>
                     </li>
                     <li>
-                      <Link to="/mumbai">
+                      <Link to="/loan-agency-in-mumbai">
                         {" "}
                         <FaArrowAltCircleRight className="content_right_icon" />{" "}
                         Mumbai
@@ -63,7 +63,7 @@ const Locations = () => {
                   </div>
                   <div className="location_container">
                     <li>
-                      <Link to="/banglore">
+                      <Link to="/advance-loans-Online-in-Bangalore">
                         {" "}
                         <FaArrowAltCircleRight className="content_right_icon" />{" "}
                         Banglore

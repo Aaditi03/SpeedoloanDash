@@ -4,6 +4,7 @@ import service_three from "../images/flexi_loan.jpg";
 import { Link } from "react-router-dom";
 import ChatButton from "../components/ChatButton";
 
+
 const ShortLoan = () => {
   return (
     <>
@@ -20,7 +21,7 @@ const ShortLoan = () => {
               </div>
               <h1 className="page_title mt30 mb20">Flexibility in Loans</h1>
               <p>
-                At SalaryOnTime, we focus on meeting your financial needs by
+                At Speedoloan, we focus on meeting your financial needs by
                 offering loan services with remarkable flexibility. Recognizing
                 that every customer has unique circumstances, we provide
                 personalized loan terms and repayment options to give you
@@ -29,19 +30,19 @@ const ShortLoan = () => {
                 our convenient online application and management tools, our aim
                 is to make the borrowing process straightforward and
                 hassle-free. With our dedicated support team always available to
-                assist, SalaryOnTime ensures a loan experience that adapts to
+                assist, Speedoloan ensures a loan experience that adapts to
                 your specific needs.
               </p>
               <br />
               <p>
-                In addition to our flexible loan services, SalaryOnTime stands
+                In addition to our flexible loan services, Speedoloan stands
                 out by offering competitive interest rates and transparent
                 terms, ensuring you understand every aspect of your loan
                 agreement. Our streamlined application process is designed to
                 save you time, with quick approvals and minimal paperwork,
                 allowing you to access funds when you need them most. We also
                 provide personalized financial advice to help you make informed
-                decisions and manage your loan effectively. At SalaryOnTime, we
+                decisions and manage your loan effectively. At Speedoloan, we
                 are dedicated to fostering a trustworthy and supportive
                 relationship with our clients, helping you achieve your
                 financial goals with confidence and ease.

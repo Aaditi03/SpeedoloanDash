@@ -1,14 +1,10 @@
-
-
-
 import React, { useEffect,useContext, useState } from 'react';
-
 import { BoxWrapper } from '../../../style';
 import arrowIcon from "../../../images/arrow.png"
 import { FormWrapper } from '../../../components/loan/style';
 import Button from '../../../components/ui/Button';
 import Alert from '../../../components/ui/Alert';
-import {getIncomeDetails} from '../../../Utils/api';
+import { getDashboardData, getIncomeDetails} from '../../../Utils/api';
 import { useNavigate } from 'react-router-dom';
 import { getStorage, goBack, isAlphabet, isEmpty, isNumber,setStorage } from '../../../Utils/common';
 import Input from '../../../components/ui/Input';
@@ -68,18 +64,11 @@ function CapturIncomeDetails() {
     const [showSteps, setShowSteps] = useState(-1);
     const [toggle, setToggle] = useState(true);
     const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
-
     const navigate = useNavigate();
-
-    const {message,setMessage, logout,setps} = useContext(ContextDashboard);
-  
-
+    const {message,setMessage, logout,setps,handleEvent} = useContext(ContextDashboard);
 
     const submit = () =>{
-     
-
         const error = formValidation(formData);
-  
         console.log("error",error)
         setFormDataError({...formDataError,...error});
         const param = {
@@ -88,8 +77,7 @@ function CapturIncomeDetails() {
           income_type_id:formData.employmentType,
           salary_mode_id:formData.ModeIncomeReceived=="bank"?"1":formData.ModeIncomeReceived=="cheque"?"2":formData.ModeIncomeReceived=="cash"?"3":"",
           salary_date:formData.nextSalaryDate,
-          monthly_income:formData.monthlyIncome
-       
+          monthly_income:formData.monthlyIncome 
       }
   
         if(isEmpty(error)){
@@ -101,20 +89,25 @@ function CapturIncomeDetails() {
           setStorage("step_percent",resp?.data?.Data?.step_percentage)
           setResponce(resp?.data);
           setMessage({ type: 'success', msg:resp?.data?.Message, place:"globle" });
-          navigate("/my-dashboard/upload-picture")
+          handleEvent(getStorage('next_step'));
         }else if(resp?.data?.Status === 4){
           logout();
         }else{
           setMessage({ type: 'error', msg: resp?.data?.Message, });
-        }
-        
-        
+        }      
     })
-  
-        }
-  
-    
+    }  
     }
+
+    const handleIncomeChange = (e) => {
+      const { value } = e.target;
+  
+      // Allow only numbers and restrict input to a maximum of 10 digits
+      if (/^\d{0,7}$/.test(value)) {
+        setFormData({ ...formData, monthlyIncome: value });
+        setFormDataError({ ...formDataError, monthlyIncome: "" });
+      }
+    };
   
 const onChange = (e)=>{
   let {name, value} = e.target;  
@@ -122,58 +115,58 @@ const onChange = (e)=>{
   setFormDataError({...formDataError,[name]:""});
 }
 
-const onChangeDate = (date) =>{
-    console.log("date",date)
-    setFormData({...formData,nextSalaryDate:date});
-    setFormDataError({...formDataError,nextSalaryDate:""});
-}
-
-// useEffect(() => {
-
-//   // Fetch dashboard data on mount
-//   const params = {
-//       lead_id: getStorage("lead_id") || "",
-//       token: getStorage("token") || "",
-//       mobile: getStorage("mobile") || "",
-//   };
-
-//   getDashboardData(params).then(resp => {
-//       if (resp?.data?.Status === 1) {
-//           const dashboardData = resp?.data?.Steps?.data || {};
-//           if (dashboardData) {
-//               // Update form data with fetched dashboard data
-//               setFormData(prev => ({
-//                   ...prev,
-//                   employmentType: dashboardData.employee_type || "",
-//                   // monthlyIncome: dashboardData.monthly_salary || "",
-//                   organization: dashboardData.company_name || "",
-//                   ModeIncomeReceived: dashboardData.salary_mode || "", 
-//                   nextSalaryDate:dashboardData.nextSalaryDate || "",
-//                   obligations: dashboardData.obligations || "", 
-            
-//               }));
-
-//               setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent); 
-//           }
-//       } else if (resp?.data?.Status === 5) {
-//           logout();
-//       }
-//   });
-// }, [logout]);
+const onChangeDate = (date) => {
+  const currentDate = new Date();
+  const selectedDate = new Date(date);
+  
+  // Check if the selected date is in the future
+  if (selectedDate > currentDate) {
+    setFormData({...formData, nextSalaryDate: ""});  // Reset the value
+    setFormDataError({...formDataError, nextSalaryDate: "Date cannot be in the future."});
+  } else {
+    setFormData({...formData, nextSalaryDate: date});
+    setFormDataError({...formDataError, nextSalaryDate: ""});
+  }
+};
 
 useEffect(() => {
-  if (!isEmpty(setps)) {
-      checkStep(setps);
-  }
-}, [setps]);
 
-const checkStep = (data) => {
-  const steps = (data?.step_stage - 1);
-  if (data?.step_complete_percent === 100) {
-      setToggle(false);
+  const params={
+    profile_id: getStorage("cust_profile_id") || "", 
+  };
+  getDashboardData(params).then(resp=>{
+    if(resp?.data?.Status===1){
+    const dashboardData =resp?.data || {};
+    if (dashboardData) {
+        // Update form data with fetched dashboard data
+        setFormData(prev => ({
+            ...prev,
+            employmentType: dashboardData.Data.profile_details.income_type_id || "",
+            // monthlyIncome: dashboardData.monthly_salary || "",
+            // organization: dashboardData.Data.profile_details.company_name || "",
+            ModeIncomeReceived: dashboardData.Data.profile_details.income_type_id || "", 
+            nextSalaryDate:dashboardData.Data.profile_details.salary_date || "",
+            monthlyIncome: dashboardData.Data.profile_details.monthly_income || "", 
+      
+        }));
+    }
   }
-  setShowSteps(steps);
-};
+})
+}, [logout]);
+
+// useEffect(() => {
+//   if (!isEmpty(setps)) {
+//       checkStep(setps);
+//   }
+// }, [setps]);
+
+// const checkStep = (data) => {
+//   const steps = (data?.step_stage - 1);
+//   if (data?.step_complete_percent === 100) {
+//       setToggle(false);
+//   }
+//   setShowSteps(steps);
+// };
 
   return (
     <><ProgressBar value={`${progressBar}%`}>
@@ -181,7 +174,7 @@ const checkStep = (data) => {
       <div >
        
       </div>
-   <></>
+  
   </ProgressBar><br/>
        <BoxWrapper  className="w100" >
         <div className="formmainBox flex">
@@ -203,13 +196,11 @@ const checkStep = (data) => {
                   label="Monthly Income *"
                   name="monthlyIncome"
                   error={formDataError?.monthlyIncome}
-                  onChange={onChange}
+                  onChange={handleIncomeChange}
                   value={formData?.monthlyIncome}
                   required={true}
-                  type='number'
-                  
+                  type='number'                  
                 />
-
 
             {/* <Input
                   label="Organization Name"
@@ -218,20 +209,19 @@ const checkStep = (data) => {
                   error={formDataError?.organization}
                   onChange={onChange}
                   value={formData?.organization}
-                  required={true}
-                  
+                  required={true}                  
                 /> */}
 
                 
             <Input
-                  label="Salary Date"
+                  label="Last Salary Date"
                   name="nextSalaryDate"
                   type='date'
                   error={formDataError?.nextSalaryDate}
                   onChange={onChangeDate}
                   value={formData?.nextSalaryDate}
                   required={true}
-                  
+                  max={new Date().toISOString().split('T')[0]}  // Disable future date selection
                 />
                
                {/* <Input
@@ -241,16 +231,10 @@ const checkStep = (data) => {
                   type='number'
                   error={formDataError?.obligations}
                   onChange={onChange}
-                  value={formData?.obligations}
-                
-                  
+                  value={formData?.obligations}                 
                 /> */}
-                
 
            <RadioButtons  title='Mode of Salary Received' options={options2} className="flex "  value={formData.ModeIncomeReceived} error={formDataError.ModeIncomeReceived} onChange={onChange} required={true}/>
-       
-          
-               
               </div>
               <div>
               

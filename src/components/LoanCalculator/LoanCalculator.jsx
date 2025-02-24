@@ -5,7 +5,7 @@ import RangeSlider from "../RangeSlider/RangeSlider";
 import principalIcon from '../../images/Principal.svg';
 import emiIcon from '../../images/EMI.svg';
 import paybleIcon from '../../images/Total payble.svg';
-import { getStorage,setStorage } from "../../Utils/common";
+import { getStorage, setStorage } from "../../Utils/common";
 import Button from "../ui/Button";
 import ContextDashboard from "../../Context/ContextDashboard";
 import { calculateLoan, generateLoan } from "../../Utils/api";
@@ -26,18 +26,16 @@ const options = [
 
 function LoanCalculator() {
   const [principal, setPrincipal] = useState(5000);
-  const [tenure, setTenure] = useState(40);
+  const [tenure, setTenure] = useState(7);
   const [emi, setEmi] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loadingAccept, setLoadingAccept] = useState(false);  // Loading state for Accept button
+  const [loadingReject, setLoadingReject] = useState(false);  // Loading state for Reject button
   const [formData, setFormData] = useState(initialData);
-  const [formDataError, setFormDataError,] = useState(initialData);
-  const [showSteps, setShowSteps] = useState(-1);
-  const [toggle, setToggle] = useState(true);
-  const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
+  const [formDataError, setFormDataError] = useState(initialData);
+  const [progressBar, setProgressBar] = useState(getStorage('percent'));
   const [loanData, setLoanData] = useState([]);
     
-  const { message, setMessage, logout, getProfileDaital, setps } = useContext(ContextDashboard);
-  const navigate = useNavigate();
+  const { setMessage, logout, handleEvent } = useContext(ContextDashboard);
 
   useEffect(() => {
     const params = {
@@ -46,6 +44,8 @@ function LoanCalculator() {
     };
     generateLoan(params).then(resp => {
       if (resp?.data?.Status === 1) {
+        setStorage('percent', resp?.data?.Data?.step_percentage);
+        setProgressBar(resp?.data?.Data?.step_percentage);
         setLoanData(resp?.data?.Data);
       }
     });
@@ -60,16 +60,27 @@ function LoanCalculator() {
       amount: principal,
       accepted_id: acceptedId // Pass the accepted_id here
     };
-  
-    setLoading(true);
+
+    // Set loading state depending on whether the user clicked "Accept" or "Reject"
+    if (acceptedId === "1") {
+      setLoadingAccept(true); // Start loading for "Accept"
+      setLoadingReject(false); // Ensure "Reject" is not loading
+    } else if (acceptedId === "2") {
+      setLoadingReject(true); // Start loading for "Reject"
+      setLoadingAccept(false); // Ensure "Accept" is not loading
+    }
+
     calculateLoan(param).then(resp => {
-      setLoading(false);
-  
+      // Reset the loading state after the request completes
+      if (acceptedId === "1") setLoadingAccept(false); // Stop loading for "Accept"
+      if (acceptedId === "2") setLoadingReject(false); // Stop loading for "Reject"
+
       if (resp?.data?.Status === 1) {
-        setStorage("next_step",resp?.data?.Data?.next_step)
+        setStorage("next_step", resp?.data?.Data?.next_step);
+        setStorage('percent', resp?.data?.Data?.step_percentage);
+        setProgressBar(resp?.data?.Data?.step_percentage);
         setMessage({ type: 'success', msg: resp?.data?.Message, place: "global" });
-        // getProfileDaital();
-        navigate("/my-dashboard/about-your-company");
+        handleEvent(getStorage('next_step'));
       } else if (resp?.data?.Status === 4) {
         logout();
       } else {
@@ -91,10 +102,6 @@ function LoanCalculator() {
 
   return (
     <>
-      <br />
-      <ProgressBar value={`${progressBar}%`}>
-        <div></div>
-      </ProgressBar>
     
       <LoanCalculatorWrapper className="flex">
         <div className="left">
@@ -172,8 +179,8 @@ function LoanCalculator() {
               </div>
             </div>
           </div>
-          <Button title={"Accept"} onClick={() => submit("1")} loading={loading} />
-          <Button title={"Reject"} onClick={() => submit("2")} loading={loading} />
+          <Button title={"Accept"} onClick={() => submit("1")} loading={loadingAccept} />
+          {/* <Button title={"Reject"} onClick={() => submit("2")} loading={loadingReject} /> */}
         </div>
       </LoanCalculatorWrapper>
     </>

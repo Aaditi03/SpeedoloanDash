@@ -16,7 +16,7 @@ import photoCapturIcon from "../../../images/photo-capture.svg";
 import Webcam from 'react-webcam';
 import TakeImage from '../../../components/TakeImage/TakeImage';
 import ContextDashboard from '../../../Context/ContextDashboard';
-import { saveProfile,getDashboardData } from '../../../Utils/api';
+import { saveProfile} from '../../../Utils/api';
 import ProgressBar from "../../../components/ProgressBar/ProgressBar";
 
 
@@ -39,7 +39,7 @@ function UploadPicture() {
 
 
   
-    const {message,setMessage,logout,profileData,setps} = useContext(ContextDashboard);
+    const {message,setMessage,logout,profileData,setps,handleEvent} = useContext(ContextDashboard);
 
 
     useEffect(() => {
@@ -63,8 +63,7 @@ function UploadPicture() {
           } else {
               reader.readAsDataURL(image);
           }
-          console.log('ddd');
-          console.log(image);
+          
       }
   }, [image]);
   
@@ -109,12 +108,12 @@ function UploadPicture() {
         setStorage("selfie",resp?.data?.Data?.selfie_doc_url)
         setResponce(resp?.data);
         setMessage({ type: 'success', msg:resp?.data?.Message, place:"globle" });
-  
-        if(!isEmpty(state?.action)){
-          navigate("/my-dashboard/")
-        }else{
-          navigate("/my-dashboard/profile-preview")
-        }
+        handleEvent(getStorage('next_step'));
+        // if(!isEmpty(state?.action)){
+        //   navigate("/my-dashboard/")
+        // }else{
+        //   navigate("/my-dashboard/profile-preview")
+        // }
         
       }else if(resp?.data?.Status === 4){
         logout();
@@ -161,27 +160,26 @@ function UploadPicture() {
     // }, [logout]);
 
  
-    useEffect(() => {
-      if (!isEmpty(setps)) {
-          checkStep(setps);
-      }
-  }, [setps]);
+  //   useEffect(() => {
+  //     if (!isEmpty(setps)) {
+  //         checkStep(setps);
+  //     }
+  // }, [setps]);
 
-  const checkStep = (data) => {
-      const steps = (data?.step_stage - 1);
-      if (data?.step_complete_percent === 100) {
-          setToggle(false);
-      }
-      setShowSteps(steps);
-  };
+  // const checkStep = (data) => {
+  //     const steps = (data?.step_stage - 1);
+  //     if (data?.step_complete_percent === 100) {
+  //         setToggle(false);
+  //     }
+  //     setShowSteps(steps);
+  // };
 
   return (
-    <><ProgressBar value={`${progressBar}%`}>
-      <div >
-      
-      </div>
-    <></>
-  </ProgressBar>
+    <>
+   {progressBar !== 100 && progressBar !== undefined && (
+  <ProgressBar value={`${progressBar}%`} />
+)}
+
             <br />
        <BoxWrapper  className="w100" >
      

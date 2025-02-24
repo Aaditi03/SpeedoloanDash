@@ -1,255 +1,170 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import { BoxWrapper } from "../../../style";
 import arrowIcon from "../../../images/arrow.png";
 import { FormWrapper2 } from "../../../components/loan/style";
 import Button from "../../../components/ui/Button";
 import Alert from "../../../components/ui/Alert";
-
 import { useNavigate } from "react-router-dom";
-import { getStorage, goBack, isEmpty, setStorage } from "../../../Utils/common";
-
+import { getStorage, goBack, setStorage } from "../../../Utils/common";
 import PictureUpload from "../../../components/PictureUpload/PictureUpload";
-import { saveDocuments } from "../../../Utils/api";
+import { saveDocuments, requiredDocs } from "../../../Utils/api";
 import ContextDashboard from "../../../Context/ContextDashboard";
-import ProgressBar from "../../../components/ProgressBar/ProgressBar";
+
+
 
 function DocumentUpload() {
     const [loading, setLoading] = useState(false);
-    const [responce, setResponce] = useState({});
-    
-    // Aadhar Upload states
-    const [aadharFront, setAadharFront] = useState("");
-    const [aadharFront64, setAadharFront64] = useState("");
-    const [aadharBack, setAadharBack] = useState("");
-    const [aadharBack64, setAadharBack64] = useState("");
-    
-    // PAN Upload states
-    const [panImage, setPanImage] = useState("");
-    const [panBase64, setPanBase64] = useState("");
-
-    const [bankImage, setBankImage] = useState("");
-    const [bankBase64, setBankBase64] = useState("");
-
-    const [salaryImage, setSalaryImage] = useState("");
-    const [salaryBase64, setSalaryBase64] = useState("");
-    
-    const [utilityImage, setUtilityImage] = useState("");
-    const [utilityBase64, setUtilityBase64] = useState("");
-    // Other states
     const [message, setMessage] = useState("");
-    const [progressBar, setProgressBar] = useState(getStorage("step_percent"));
-
+    const [documentsRequired, setDocumentsRequired] = useState([]);
+    const [uploadedDocuments, setUploadedDocuments] = useState({});
+    const [isLoadingDocs, setIsLoadingDocs] = useState(true); // Loading state for docs
     const navigate = useNavigate();
-    const { logout, getProfileDaital } = useContext(ContextDashboard);
+    const { logout, handleEvent } = useContext(ContextDashboard);
 
-    // Handle Aadhar front and back image conversions to base64
+    // Fetch required documents when the component mounts
     useEffect(() => {
-        if (aadharFront) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64 = reader.result.split(",").pop();
-                setAadharFront64(base64);
-            };
-            reader.readAsDataURL(aadharFront);
-        }
-    }, [aadharFront]);
+        const params = { profile_id: getStorage("cust_profile_id") || "" };
+        setIsLoadingDocs(true); // Set loading state to true before API call
+        requiredDocs(params).then(resp => {
+            if (resp?.data?.Status === 1) {
+                setDocumentsRequired(resp?.data?.Data || []);
+                // setMessage({ type: 'success', msg: resp?.data?.Message, place:"globle" });
+                setMessage({ type: 'success', msg: resp?.data?.Message, place: "globle" });
 
-    useEffect(() => {
-        if (aadharBack) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64 = reader.result.split(",").pop();
-                setAadharBack64(base64);
-            };
-            reader.readAsDataURL(aadharBack);
-        }
-    }, [aadharBack]);
+            } else {
+                setMessage({ type: "error", msg: resp?.data?.Message });
+            }
+            setIsLoadingDocs(false); // Set loading state to false once data is fetched
+        }).catch(err => {
+            setMessage({ type: "error", msg: "Failed to fetch required documents." });
+            setIsLoadingDocs(false); // Set loading state to false on error
+        });
+    }, []);
 
-    // Handle PAN image conversion to base64
-    useEffect(() => {
-        if (panImage) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                const base64 = reader.result.split(",").pop();
-                setPanBase64(base64);
-            };
-            reader.readAsDataURL(panImage);
-        }
-    }, [panImage]);
-
-    useEffect(() => {
-      if (bankImage) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-              const base64 = reader.result.split(",").pop();
-              setBankBase64(base64);
-          };
-          reader.readAsDataURL(bankImage);
-      }
-  }, [bankImage]);
-
-  useEffect(() => {
-    if (utilityImage) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64 = reader.result.split(",").pop();
-            setUtilityBase64(base64);
-        };
-        reader.readAsDataURL(utilityImage);
-    }
-}, [utilityImage]);
-
-  useEffect(() => {
-    if (salaryImage) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64 = reader.result.split(",").pop();
-            setSalaryBase64(base64);
-        };
-        reader.readAsDataURL(salaryImage);
-    }
-}, [salaryImage]);
-
-    // Submit both Aadhar and PAN documents in a single function
-    const submitDocuments = async () => {
-        if (!aadharFront64 || !aadharBack64 || !panBase64 || !bankBase64 || !salaryBase64 || !utilityBase64) {
-            setMessage({ type: "error", msg: "Please upload all required documents", place: "local" });
-            return;
-        }
-
-        setLoading(true);
-        try {
-            // Upload Aadhar Front
-            await uploadDocument("aadhaar_upload","aadhaar_front", aadharFront64, aadharFront);
-            // Upload Aadhar Back
-            await uploadDocument("aadhaar_upload","aadhaar_back", aadharBack64, aadharBack);
-            // Upload PAN Card
-            await uploadDocument("pan_upload","", panBase64, panImage);
-
-            await uploadDocument("bank_statement_upload","", bankBase64, bankImage);
-
-            await uploadDocument("pay_slip_upload","", salaryBase64,salaryImage);
-
-            await uploadDocument("residence_proof_upload","electricity_bill", utilityBase64, utilityImage);
-
-            // After both uploads succeed
-            // getProfileDaital();
-            navigate("/my-dashboard/bank-detail");
-        } catch (error) {
-            setMessage({ type: "error", msg: "An error occurred during upload. Please try again." });
-        }
-        setLoading(false);
+    // Handle file change (image or document)
+    const handleFileChange = (docName, file) => {
+        setUploadedDocuments(prev => ({ ...prev, [docName]: file }));
     };
 
-    const uploadDocument = (event,doc_type ,fileBase64, fileObj) => {
+    // Convert file to base64 for upload
+    const convertToBase64 = (file) => {
         return new Promise((resolve, reject) => {
-            let ext = "JPEG";
-            if (typeof fileObj === "object") {
-                ext = fileObj.name.split('.').pop().toUpperCase();
-            }
-
-            const param = {
-                profile_id: getStorage("cust_profile_id") || "", 
-                file_ext: ext,
-                password: "N/A",
-                event_name: event,
-                doc_type:doc_type || "",
-                file: fileBase64,
-            };
-
-            saveDocuments(param).then(resp => {
-                if (resp?.data?.Status === 1) {
-                    setResponce(resp?.data);
-                    setMessage({ type: 'success', msg: resp?.data?.Message, place: "global" });
-                    resolve();
-                } else if (resp?.data?.Status === 4) {
-                    logout();
-                    reject(new Error('Session expired.'));
-                } else {
-                    setMessage({ type: 'error', msg: resp?.data?.Message });
-                    reject(new Error(resp?.data?.Message));
-                }
-            }).catch(err => {
-                reject(err);
-            });
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result.split(",").pop());
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
         });
     };
 
-    // Fetch progress bar data
-    // useEffect(() => {
-    //     const params = {
-    //         lead_id: getStorage("lead_id") || "",
-    //         token: getStorage("token") || "",
-    //         mobile: getStorage("mobile") || "",
-    //     };
+    // Submit the documents
+    const submitDocuments = async () => {
+        // Validation: Check if all required documents have been uploaded
+        const missingDocuments = documentsRequired.filter(doc => !uploadedDocuments[doc.name]);
+        if (missingDocuments.length > 0) {
+            setMessage({ type: "error", msg: "Please upload all required documents." });
+            return; // Stop the submission if there are missing documents
+        }
 
-    //     getDashboardData(params).then(resp => {
-    //         if (resp?.data?.Status === 1) {
-    //             const dashboardData = resp?.data?.Steps?.data || {};
-    //             if (dashboardData) {
-    //                 setProgressBar(resp?.data?.Steps?.steps?.step_complete_percent);
-    //             }
-    //         } else if (resp?.data?.Status === 5) {
-    //             logout();
-    //         }
-    //     });
-    // }, [logout]);
+        setLoading(true);
+
+        const uploadPromises = [];
+        for (const doc of documentsRequired) {
+            const docName = doc.name;
+            const file = uploadedDocuments[docName];
+            if (file) {
+                try {
+                    const base64File = await convertToBase64(file);
+                    const ext = file.name.split('.').pop().toUpperCase();
+                    const param = {
+                        profile_id: getStorage("cust_profile_id") || "",
+                        file_ext: ext,
+                        password: "N/A",
+                        event_name: doc.event_name,
+                        doc_type: doc.doc_type,
+                        file: base64File,
+                    };
+                    uploadPromises.push(saveDocuments(param));
+                } catch (err) {
+                    setMessage({ type: "error", msg: `Failed to upload ${docName}. Please try again.` });
+                    setLoading(false);
+                    return;
+                }
+            }
+        }
+
+        try {
+            const responses = await Promise.all(uploadPromises);
+            const successResponses = responses.filter(resp => resp?.data?.Status === 1);
+            if (successResponses.length === uploadPromises.length) {
+                setMessage({ type: 'success', msg: 'All documents uploaded successfully', place: "global" });
+                setStorage("next_step", successResponses[0]?.data?.Data?.next_step);
+                setStorage('percent', successResponses[0]?.data?.Data?.step_percentage);
+                handleEvent(getStorage('next_step'));
+            } else {
+                setMessage({ type: "error", msg: "Some documents failed to upload. Please try again." });
+            }
+        } catch (error) {
+            setMessage({ type: "error", msg: "An error occurred while uploading documents. Please try again." });
+        }
+
+        setLoading(false);
+    };
 
     return (
         <>
-            <ProgressBar value={`${progressBar}%`} />
-            <br />
-            <BoxWrapper className="w100">
-                <div className="formmainBox flex">
-                    <div className="left">
-                        <div className='center gap4 pointer' onClick={() => goBack(navigate, "/my-dashboard/about-your-company")}>
-                            <img src={arrowIcon} alt="" /> <span>Back</span>
-                        </div>
-                    </div>
-                    <div className="right">
-                        <h2>Upload Your Documents</h2>
-                        <p>Upload your Documents to verify your details</p>
-
-                        <FormWrapper2>
-                            <Alert setMessage={setMessage} message={message} />
-
-                            <div className="inputBox">
-                                <h2 className='subheading small'>Aadhar front side</h2>
-                                <PictureUpload setImage={setAadharFront} image={aadharFront} />
-
-                                <h2 className='subheading small'>Aadhar back side</h2>
-                                <PictureUpload setImage={setAadharBack} image={aadharBack} />
-                                
-                            </div>
-
-                            <div className="inputBox">
-
-                            <h2 className='subheading small'>PAN card</h2>
-                            <PictureUpload setImage={setPanImage} image={panImage} />
-
-                            <h2 className='subheading small'>Bank statement (6 months)</h2>
-                            <PictureUpload setImage={setBankImage} image={bankImage} accept="application/pdf" type="file"  />
-
-                            </div>
-
-                            <div className="inputBox">
-
-                            <h2 className='subheading small'>Salary slip</h2>
-                            <PictureUpload setImage={setSalaryImage} image={salaryImage} accept="application/pdf" type="file" />
-
-                            <h2 className='subheading small'>Utility bill</h2>
-                            <PictureUpload setImage={setUtilityImage} image={utilityImage} />
-
-                            </div>
-
-                            <div className="button">
-                                <Button title="Continue" onClick={submitDocuments} loading={loading} />
-                            </div>
-                        </FormWrapper2>
-                    </div>
+       
+        <BoxWrapper className="w100">
+            <div className="formmainBox flex">
+                <div className="left">
+                    {/* <div className='center gap4 pointer' onClick={() => goBack(navigate, "/my-dashboard/about-your-company")}>
+                        <img src={arrowIcon} alt="" /> <span>Back</span>
+                    </div> */}
                 </div>
-            </BoxWrapper>
+                <div className="right">
+                    <h2>Upload Your Documents</h2>
+                    <p>Upload your documents to verify your details</p>
+
+                    <FormWrapper2>
+                        <Alert setMessage={setMessage} message={message} />
+
+                        {isLoadingDocs ? (  // Show loading spinner when documents are being fetched
+                            <p>Loading required documents...</p>
+                        ) : (
+                            documentsRequired.length > 0 ? (
+                                documentsRequired.map(doc => (
+                                    <div key={doc.name} className="inputBox">
+                                        <h2 className="subheading small">{doc.name} <span style={{color:"red"}}>*</span> </h2>
+
+                                        {/* Render PictureUpload dynamically based on allowed format */}
+                                        <PictureUpload
+                                            setImage={(file) => handleFileChange(doc.name, file)}
+                                            image={uploadedDocuments[doc.name] || ""}
+                                            accept={doc.allowed_format === "image" ? "image/*" : "application/pdf"}
+                                            type="file"
+                                            
+                                        />
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No documents are required at this moment.</p>
+                            )
+                        )}
+
+                        {/* Conditionally render the button only if documents are loaded */}
+                        {!isLoadingDocs && documentsRequired.length > 0 && (
+                            <div className="button">
+                                <Button 
+                                    title="Continue" 
+                                    onClick={submitDocuments} 
+                                    loading={loading} 
+                                    disabled={loading || isLoadingDocs}  // Disable button while uploading or fetching
+                                />
+                            </div>
+                        )}
+                    </FormWrapper2>
+                </div>
+            </div>
+        </BoxWrapper>
         </>
     );
 }

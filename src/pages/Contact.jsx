@@ -7,9 +7,11 @@ import title_icon from "../images/title_shape_1.svg";
 import ChatButton from "../components/ChatButton";
 import { Link} from "react-router-dom";
 
+
 const Contact = () => {
   return (
     <>
+  
       <div className="page_wrapper">
         <div className="page_banner_wrapper">
           <div className="page_banner_wrapper_overlay">
@@ -64,20 +66,23 @@ const Contact = () => {
                 <a
                   style={{ color: "#26b9db" }}
                   href="tel:+919289877932"
+                  target="_blank"
                 >
                   +91 9289877932
                 </a><br/>
                 <a
                   style={{ color: "#26b9db" }}
                   href="tel:+918800002890"
+                  target="_blank"
                 >
                   +91 8800002890
                 </a><br/>
                 <a
                   style={{ color: "#26b9db" }}
-                  href="mailto:info@salaryontime.com"
+                  href="mailto:info@speedoloan.com"
+                  target="_blank"
                 >
-                  info@salaryontime.com <br />
+                  info@Speedoloan.com <br />
                 </a>
               </div>
             </div>
@@ -90,14 +95,16 @@ const Contact = () => {
                 <a
                   style={{ color: "#26b9db" }}
                   href="tel:+919289877932"
+                  target="_blank"
                 >
                   +91 9289877841
                 </a><br/>
                 <a
                   style={{ color: "#26b9db" }}
-                  href="mailto:info@salaryontime.com"
+                  href="mailto:info@speedoloan.com"
+                  target="_blank"
                 >
-                  shashi@salaryontime.com <br />
+                  shashi@speedoloan.com <br />
                 </a>
               </div>
             </div>

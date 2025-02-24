@@ -1,5 +1,7 @@
 
-export default  {
+export default 
+
+{
    API_BASEPATH: 'https://api.salaryontime.in',
     // API_BASEPATH: 'https://api.salaryontime.co.in',
     // API_BASEPATH: '',//uat
@@ -19,9 +21,11 @@ export default  {
        ABOUT_COMPANY:"/Api/Website/InstantJourneyController/saveleadDetails",
        CALCULATE_LOAN:"/Api/Website/InstantJourneyController/saveleadDetails",
        USER_DATA:"/Api/Website/getUser",
-       ALL_LEADS: "/Api/Website/getAllLeads",
-       LOAN_DETAIL: "/Api/Website/getLeadDetail",
-       GENERATE_LOAN:"/Api/Website/InstantJourneyController/saveleadDetails"
+       ALL_LEADS: "/Api/Website/InstantJourneyController/getLeadList",
+       LOAN_DETAIL: "/Api/Website/InstantJourneyController/getLeadDetail",
+       GENERATE_LOAN:"/Api/Website/InstantJourneyController/saveleadDetails",
+       GENERATE_ORDER_ID:"/Api/Website/InstantJourneyController/generateRazorpayorderId",
+       MANDATORY_DOCS:"/Api/Website/InstantJourneyController/check_customer_mandatory_documents"
        
     }
 }

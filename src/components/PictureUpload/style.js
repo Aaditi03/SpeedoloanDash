@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
-
 export const PictureUploadWrapper = styled.div`
+
 
     width: 300px;
     min-width: 300px;
-    min-height: 140px;
+    min-height: 175px;
     border: 1px dashed #E1E1E1;
     display: flex;
     justify-content: center;
@@ -39,8 +39,8 @@ export const PictureUploadWrapper = styled.div`
   
   .preview-container {
     position: relative;
-    width: 100%;
-    height: 100%;
+    width: 300px;
+    min-height: 140px;
     img {
     max-width: 100%;
     max-height: 100%;

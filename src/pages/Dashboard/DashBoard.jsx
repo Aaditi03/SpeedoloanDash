@@ -10,9 +10,11 @@ import banner from "../../images/bannerimg2.png";
 import play from "../../images/play-circle.png";
 import Button from "../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
-import { getStorage, isEmpty } from "../../Utils/common";
+import { getStorage, setStorage } from "../../Utils/common";
 import ContextDashboard from "../../Context/ContextDashboard";
 import DashboardCard2 from "./DashboardCard2";
+import { getDashboardData, ckeckEligibility } from "../../Utils/api";
+import Modal from "../../components/Modal/Modal";
 
 const cardList = [
   {
@@ -55,14 +57,17 @@ const cardList = [
 function DashBoard() {
   const [cards, setCards] = useState(cardList);
   const [stepComplate, setStepComplate] = useState(false);
-  const [showSteps, setShowSteps] = useState(getStorage("next_step")-2);
+  const [showSteps, setShowSteps] = useState(0);
   const [toggle, setToggle] = useState(true);
   const [progressBar, setProgressBar] = useState(0);
-  const { message, setMessage, setProfileData, profileData,  eligibilityStatus, getProfileDaital, logout } = useContext(ContextDashboard);
+  const [modelOpen, setModelOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [responce, setResponce] = useState(false);
+  const [status, setStatus] = useState();
+  const [registrationSuccessful, setRegistrationSuccessful] = useState(false); // New state to track registration success
+  const { message, setMessage, setProfileData, profileData, eligibilityStatus, getProfileDaital, logout, currentEvent } = useContext(ContextDashboard);
 
   const navigate = useNavigate();
-
- 
 
   const redirect = (data) => {
     navigate(data.link);
@@ -70,47 +75,72 @@ function DashBoard() {
 
   const showSteps_ = () => {
     if (eligibilityStatus === 'ELIGIBLE') {
-      navigate('/my-dashboard/eligibility'); 
+      navigate('/my-dashboard/eligibility');
     } else {
       setToggle(!toggle);
     }
   };
 
+  const submit = () => {
+    const param = {
+      "profile_id": getStorage("cust_profile_id") || "",
+      "event_name": "register_now",
+    };
+
+    setLoading(true);
+    ckeckEligibility(param).then((resp) => {
+      setLoading(false);
+      if (resp?.data?.Status === 1) {
+        setModelOpen(true);
+        setStorage("next_step", resp?.data?.Data?.next_step);
+        setStorage("eligibility", 1);
+        setResponce(resp?.data?.Message);
+        setStatus(resp?.data?.Status);
+      } else if (resp?.data?.Status === 4) {
+        logout();
+      } else {
+        setModelOpen(true);
+        setResponce(resp?.data?.Message);
+        setStatus(resp?.data?.Status);
+      }
+    });
+  };
+
   useEffect(() => {
-    // Set the progress bar based on the session data only if the active card index is not 0
-    if (showSteps > 0) {
-      setProgressBar(getStorage("step_percent"));
-    }
-  }, [showSteps]);
+    const params = {
+      profile_id: getStorage("cust_profile_id") || "",
+    };
 
-  // useEffect(() => {
-  //   if (!isEmpty(setps)) {
-  //     checkStep(setps);
-  //   }
-  // }, [setps]);
+    getDashboardData(params).then(resp => {
+      if (resp?.data?.Status === 1) {
+        const dashboardData = resp?.data || {};
+        setStorage('dashboardData', dashboardData);
+        setStorage('step_percent', dashboardData?.Data?.profile_filled_percent);
+        setProgressBar(dashboardData?.Data?.profile_filled_percent);
+        
+        // Check if registration is successful
+        if (dashboardData?.Data?.registration_successful === 1) {
+          setRegistrationSuccessful(true); // Set to true if registration is successful
+        } else {
+          setRegistrationSuccessful(false); // Set to false if registration is not successful
+        }
+      }
+    });
+  }, []);
 
-  // useEffect(() => {
-  //   if (isEmpty(profileData)) return;
-  //   getProfileDaital();
-  // }, []);
-
-  // function checkStep(data) {
-  //   const nextStep = getStorage("next_step");
-  //   const steps = nextStep > 2 ? nextStep - 2 : 0; // Calculate showSteps based on next_step
-  //   if (data?.step_complete_percent === 100) {
-  //     setToggle(false);
-  //   }
-  //   setShowSteps(steps);
-  // }
+  useEffect(() => {
+    const steps = currentEvent(getStorage("next_step"));
+    setShowSteps(steps);
+  }, []);
 
   return (
     <DashboardWrapper>
       <ProgressBar value={`${progressBar}%`}>
-        {!stepComplate ? (
+        {registrationSuccessful && ( // Only show button if registration is successful
           <div>
-            <Button title="Let's Start" onClick={showSteps_} />
+            <Button title="Check Eligibility" onClick={submit} loading={loading} />
           </div>
-        ) : <></>}
+        )}
       </ProgressBar>
 
       {toggle ? (
@@ -152,6 +182,7 @@ function DashBoard() {
           </div>
         </>
       )}
+      {modelOpen && <Modal onClose={() => setModelOpen(false)} msg={responce} state={status} onConfirm={() => navigate("/my-dashboard/eligibility")} />}
     </DashboardWrapper>
   );
 }

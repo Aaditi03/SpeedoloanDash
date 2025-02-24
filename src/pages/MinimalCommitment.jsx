@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import  service_five from "../images/commitment.jpg";
 import ChatButton from "../components/ChatButton";
 
+
 const MinimalCommitment = () => {
   return (
     <>
+
       <div className="content_page_wrapper">
         <div className="content_page_banner_wrapper">
           <div className="service_page_banner_wrapper_overlay">
@@ -21,7 +23,7 @@ const MinimalCommitment = () => {
                 Short and Minimal Commitments
               </h1>
               <p>
-                At SalaryOnTime, we understand that financial commitments can be
+                At Speedoloan, we understand that financial commitments can be
                 daunting, which is why we offer loan services with minimal
                 commitment requirements. Our flexible loan options are designed
                 to accommodate your specific needs without locking you into
@@ -40,7 +42,7 @@ const MinimalCommitment = () => {
                 decisions about your borrowing needs. Our dedicated team is
                 always available to offer support and answer any questions,
                 making the entire loan process smooth and stress-free. With
-                SalaryOnTime, you can enjoy the benefits of financial
+                Speedoloan, you can enjoy the benefits of financial
                 flexibility and minimal commitment, giving you greater control
                 over your financial future
               </p>

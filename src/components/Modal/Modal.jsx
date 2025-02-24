@@ -6,12 +6,13 @@ import { getStorage } from "../../Utils/common";
 
 const Modal = ({ onClose, msg,state }) => {
   const navigate = useNavigate();
-  const { usertype } = useContext(ContextDashboard);
-  const [eligibilityStatus, setEligibilityStatus] = useState(getStorage("eligibility"));
+  const { handleEvent } = useContext(ContextDashboard);
+  
 
   // Function to handle the "Process" button click
   const handleProcessClick = () => {
-    navigate('/my-dashboard/eligibility'); // Redirect to the eligibility URL
+    // handleEvent(getStorage('next_step'));// Redirect to the eligibility URL
+    navigate("/my-dashboard/eligibility")
   };
 
   // Function to handle the "OK" button click

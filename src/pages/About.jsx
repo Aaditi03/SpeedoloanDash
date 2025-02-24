@@ -10,9 +10,12 @@ import { FaCheck } from "react-icons/fa";
 import ChatButton from "../components/ChatButton";
 import { Link } from "react-router-dom";
 
+import moneybip from "../images/moneybip-color-logo.svg"
+
 const About = () => {
   return (
     <>
+
       <div className="page_wrapper">
         <div className="page_banner_wrapper">
           <div className="page_banner_wrapper_overlay">
@@ -40,10 +43,10 @@ const About = () => {
         <div className="company_info_section">
           <div className="company_info_wrapper">
             <div className="title_section">
-              <h2 className="full-width text-center">SalaryOnTime</h2>
+              <h2 className="full-width text-center">Speedoloan</h2>
             </div>
             <p className="text-center  company_info_content">
-              SalaryOnTime empowers millennials to achieve their desired
+              Speedoloan empowers millennials to achieve their desired
               lifestyle through innovative loan solutions. <br />
               We stand out in the crowded personal loan market by offering the
               fastest loans with customer-friendly terms. <br /> As an
@@ -74,20 +77,20 @@ const About = () => {
                 <span>About us</span>
               </p>
               <h2 className="mt20">
-                Discover SalaryOnTime: Your Partner in{" "}
+                Discover Speedoloan: Your Partner in{" "}
                 <span>Financial Growth</span>
               </h2>
             </div>
             <p className="mt30">
-              At SalaryOnTime, we redefine financial empowerment through
+              At Speedoloan, we redefine financial empowerment through
               personalized solutions designed to meet your unique needs. With a
               commitment to excellence and innovation, we guide individuals and
               businesses towards their financial goals with expertise and
               integrity. Backed by a team of seasoned professionals,
-              SalaryOnTime ensures transparency and reliability in every
+              Speedoloan ensures transparency and reliability in every
               interaction, fostering lasting relationships built on trust.
               Whether you're seeking loans or strategic financial advice,
-              SalaryOnTime is dedicated to securing your financial future and
+              Speedoloan is dedicated to securing your financial future and
               driving success in an ever-evolving market landscape.
             </p>
 
@@ -131,7 +134,7 @@ const About = () => {
             </div>
             <p className="mt30">
               Flexible and realible financial solutions for your emergency
-              needs. With SalaryOnTime, your financial future is in secure
+              needs. With Speedoloan, your financial future is in secure
               hands.
             </p>
 
@@ -171,6 +174,26 @@ const About = () => {
           <div className="about_us_section_1_2_left">
             <div className="img1">
               <img src={img3} alt="" />
+            </div>
+          </div>
+        </div>
+
+        <div className="about_us_section_1">
+          <div className="about_us_section_1_right">
+            <div className="title_section">
+              <p className="sub_title flex flex-center">
+                <img src={title_icon} alt="" className="mr10" />
+                <span>Why Choose Us</span>
+              </p>
+              <h2 className="mt20">
+                Our
+                <span> Partners</span>
+              </h2>
+              <div className="partner_image">
+                <Link to="https://moneybip.com/" target="_blank">
+              <img src={moneybip} alt="" className="mr10"  style={{width:"65%",padding:"30px",marginBottom:"45px"}}/>
+              </Link>
+              </div>
             </div>
           </div>
         </div>

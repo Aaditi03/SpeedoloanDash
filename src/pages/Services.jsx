@@ -8,9 +8,11 @@ import { TbAdjustmentsCog } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import ChatButton from "../components/ChatButton";
 
+
 const Services = () => {
   return (
     <>
+
       <div className="page_wrapper">
         <div className="page_banner_wrapper">
           <div className="page_banner_wrapper_overlay">
@@ -64,7 +66,7 @@ const Services = () => {
                 </div>
                 <h3 className="box_title">Short Loan</h3>
                 <p className="service_card_text">
-                  Discover the convenience of short loans at SalaryOnTime,
+                  Discover the convenience of short loans at Speedoloan,
                   designed to meet your immediate financial needs with ease. Our
                   quick approval process ensures that you can access the funds
                   you need.
@@ -151,7 +153,7 @@ const Services = () => {
 
         <div className="services_page_section"  data-aos="zoom-in">
           <div className="services_row">
-            <Link to="/instantloan">
+            <Link to="/instant-loan">
               <div className="services_item">
                 <div className="services_icon_container">
                   <GiPayMoney className="services_icon" />
@@ -167,7 +169,7 @@ const Services = () => {
                 </div>
               </div>
             </Link>
-            <Link to="/shortloan">
+            <Link to="/short-term-loan">
               <div className="services_item">
                 <div className="services_icon_container">
                   <GiTakeMyMoney className="services_icon" />
@@ -177,14 +179,14 @@ const Services = () => {
                     <h4>Short Loan</h4>
                   </div>
                   <p>
-                    Discover the convenience of short loans at SalaryOnTime,
+                    Discover the convenience of short loans at Speedoloan,
                     designed to meet your immediate financial needs with ease.
                   
                   </p>
                 </div>
               </div>
             </Link>
-            <Link to="/debtconsolidation">
+            <Link to="/debt-consolidation-loan">
               <div className="services_item">
                 <div className="services_icon_container">
                   <VscCombine className="services_icon" />

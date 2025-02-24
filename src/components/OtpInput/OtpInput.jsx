@@ -82,6 +82,7 @@ const OtpInput = ({
             onFocus={() => setFocus(index)}
             onBlur={() => setFocus(null)}
             onKeyDown={(e) => handleKeyDown(e, index)}
+            inputMode="numeric"
           />
         </div>
       ))}

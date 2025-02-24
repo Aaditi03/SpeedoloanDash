@@ -63,7 +63,15 @@ export const allLeads = (params) => {
 	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.ALL_LEADS}`, params);
 };
 
-export const loanDetail = (lead_id) => {
-	return apiRequest.get(`${urls.API_BASEPATH}${urls.loan.LOAN_DETAIL}/${lead_id}`);
+export const loanDetail = (params) => {
+	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.LOAN_DETAIL}`,params);
+};
+
+export const orderId = (params) => {
+	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.GENERATE_ORDER_ID}`,params);
+};
+
+export const requiredDocs = (params) => {
+	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.MANDATORY_DOCS}`,params);
 };
 

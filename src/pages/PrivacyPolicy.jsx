@@ -5,9 +5,11 @@ import "../css/ContentPage.css";
 import ChatButton from "../components/ChatButton";
 import { Link} from "react-router-dom";
 
+
 const PrivacyPolicy = () => {
   return (
     <>
+
       <div className="content_page_wrapper">
         <div className="content_page_banner_wrapper">
           <div className="content_page_banner_wrapper_overlay">
@@ -39,7 +41,7 @@ const PrivacyPolicy = () => {
               <div className="content_item" style={{ maxWidth: "90%" }}>
                 <p>
                   <b>Kasar Credit and Capital Private Limited</b> ("we," "our,"
-                  "us") operates the https://www.salaryontime.com website (the
+                  "us") operates the https://www.speedoloan.com website (the
                   "Service"). This Privacy Policy explains how we collect, use,
                   and share your personal information when you use our Service.
                 </p>
@@ -161,7 +163,7 @@ const PrivacyPolicy = () => {
               <div className="content_item" style={{ maxWidth: "90%" }}>
                 <h2 className="mb10 mt10">Grievance Officer</h2>
                 <p className="mt10">
-                  At SalaryOnTime, your privacy and satisfaction are our top
+                  At Speedoloan, your privacy and satisfaction are our top
                   priorities. To ensure your concerns are addressed promptly, we
                   have appointed a dedicated Grievance Officer. If you have any
                   issues or grievances regarding your personal information or
@@ -183,7 +185,7 @@ const PrivacyPolicy = () => {
                   </p>
                   <p className="mt10 flex flex-center">
                     <MdEmail className="content_icon mr5" />
-                    <span>care@salaryontime.com</span>
+                    <span>care@Speedoloan.com</span>
                   </p>
                   <p className="mt10 flex flex-center">
                     <FaLocationArrow className="content_icon mr5" />
@@ -195,7 +197,7 @@ const PrivacyPolicy = () => {
                 </div>
                 <p className="mt10">
                   We are committed to resolving your concerns in a timely and
-                  efficient manner. Thank you for choosing SalaryOnTime.
+                  efficient manner. Thank you for choosing Speedoloan.
                 </p>
               </div>
             </div>

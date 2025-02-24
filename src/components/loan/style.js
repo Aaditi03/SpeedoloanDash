@@ -122,7 +122,7 @@ export const FormWrapper = styled.div`
     }
 
     .otp-input {
-      max-width: 100%;
+      max-width: 73%;
     }
 
     &.panBox {

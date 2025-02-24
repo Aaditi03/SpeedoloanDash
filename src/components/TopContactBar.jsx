@@ -14,7 +14,7 @@ const TopContactBar = () => {
                         <p className='ml30 number flex flex-center'><span><IoCall className='icon' /></span><span>+91 88000 02890</span></p>
                     </div>
                     <div className="contact_details mail flex flex-center">
-                        <span><IoIosMail className='icon' /></span><span>infosalaryontime.com</span>
+                        <span><IoIosMail className='icon' /></span><span>infospeedoloan.com</span>
                     </div>
                 </div>
             </div>

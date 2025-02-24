@@ -3,8 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import LoanLayout from "./LoanLayout";
 import Layout from "./Layout";
 import ScrollToTop from "./components/ScrollTop";
-
-// Import your pages
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
@@ -50,6 +48,13 @@ import LoanHistory from "./pages/LoanHistory/LoanHistory";
 import LoanDetail from "./pages/LoanHistory/LoanDetail"
 import RepayPage from "./pages/Dashboard/ProfilePage/RepayPage";
 import BankDetail from "./pages/Dashboard/BankDetail/BankDetail";
+import Ghaziabad from "./pages/locations/Ghaziabad";
+import Noida from "./pages/locations/Noida";
+import Faridabad from "./pages/locations/Faridabad";
+import GreaterNoida from "./pages/locations/GreaterNoida";
+import Gurgaon from "./pages/locations/Gurgaon";
+import RepayThankyou from "./pages/RepayThanku";
+
 
 const showmessage = async (message) => {
   try {
@@ -72,24 +77,30 @@ function Router() {
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="home" element={<Home />} />
-          <Route path="about" element={<About />} />
+          <Route path="about-us" element={<About />} />
           <Route path="services" element={<Services />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="shortloan" element={<ShortLoan />} />
-          <Route path="instantloan" element={<InstantLoan />} />
+          <Route path="short-term-loan" element={<ShortLoan />} />
+          <Route path="instant-loan" element={<InstantLoan />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="rateandterms" element={<RateandTerms />} />
           <Route path="privacypolicy" element={<PrivacyPolicy />} />
           <Route path="termsandconditions" element={<TermsandConditions />} />
-          <Route path="delhi" element={<Delhi />} />
-          <Route path="banglore" element={<Banglore />} />
-          <Route path="mumbai" element={<Mumbai />} />
-          <Route path="ahmedabad" element={<Ahmedabad />} />
-          <Route path="hyderabad" element={<Hyderabad />} />
+          <Route path="Instant-Personal-Loan-for-Salaried-in-Delhi" element={<Delhi />} />
+          <Route path="advance-loans-Online-in-Bangalore" element={<Banglore />} />
+          <Route path="loan-agency-in-mumbai" element={<Mumbai />} />
+          <Route path="instant-personal-loan-in-ahmedabad" element={<Ahmedabad />} />
+          <Route path="instant-personal-loan-online-in-hyderabad" element={<Hyderabad />} />
+          <Route path="personal-loan-in-Gurgaon" element={<Gurgaon />} />
+          <Route path="Personal-loan-in-Noida" element={<Noida />} />
+          <Route path="personal-loan-in-faridabad" element={<Faridabad />} />
+          <Route path="instant-personal-loan-in-greater-noida" element={<GreaterNoida />} />
+          <Route path="Instant-Personal-Loan-in-Ghaziabad" element={<Ghaziabad />} />
           <Route path="flexibility" element={<Flexibility />} />
-          <Route path="debtconsolidation" element={<DebtConsolidation />} />
+          <Route path="debt-consolidation-loan" element={<DebtConsolidation />} />
           <Route path="minimalcommitment" element={<MinimalCommitment />} />
           <Route path="costeffective" element={<CostEffective />} />
+          <Route path="thanku" element={<RepayThankyou/>}/>
           <Route path="apply-now" element={<ApplyForLoan showmessage={showmessage} />} />
           <Route path="repayloan" element={<RepayLoan showmessage={showmessage} />} />
         </Route>
@@ -116,10 +127,9 @@ function Router() {
           <Route path="/my-dashboard/lead-preview" element={<LeadPreview />} />
           <Route path="/my-dashboard/leads" element={<LoanHistory />} />
           <Route path="/my-dashboard/repayment" element={<RepayPage />} />
-          <Route path="/my-dashboard/details/:lead_id" element={<LoanDetail />} />
+          <Route path="/my-dashboard/details" element={<LoanDetail />} />
           {/* <Route path="/my-dashboard/eligibility" element={<Eligibility />} /> */}
-
-          
+       
           <Route
             path="/my-dashboard/eligibility"
             element={

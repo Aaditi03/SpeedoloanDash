@@ -2,9 +2,11 @@ import React from "react";
 import "../css/ContentPage.css";
 import ChatButton from "../components/ChatButton";
 import { Link} from "react-router-dom";
+
 const TermsandConditions = () => {
   return (
     <>
+
       <div className="content_page_wrapper">
         <div className="content_page_banner_wrapper">
           <div className="content_page_banner_wrapper_overlay">
@@ -35,7 +37,7 @@ const TermsandConditions = () => {
             <div className="flex flex-center content_row">
               <div className="content_item" style={{ maxWidth: "90%" }}>
                 <p>
-                  Welcome to the SalaryOnTime website, operated by Kasar Credit
+                  Welcome to the Speedoloan website, operated by Kasar Credit
                   and Capital Pvt Ltd ("we", "us", "our"). By accessing or using
                   our website ("Site") and services ("Services"), you agree to
                   be bound by the following terms and conditions ("Terms").
@@ -142,7 +144,7 @@ const TermsandConditions = () => {
               <div className="content_item">
                 <h2>Data Deletion Policy</h2>
                 <p className="mt10">
-                  At SalaryOnTime, we value your privacy and are committed to
+                  At Speedoloan, we value your privacy and are committed to
                   ensuring your personal data is handled securely and
                   responsibly. If you wish to delete your account and personal
                   data, please follow the steps below:
@@ -152,7 +154,7 @@ const TermsandConditions = () => {
                 </p>
                 <ul>
                   <li className="tc_li">
-                    <b>Open the SalaryOnTime App:</b> Launch the app on your
+                    <b>Open the Speedoloan App:</b> Launch the app on your
                     mobile device and log in to your account.
                   </li>
                   <li className="tc_li">
@@ -199,13 +201,13 @@ const TermsandConditions = () => {
                   </li>
                   <li className="tc_li">
                     <b>Outstanding Loans:</b> If you have any outstanding loans
-                    or financial obligations with SalaryOnTime, please settle
+                    or financial obligations with Speedoloan, please settle
                     them before requesting data deletion.
                   </li>
                   <li className="tc_li">
                     <b>Customer Support:</b> If you encounter any issues or have
                     questions about the data deletion process, please contact
-                    our customer support team at info@salaryontime.com or call
+                    our customer support team at info@speedoloan.com or call
                     us at +918800002890.
                   </li>
                 </ul>
@@ -220,7 +222,7 @@ const TermsandConditions = () => {
                 </p>
                 <ul>
                   <li className="tc_li">Kasar Credit and Capital Pvt Ltd</li>
-                  <li className="tc_li">info@salaryontime.com</li>
+                  <li className="tc_li">info@speedoloan.com</li>
                   <li className="tc_li">+918800002890</li>
                 </ul>
 

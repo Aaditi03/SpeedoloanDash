@@ -13,7 +13,7 @@ export const SidebarWrapper = styled.div`
   transition: all .3s;
 ul{
     li{
-        background: #24539B 0% 0% no-repeat padding-box;
+        background:rgb(151, 153, 157) 0% 0% no-repeat padding-box;
          border-radius: 10px;
          display: flex;
          gap: 8px;
@@ -34,11 +34,11 @@ ul{
             white-space: nowrap;
          }
          &:hover{
-            box-shadow: 0px 1px 2px #00000017;
-border: 1px solid #26B9DB;
+            box-shadow: 0px 1px 2px rgba(240, 225, 225, 0.09);
+border: 1px solidrgb(61, 62, 62);
          }
          &.active{
-          background-color: #26b9db;
+          background-color:rgb(68, 68, 70);
           color: #fff;
           img{
             

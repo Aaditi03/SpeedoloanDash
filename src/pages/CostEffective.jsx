@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import service_six from "../images/cost effective.webp";
 import ChatButton from "../components/ChatButton";
 
+
 const CostEffective = () => {
   return (
     <>
+
       <div className="content_page_wrapper">
         <div className="content_page_banner_wrapper">
           <div className="service_page_banner_wrapper_overlay">
@@ -21,7 +23,7 @@ const CostEffective = () => {
                 Cost Effective Loan Services
               </h1>
               <p>
-                At SalaryOnTime, we pride ourselves on providing cost-effective
+                At Speedoloan, we pride ourselves on providing cost-effective
                 loan services designed to meet your financial needs without
                 breaking the bank. Our competitive interest rates and
                 transparent fee structures ensure that you receive the best
@@ -37,7 +39,7 @@ const CostEffective = () => {
                 that can be adjusted to fit your budget, reducing the risk of
                 financial strain. Our expert advisors work closely with you to
                 identify the most economical options, ensuring you can manage
-                your loan repayments comfortably. At SalaryOnTime, we believe
+                your loan repayments comfortably. At Speedoloan, we believe
                 that financial support should be accessible and affordable, and
                 we strive to provide loan services that deliver exceptional
                 value and long-term savings.
