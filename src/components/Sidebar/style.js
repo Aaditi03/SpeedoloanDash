@@ -13,7 +13,7 @@ export const SidebarWrapper = styled.div`
   transition: all .3s;
 ul{
     li{
-        background:rgb(151, 153, 157) 0% 0% no-repeat padding-box;
+background: linear-gradient(90deg, #ff7e5f, #feb47b) no-repeat padding-box;
          border-radius: 10px;
          display: flex;
          gap: 8px;

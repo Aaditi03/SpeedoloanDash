@@ -8,9 +8,9 @@ const apiRequest = new Request(
 );
 
 
-export const sendotpForLogin = (params) => {
-	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.SEND_OTP}`, params);
-};
+	export const sendotpForLogin = (params) => {
+		return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.SEND_OTP}`, params);
+	};
 export const verifyotpForLogin = (params) => {
 	return apiRequest.post(`${urls.API_BASEPATH}${urls.loan.VERIFY_OTP}`, params);
 };

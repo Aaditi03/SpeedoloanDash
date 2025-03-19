@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import banner from "../../images/loginImg.jpg";
+import banner from "../../images/loginImg.jpeg";
 import loginBanner from "../../images/loginBanner.jpg" // Import your mobile banner image
 
 export const Loginwrapper = styled.div`
   width: 100%;
-  min-height: 695px;
+  min-height: 795px;
   padding: 70px 20px 0;
   font-family: "Lato", sans-serif;
   background: url(${banner});

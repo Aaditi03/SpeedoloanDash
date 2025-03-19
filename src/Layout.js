@@ -18,9 +18,9 @@ function Layout() {
      
     <Outlet />  
     </main>
-    <div className="float_content">
+    {/* <div className="float_content">
     <p className="marquee">"Beware of fraudulent practices! You must use only our secure website repayment link to repay a loan. Speedoloan is not answerable and accountable for any direct bank payment or payment made to other accounts."</p>
-</div>
+</div> */}
 
     <footer className="">
       <Footer />

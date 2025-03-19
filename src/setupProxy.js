@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     '/Api',
     createProxyMiddleware({
-      target: 'https://api.salaryontime.co.in',
+      target: 'https://crm.speedoloan.com/api',
      
     })
   );

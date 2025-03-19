@@ -40,7 +40,7 @@ const PrivacyPolicy = () => {
             <div className="flex flex-center content_row">
               <div className="content_item" style={{ maxWidth: "90%" }}>
                 <p>
-                  <b>Kasar Credit and Capital Private Limited</b> ("we," "our,"
+                  <b>Agrim Fincap Private Limited</b> ("we," "our,"
                   "us") operates the https://www.speedoloan.com website (the
                   "Service"). This Privacy Policy explains how we collect, use,
                   and share your personal information when you use our Service.
@@ -173,25 +173,22 @@ const PrivacyPolicy = () => {
             </div>
             <div className="flex flex-center content_row">
               <div className="content_item" style={{ maxWidth: "90%" }}>
-                <h2 className="mb15 mt10">Contact Our Grievance Officer</h2>
+                <h2 className="mb15 mt10">Contact Us</h2>
                 <div className="ml20">
-                  <p className="mt10 flex flex-center">
-                    <FaUser className="content_icon mr5" />
-                    <span>Sanjay Singh</span>
-                  </p>
+
                   <p className="mt10 flex flex-center">
                     <FaMobile className="content_icon mr5" />
-                    <span>+91-8800002898</span>
+                    <span>+91-90999 09941</span>
                   </p>
                   <p className="mt10 flex flex-center">
                     <MdEmail className="content_icon mr5" />
-                    <span>care@Speedoloan.com</span>
+                    <span>care@speedoloan.com</span>
                   </p>
                   <p className="mt10 flex flex-center">
                     <FaLocationArrow className="content_icon mr5" />
                     <span>
-                      G -51, Krishna Apra Business Square, Netaji Subhash Place,
-                      New Delhi - 110034
+                    276, First Floor, Gagan Vihar, Shahdara, Delhi 110051
+
                     </span>
                   </p>
                 </div>

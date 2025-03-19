@@ -1,171 +1,249 @@
 import React from "react";
+import { TextField, Button, Grid, Typography, Box } from "@mui/material";
+import Swal from "sweetalert2"; // Import SweetAlert
 import "../css/Common.css";
-import { FaLocationDot } from "react-icons/fa6";
-import { IoMdCall } from "react-icons/io";
-import { MdPerson } from "react-icons/md";
-import title_icon from "../images/title_shape_1.svg";
-import ChatButton from "../components/ChatButton";
-import { Link} from "react-router-dom";
+import aboutImage from "../images/about.jpg";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
+const ContactUs = () => {
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    console.log("Form submitted!"); // Check if this log appears
 
-const Contact = () => {
+    // Show SweetAlert notification
+    Swal.fire({
+      icon: "success",
+      title: "Thank You!",
+      text: "Thank you for connecting!",
+      confirmButtonText: "OK",
+    });
+
+    // You can also perform additional actions here, like sending the form data to your server
+  };
+
   return (
     <>
-  
-      <div className="page_wrapper">
-        <div className="page_banner_wrapper">
-          <div className="page_banner_wrapper_overlay">
-            <h2>Contact Us</h2>
-            <div style={{ marginTop: "10px" }}>
-            <Link 
-              to="/" 
-              style={{ 
-                color: "#26b9db", 
-                fontWeight: "600", 
-                marginTop: "10px", 
-                textDecoration: "none"
+      {/* Image Section */}
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          height: { xs: "30vh", sm: "40vh", md: "50vh", lg: "90vh" },
+          overflow: "hidden",
+          mb: 2,
+        }}
+      >
+        <Box
+          component="img"
+          src={aboutImage}
+          alt="Contact Us"
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "500px",
+            objectFit: "cover",
+          }}
+        />
+      </Box>
+
+      {/* Contact Information Section */}
+      <Box
+        sx={{
+          width: "100%",
+          textAlign: "center",
+          padding: "20px",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          borderRadius: "8px",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+          mt: "-150px",
+        }}
+      >
+        <Typography
+          variant="h3"
+          sx={{
+            color: "black",
+            fontWeight: "bold",
+            "&:hover": { color: "orange" },
+          }}
+        >
+          Reach Out to Us
+        </Typography>
+        <Grid container spacing={3} justifyContent="center" mt={3}>
+          <Grid item xs={12} sm={4}>
+            <Box
+              className="hover-box"
+              sx={{
+                padding: "30px",
+                transition: "0.3s",
+                borderRadius: "10px",
+                textAlign: "center",
               }}
             >
-              Home
-            </Link>
-            <span style={{ color: "white", fontSize: "16px", margin: "0 10px" }}>→</span>
-              <span style={{ color: "white", fontWeight: "600", fontSize: "16px" }}>
-                Contact Us
-              </span>
-          </div>
-        </div>
-        </div>
+              <i className="fas fa-envelope"></i>
+              <Typography>Email: info@speedoloan.com</Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Box
+              className="hover-box"
+              sx={{
+                padding: "30px",
+                transition: "0.3s",
+                borderRadius: "10px",
+                textAlign: "center",
+              }}
+            >
+              <i
+                className="fas fa-phone-alt"
+                style={{ transform: "rotate(90deg)" }}
+              ></i>
+              <Typography>Phone: +91 90999 09941</Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Box
+              className="hover-box"
+              sx={{
+                padding: "30px",
+                transition: "0.3s",
+                borderRadius: "10px",
+                textAlign: "left",
+                display: "flex",
+                alignItems: "center", // Vertically aligns icon and text
+              }}
+            >
+              <Box
+                component="i"
+                className="fas fa-map-marker-alt"
+                sx={{ fontSize: "24px", marginRight: "10px" }}
+              />
+              <Typography style={{ marginTop: "20px" }}>
+                Address:276, First Floor, Gagan Vihar, Shahdara, Delhi 110051
+              </Typography>
+            </Box>
+          </Grid>
+        </Grid>
 
-        <div className="contact_page_details">
-          <div className="contact_page_details_row">
-            <div className="contact_page_details_item">
-              <div className="contact_page_details_item_icon flex flex-center justify-center">
-                <FaLocationDot className="contact_icon" />
-              </div>
-              <div className="contact_page_details_item_text ml10">
-                <h3>Our Office Address</h3>
-                <a
-                  style={{ color: "#26b9db" }}
-                  href="https://www.google.com/maps?q=G+51,+Krishna+Apra+Business+Square,+Netaji+Subhash+Place,+New+Delhi+-+110034"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  G -51, Krishna Apra Business Square,
-                  <br />
-                  Netaji Subhash Place,<br/>
-                  New Delhi - 110034
-                </a>
-              </div>
-            </div>
-            <div className="contact_page_details_item">
-              <div className="contact_page_details_item_icon flex flex-center justify-center">
-                <IoMdCall className="contact_icon" />
-              </div>
-              <div className="contact_page_details_item_text ml10">
-                <h3>Contact Us</h3>
-                <a
-                  style={{ color: "#26b9db" }}
-                  href="tel:+919289877932"
-                  target="_blank"
-                >
-                  +91 9289877932
-                </a><br/>
-                <a
-                  style={{ color: "#26b9db" }}
-                  href="tel:+918800002890"
-                  target="_blank"
-                >
-                  +91 8800002890
-                </a><br/>
-                <a
-                  style={{ color: "#26b9db" }}
-                  href="mailto:info@speedoloan.com"
-                  target="_blank"
-                >
-                  info@Speedoloan.com <br />
-                </a>
-              </div>
-            </div>
-            <div className="contact_page_details_item">
-              <div className="contact_page_details_item_icon flex flex-center justify-center">
-                <MdPerson className="contact_icon" />
-              </div>
-              <div className="contact_page_details_item_text ml10">
-                <h3>Collection Officer</h3>
-                <a
-                  style={{ color: "#26b9db" }}
-                  href="tel:+919289877932"
-                  target="_blank"
-                >
-                  +91 9289877841
-                </a><br/>
-                <a
-                  style={{ color: "#26b9db" }}
-                  href="mailto:info@speedoloan.com"
-                  target="_blank"
-                >
-                  shashi@speedoloan.com <br />
-                </a>
-              </div>
-            </div>
-          </div>
+        <Grid container spacing={3} justifyContent="center" mt={3}>
+          {/* Contact info boxes */}
+        </Grid>
+      </Box>
 
-          <div className="contact_form_container">
-            <div className="title_section">
-              <p className="sub_title flex flex-center">
-                <img src={title_icon} alt="" className="mr10" />
-                <span>Connect with us</span>
-              </p>
-              <h2 className="mt20">
-                Have Any <span>Questions?</span>
-              </h2>
-            </div>
-            <p className="mt20">
-              Have any query or want to enquire about the services we provide?{" "}
-              <br />
-              Fill out the contact form below and our team will get back to you
-              as soon as possible.
-            </p>
+      {/* Contact Us Form */}
+      <Grid container spacing={2} mt={5} mb={5}>
+        {/* Left Video */}
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          sx={{
+            display: "flex",
+            flexDirection: "column", // Stack the video and map vertically
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Box
+  component="iframe"
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.915725398944!2d77.29433127569148!3d28.632287784091417!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfb52ea25bd41%3A0x546941c2dfb31c1d!2sGali%20No.%201%2C%20Delhi!5e0!3m2!1sen!2sin!4v1742275001937!5m2!1sen!2sin"
+  sx={{
+    width: { xs: '100%', sm: '100%', md: '100%' },
+    height: '450px',
+    border: 0,
+    borderRadius: '8px',
+  }}
+  allowFullScreen=""
+  loading="lazy"
+  referrerPolicy="no-referrer-when-downgrade"
+/>
+</Grid>
 
-            <div className="contact_form mt20">
-              <div className="row">
-                <div className="input_item">
-                  <input type="text" placeholder="Your Name" />
-                </div>
-                <div className="input_item">
-                  <input type="text" placeholder="Your Email" />
-                </div>
-              </div>
-              <div className="row mt50">
-                <div className="input_item">
-                  <input type="text" placeholder="Enter Subject" />
-                </div>
-                <div className="input_item">
-                  <input type="text" placeholder="Phone Number" />
-                </div>
-              </div>
-              <div className="row mt50">
-                <textarea rows="8" placeholder="Your Message"></textarea>
-              </div>
-              <div className="btn_container mt40">
-                <button>Submit</button>
-              </div>
-            </div>
-          </div>
-          <div className="google_map_container full-width">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3499.9464319503822!2d77.14668417495896!3d28.691248981412773!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d023357af3355%3A0x1243565ed8daae43!2sKrishna%20Apra%20Business%20Square%2C%20909-910%2C%20Netaji%20Subhash%20Place%2C%20Pitampura%2C%20Delhi%2C%20110034!5e0!3m2!1sen!2sin!4v1721620023240!5m2!1sen!2sin"
-              style={{ border: "0" }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-        </div>
-      </div>
-      <ChatButton />
+        {/* Right Contact Form */}
+        <Grid item xs={12} sm={6}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              width: "100%",
+              padding: "20px",
+              borderRadius: "8px",
+              boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+              backgroundColor: "#f9f9f9",
+              mt: 2,
+            }}
+          >
+            <Typography variant="h4" gutterBottom textAlign="center">
+              Get in Touch
+            </Typography>
+
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Full Name"
+                  variant="outlined"
+                  fullWidth
+                  required
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Email"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  type="email"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Phone Number"
+                  variant="outlined"
+                  fullWidth
+                  required
+                  type="tel"
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Subject"
+                  variant="outlined"
+                  fullWidth
+                  required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Message"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                  rows={6}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  type="submit"
+                  fullWidth
+                  sx={{
+                    padding: "10px",
+                    backgroundColor: "#0b2747",
+                    "&:hover": { backgroundColor: "orange" },
+                    borderRadius: "8px",
+                  }}
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </Grid>
+      </Grid>
     </>
   );
 };
 
-export default Contact;
+export default ContactUs;

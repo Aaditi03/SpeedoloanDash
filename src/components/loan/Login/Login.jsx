@@ -3,7 +3,7 @@ import { Loginwrapper } from "../style";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import OtpInput from "../../OtpInput/OtpInput";
-import imgLogin from '../../../images/loginImg.png';
+import imgLogin from '../../../images/loginImg.jpeg';
 import { getStorage, isEmpty, isNumber, setStorage } from "../../../Utils/common";
 import { Link, useNavigate } from "react-router-dom";
 import { sendotpForLogin, verifyotpForLogin, ckeckEligibility } from "../../../Utils/api";
@@ -448,7 +448,7 @@ The rates are somewhat higher as compared to long-term loans like automobile loa
                   <div className="process_card_number">03</div>
                   <h2 className="mb10">Salary loans</h2>
                   <p className="full-width text-center">
-This is short term loan service only for salaried individuals with a salary above INR 25000/-.
+This is short term loan service only for salaried individuals with a salary above INR 35000/-.
                   </p>
                 </div>
                 
@@ -462,8 +462,7 @@ This is short term loan service only for salaried individuals with a salary abov
             <div className="flex flex-center content_row">
               <div className="content_item" style={{ maxWidth: "90%" }}>
                 <p>
-                  Welcome to the Speedoloan website, operated by Kasar Credit
-                  and Capital Pvt Ltd ("we", "us", "our"). By accessing or using
+                  Welcome to the Speedoloan website, operated by Agrim Private Limited ("we", "us", "our"). By accessing or using
                   our website ("Site") and services ("Services"), you agree to
                   be bound by the following terms and conditions.
                 </p>

@@ -37,8 +37,7 @@ const TermsandConditions = () => {
             <div className="flex flex-center content_row">
               <div className="content_item" style={{ maxWidth: "90%" }}>
                 <p>
-                  Welcome to the Speedoloan website, operated by Kasar Credit
-                  and Capital Pvt Ltd ("we", "us", "our"). By accessing or using
+                  Welcome to the Speedoloan website, operated by Agrim Fincap Pvt Ltd ("we", "us", "our"). By accessing or using
                   our website ("Site") and services ("Services"), you agree to
                   be bound by the following terms and conditions ("Terms").
                   Please read them carefully.
@@ -106,7 +105,7 @@ const TermsandConditions = () => {
                   <li className="tc_li">
                     <b>Intellectual Property: </b>All content on the Site,
                     including text, graphics, logos, and images, is the property
-                    of Kasar Credit and Capital Pvt Ltd or its content suppliers
+                    of Agrim Fincap Private Limited or its content suppliers
                     and is protected by intellectual property laws. You may not
                     use, reproduce, or distribute any content from the Site
                     without our prior written permission.
@@ -126,7 +125,7 @@ const TermsandConditions = () => {
                   </li>
                   <li className="tc_li">
                     <b>Limitation of Liability: </b>To the maximum extent
-                    permitted by law, Kasar Credit and Capital Pvt Ltd shall not
+                    permitted by law, Agrim Fincap Private Limited shall not
                     be liable for any indirect, incidental, special, or
                     consequential damages arising out of or in connection with
                     your use of the Site and Services.
@@ -208,7 +207,7 @@ const TermsandConditions = () => {
                     <b>Customer Support:</b> If you encounter any issues or have
                     questions about the data deletion process, please contact
                     our customer support team at info@speedoloan.com or call
-                    us at +918800002890.
+                    us at +919099909941.
                   </li>
                 </ul>
               </div>
@@ -221,9 +220,9 @@ const TermsandConditions = () => {
                   please contact us at:{" "}
                 </p>
                 <ul>
-                  <li className="tc_li">Kasar Credit and Capital Pvt Ltd</li>
+                  <li className="tc_li">Agrim Fincap Private Limited</li>
                   <li className="tc_li">info@speedoloan.com</li>
-                  <li className="tc_li">+918800002890</li>
+                  <li className="tc_li">+9190999 09941</li>
                 </ul>
 
                 <div className="mt30">

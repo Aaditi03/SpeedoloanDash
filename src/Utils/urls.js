@@ -2,9 +2,9 @@
 export default 
 
 {
-   API_BASEPATH: 'https://api.salaryontime.in',
-    // API_BASEPATH: 'https://api.salaryontime.co.in',
-    // API_BASEPATH: '',//uat
+
+   API_BASEPATH: 'https://crm.speedoloan.com/api',
+
     loan:{
        SEND_OTP: "/Api/Website/InstantJourneyController/appCustomerRegisteration",
        VERIFY_OTP: "/Api/Website/InstantJourneyController/appCustomerRegisteration",
@@ -20,7 +20,7 @@ export default
        CHECK_ELIGIBILITY:"/Api/Website/InstantJourneyController/appCustomerRegisteration",
        ABOUT_COMPANY:"/Api/Website/InstantJourneyController/saveleadDetails",
        CALCULATE_LOAN:"/Api/Website/InstantJourneyController/saveleadDetails",
-       USER_DATA:"/Api/Website/getUser",
+       USER_DATA:"/Api/Website/getUser",     //missing api
        ALL_LEADS: "/Api/Website/InstantJourneyController/getLeadList",
        LOAN_DETAIL: "/Api/Website/InstantJourneyController/getLeadDetail",
        GENERATE_LOAN:"/Api/Website/InstantJourneyController/saveleadDetails",

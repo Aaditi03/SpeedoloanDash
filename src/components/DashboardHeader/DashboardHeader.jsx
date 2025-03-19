@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { HeaderWrapper } from './style';
-import logo from '../../images/logo.png';
+import logo from '../../images/logo.webp';
 import logoSm from '../../images/logo.png';
 import bar from '../../images/bar.png';
 import userIcon from '../../images/userIcon.webp';
@@ -42,15 +42,19 @@ function DashboardHeader({ toggle, setToggle }) {
   return (
     <HeaderWrapper
       style={{
-        backgroundImage: `url(${Footer})`,
+        height: "130px", // Adjust as needed
+        marginTop:"10px",
+        marginLeft:"20px",
+        marginRight:"20px",
+        // backgroundImage: `url(${Footer})`,
         backgroundSize: 'cover',
-        backgroundColor: "#E3F2FD",
+        backgroundImage: `linear-gradient(rgba(255, 126, 95, 0.7), rgba(254, 180, 123, 0.7))`,
       }}
       className='flex justify-between'
     >
       <div className="left flex">
         <div className="badgeIcon pointer" onClick={() => setToggle(!toggle)}>
-          <img style={{ width: "32px" }} src={bar} alt="logo" />
+        <img style={{ width: "20px", filter: "brightness(0) invert(0)" }} src={bar} alt="logo" />
         </div>
         <div className="logo">
           <Link to="/">

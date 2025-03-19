@@ -30,6 +30,16 @@ import {
 } from "react-icons/md";
 import step_2_img from "../images/step_2.png";
 import step_3_img from "../images/step_3.png";
+import Process from "../components/Process";
+import Calculator from "../components/Calculator";
+import WhyChoose from "../components/WhyChoose"; // Adjust path if needed
+// import LoanCalculatorr from "../components/LoanCalculator"; 
+import LoanPart from "../pages/LoanPart";
+import LoanProcessDiagram from "../pages/LoanProcessDiagram";
+import LoanEligibility from "../pages/LoanEligibility";
+import LoanCalculate from "./LoanCalculator";
+import SortFAQ from "../pages/SortFAQ"
+
 
 const Home = () => {
   const [step, setStep] = useState(1);
@@ -70,8 +80,17 @@ const Home = () => {
     <>
       <div className="page_wrapper">
         <Banner />
+        <Process />
+        <Calculator />
+        <WhyChoose />
+        <LoanCalculate />
+{/* <LoanCalculate /> */}
+        <LoanPart />
+        <LoanEligibility />
+        <LoanProcessDiagram />
+        <SortFAQ />
 
-        <div className="about_us ">
+        {/* <div className="about_us ">
           <div className="about_us_content">
             <div className="title_section">
               <p className="sub_title flex flex-center">
@@ -101,12 +120,12 @@ const Home = () => {
             </div>
           </div>
           <LoanCalculator />
-        </div>
+        </div> */}
         {/* <div className="float_content">
     <p className="marquee">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ullam voluptate quibusdam omnis quasi quos nesciunt facilis dolorem soluta similique voluptates ad vero ipsa corporis dolores distinctio illo minima, dicta fugiat.</p>
 </div><br/><br/> */}
 
-
+{/* 
         <div className="services_section">
           <div className="flex flex-center info_content space-between">
             <div className="title_section">
@@ -198,162 +217,10 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="features_section">
-          <div className="features_section_content ">
-            <div>
-              <div className="title_section">
-                <p className="sub_title flex flex-center">
-                  <span>
-                    <BsFillGrid1X2Fill
-                      className="mr10"
-                      style={{ marginBottom: "-2px" }}
-                    />
-                  </span>
-                  <span>Why Choose Us</span>
-                </p>
-
-                <h2 className="mt20">
-                  Providing personal loans designed to{" "}
-                  <span>secure your future success</span>
-                </h2>
-              </div>
-
-              <div className="features_section_content_description mt20">
-                <p>
-                  Choosing Speedoloan as your finance company ensures that you
-                  receive exceptional service tailored to your financial needs.
-                  Specializing in personal loans, we offer a seamless process
-                  for obtaining cash loans online, allowing you to secure funds
-                  quickly and efficiently. Whether you need an urgent loan
-                  online or an urgent money loan, Speedoloan provides reliable
-                  and fast solutions to help you manage your financial
-                  challenges with ease. Trust Speedoloan for your personal
-                  loan requirements and experience the convenience, peace of
-                  mind that comes with our expert financial services.
-                </p>
-              </div>
-            </div>
-            <div className="features_image">
-              <img src={features_img} alt="" />
-            </div>
-          </div>
-          <Number_Statistics />
-
-          <div className="general_working">
-            <div className="title_section">
-              <p className="sub_title flex flex-center justify-center">
-                <span>
-                  {/* <BsFillGrid1X2Fill
-                    className="mr10"
-                    style={{ marginBottom: "-2px" }}
-                  /> */}
-                </span>
-                {/* <span>Why Choose Us</span> */}
-              </p>
-
-              <h2 className="mt20 full-width text-center">
-                How We <span>Work ?</span>
-              </h2>
-            </div>
-            <div className="process_card_area mt50">
-              <div className="process_line">
-                <img src={process_line} alt="" />
-              </div>
-              <div className="process_row">
-                <div className="process_card">
-                  <div className="process_card_icon flex flex-center justify-center mb20">
-                    <AiOutlineFileDone className="process_icon" />
-                  </div>
-                  <div className="process_card_number">01</div>
-                  <h2 className="mb10">Application Submission</h2>
-                  <p className="full-width text-center">
-                    Fillout and submit a loan application with necessary
-                    documents and details on our website
-                  </p>
-                </div>
-                <div className="process_card">
-                  <div className="process_card_icon flex flex-center justify-center mb20">
-                    <VscOpenPreview className="process_icon" />
-                  </div>
-                  <div className="process_card_number">02</div>
-                  <h2 className="mb10">Application Review</h2>
-                  <p className="full-width text-center">
-                    Speedoloan reviews your application, conducts credit
-                    checks, and verifies your documents.
-                  </p>
-                </div>
-                <div className="process_card">
-                  <div className="process_card_icon flex flex-center justify-center mb20">
-                    <IoMdDoneAll className="process_icon" />
-                  </div>
-                  <div className="process_card_number">03</div>
-                  <h2 className="mb10">Application Approval</h2>
-                  <p className="full-width text-center">
-                    Once verified, receive loan approval along with the terms
-                    and conditions and loan repayment date
-                  </p>
-                </div>
-                <div className="process_card">
-                  <div className="process_card_icon flex flex-center justify-center mb20">
-                    <GiTakeMyMoney className="process_icon" />
-                  </div>
-                  <div className="process_card_number">04</div>
-                  <h2 className="mb10">Disbursal Initiation</h2>
-                  <p className="full-width text-center">
-                    Upon acceptance of the terms, the loan amount is disbursed
-                    to your account directly. No hassle.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="advantages_wrapper">
-      <div className="title_section">
-        <h2 className="mt20 full-width text-center">
-          Why Should You Choose <span>Speedoloan</span>
-        </h2>
-        <p className="mt5 text-center">
-          Multiple features make Speedoloan stand out from the rest. Let’s have a look at the features in detail.
-        </p>
-      </div>
-      <div className="advantages_section">
-        <div className="container">
-          <div className="advantages_section_row">
-            {advantages.map((advantage, index) => (
-              <div className="advantage_section_card" key={index}>
-                <div className="advantage_section_icon_container">
-                  <BiSolidCustomize className="advantage_icon" />
-                </div>
-                <div className="content">
-                  <h3>{advantage.title}</h3>
-                  <p style={{ textAlign: "justify" }}>
-                    {advantage.content.split('. ').slice(0, 1)}{' '}
-                    <a
-                      style={{ color: "#26b9db", cursor: 'pointer' }}
-                      onClick={() => handleToggle(index)}
-                    >
-                      {expandedIndex === index ? ' Read Less' : ' Read More'}
-                    </a>
-                  </p>
-                  {expandedIndex === index && (
-                    <div className="additional_content">
-                      <p style={{ textAlign: "justify" }}>
-                        {advantage.content.split('. ').slice(1).join('. ')}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-        </div>
-        <div className="get_started_section">
+      
+        {/* <div className="get_started_section">
           <div className="title_section ">
             <h2 className="mt20 full-width text-center">
               Get Started <span>Instantly</span>
@@ -478,7 +345,7 @@ const Home = () => {
             
           </div>
           
-        </div>
+        </div> */}
        
       </div>
       <ChatButton />

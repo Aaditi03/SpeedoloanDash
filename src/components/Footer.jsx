@@ -22,9 +22,9 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="/apply-now">
+              <Link to="/about-us">
                 <FaChevronRight className="footer_icon" />
-                Apply for Loan
+                About Us
               </Link>
             </li>
             <li>
@@ -34,9 +34,9 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="/services">
+              <Link to="/apply-now">
                 <FaChevronRight className="footer_icon" />
-                Services
+                Apply Now
               </Link>
             </li>
           </div>
@@ -48,12 +48,12 @@ const Footer = () => {
                 Faq's
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/rateandterms">
                 <FaChevronRight className="footer_icon" />
                 Rate and Terms
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/privacypolicy">
                 <FaChevronRight className="footer_icon" />
@@ -66,20 +66,26 @@ const Footer = () => {
                 Terms and Conditions
               </Link>
             </li>
+            <li>
+              <Link to="/cancelation-refund">
+                <FaChevronRight className="footer_icon" />
+                Cancellation & Refund              </Link>
+            </li>
+    
           </div>
           <div className="footer_tab">
             <h2 className="tab_title">Contact Us</h2>
             <a className="call_info" style={{ marginTop: "0px",color:"white" }} href="mailto: info@speedoloan.com">
               Email: info@speedoloan.com
             </a><br/>
-            <a style={{color:"white"}} href="tel:+919289877932" className="call_info">Phone: +91-8800002890</a><br/>
+            <a style={{color:"white"}} href="tel:+919289877932" className="call_info">Phone: +91-9099909941</a><br/>
             <p style={{color:"white"}} className="call_info">
-              Address: G-51, Krishna Apra Business Square <br />
-              Netaji Subash Place, New Delhi - 110034
+             Address: 276, First Floor, Gagan Vihar, Shahdara, Delhi 110051
+
             </p>
           </div>
         </div>
-        <div className="footer_dropdown_container">
+        {/* <div className="footer_dropdown_container">
           <div className="footer_dropdown">
             <div className="dropdown_item_title">
               <p
@@ -267,10 +273,10 @@ const Footer = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </div> */}
         <div className="copyright_section mt30">
           <p>
-            Copyright RBI Registered NBFC Kasar Credit & Capital Private Limited
+            Copyright RBI Registered NBFC Agrim Fincap Private Limited
           </p>
         </div>
       </div>

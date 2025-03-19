@@ -22,16 +22,16 @@ const ChatButton = () => {
   return (
     <>
       <div className="chat_icon_link">
-        <Link target="_blank" to="https://wa.me/+919289877932" title="Chat on WhatsApp">
+        {/* <Link target="_blank" to="https://wa.me/+919810780460" title="Chat on WhatsApp">
           <div className="chat_icon_container">
             <FaWhatsapp className="chat_icon" />
           </div>
-        </Link>
-        <Link target="_blank"to="tel:9289877932" title="Call us">
+        </Link> */}
+        {/* <Link target="_blank"to="tel:9810780460" title="Call us">
           <div className="chat_icon_container mt15">
             <IoCall className="call_icon" />
           </div>
-        </Link>
+        </Link> */}
         {/* <div onClick={toggleChatbot} title="Chat with us">
           <div className="chat_icon_container mt15">
             <AiOutlineRobot className="chat_icon" /> 

@@ -54,7 +54,7 @@ function RepayPage(props) {
     try {
       const total_due_amount = paymentAmount || repayData?.Data?.active_loan_details?.total_due;
       const options = {
-        key: "rzp_live_3XXwpvgLtdYIh3",
+        key: "rzp_live_gSedwg0IRWdr5a",
         amount: (total_due_amount * 100).toString(),
         currency: "INR",
         name: "Speedoloan",      
@@ -75,7 +75,7 @@ function RepayPage(props) {
             razorpay_signature: response.razorpay_signature,
           };
 
-          fetch("https://api.salaryontime.in/Api/CustomerDetails/verifyRazorPayCheckPaymentStatus", {
+          fetch("https://crm.speedoloan.com/api/Api/CustomerDetails/verifyRazorPayCheckPaymentStatus", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json; charset=UTF-8",
@@ -138,7 +138,7 @@ const payWithPayU = async () => {
         const email = repayData?.Data?.profile_details?.personal_email;
         const phone = repayData?.Data?.profile_details?.mobile;
 
-        const response = await fetch("https://api.salaryontime.in/Api/RepayLoanApi/payuOrders", {
+        const response = await fetch("https://crm.speedoloan.com/api/Api/RepayLoanApi/payuOrders", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json; charset=UTF-8",
@@ -322,7 +322,7 @@ const handlePaymentAmountChange = (e) => {
                   <PaymentModal 
                     onClose={handleCloseModal} 
                     onRazorpay={handleRazorpay} 
-                    onPayU={handlePayU} 
+                    // onPayU={handlePayU} 
                     isLoading={getLoading} 
                   />
                 )}

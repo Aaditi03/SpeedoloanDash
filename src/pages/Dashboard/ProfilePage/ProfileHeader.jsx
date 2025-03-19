@@ -81,8 +81,9 @@ function ProfileHeader({ children }) {
       </div>
       <div className="flex bottom">
         <p>
-          Don't let uncertainty hold you back. It's time to explore the
-          possibilities.
+          {/* Don't let uncertainty hold you back. It's time to explore the
+          possibilities. */}
+          Please Check The Eligibility To Proceed.
         </p>
         {children}
       </div>

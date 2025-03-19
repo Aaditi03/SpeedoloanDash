@@ -12,8 +12,8 @@ function DashboardCard2({number="",heading="",desc="",img=null, complate=false, 
         <div className="rightBox">
             <div className="header flex justify-between">
                 <h2>{heading}</h2>
-                <CheckboxIcon2  color={complate?"#5CB85C":"#e1e1e1"} number={number} />
-            </div>
+                <CheckboxIcon2 color={complate ? "#FF6B3C" : "#E0A899"} number={number} />
+                </div>
             <p>{desc}</p>
         </div>
 

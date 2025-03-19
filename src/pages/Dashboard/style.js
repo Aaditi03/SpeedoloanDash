@@ -3,14 +3,22 @@ import bannerImg from "../../images/bannerimg.png";
 
 export const DashboardWrapper = styled.div`
 
-.carde{
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-block: 35px;
-    >div{
-        flex: 1 1 30%;
-    }
+.carde {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+@media (max-width: 768px) {
+  .carde {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+
 }
 .banner{
  gap: 20px;
@@ -114,7 +122,7 @@ export const DashboarCarddWrapper = styled.div`
     }
 
     &.active {
-      background-color: #26B9DB;
+background: linear-gradient(90deg, #ff6a5f, #ffb88c); /* Vibrant warm gradient */
     }
   }
 

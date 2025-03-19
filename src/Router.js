@@ -24,6 +24,7 @@ import DebtConsolidation from "./pages/DebtConsolidation";
 import MinimalCommitment from "./pages/MinimalCommitment";
 import CostEffective from "./pages/CostEffective";
 import Home from "./pages/Home";
+import LendingPage from "./components/LendingPage";
 import DashBoard from "./pages/Dashboard/DashBoard";
 import PanDetails from "./pages/Dashboard/PanDetails/PanDetails";
 import CapturAddress from "./pages/Dashboard/CapturAddress/CapturAddress";
@@ -54,6 +55,7 @@ import Faridabad from "./pages/locations/Faridabad";
 import GreaterNoida from "./pages/locations/GreaterNoida";
 import Gurgaon from "./pages/locations/Gurgaon";
 import RepayThankyou from "./pages/RepayThanku";
+import CancellationRefundPolicy from "./pages/CancellationRefundPolicy";
 
 
 const showmessage = async (message) => {
@@ -80,6 +82,8 @@ function Router() {
           <Route path="about-us" element={<About />} />
           <Route path="services" element={<Services />} />
           <Route path="contact" element={<Contact />} />
+          <Route path="lending" element={<LendingPage />} />
+          <Route path="cancelation-refund" element={<CancellationRefundPolicy />} />
           <Route path="short-term-loan" element={<ShortLoan />} />
           <Route path="instant-loan" element={<InstantLoan />} />
           <Route path="faq" element={<FAQ />} />

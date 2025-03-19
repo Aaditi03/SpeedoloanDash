@@ -9,6 +9,18 @@ import Number_Statistics from "../components/Number_Statistics";
 import { FaCheck } from "react-icons/fa";
 import ChatButton from "../components/ChatButton";
 import { Link } from "react-router-dom";
+import { Typography, Grid, Paper, Box, Container,Button } from '@mui/material';
+import ApplicationIcon from '@mui/icons-material/Assignment'; // Example icon
+import VerificationIcon from '@mui/icons-material/CheckCircle';
+import ApprovalIcon from '@mui/icons-material/Check'; // Make sure this line is included
+import RepaymentIcon from '@mui/icons-material/Payment'; // Example icon for repayment
+
+// import './AboutUs.css'; 
+
+import visionImage from '../images/vison-DBwR7l0z.webp'; // import vision image 
+import missionImage from '../images/13.webp'; // Import mission image
+import aboutUsImage from '../images/4.webp'; // Import about us image
+import familyImage from '../images/Downloader-La-270835.jpg'; // Import your rounded person image
 
 import moneybip from "../images/moneybip-color-logo.svg"
 
@@ -39,164 +51,193 @@ const About = () => {
             </div>
           </div>
         </div>
+        <section className="company_info_section">
+  <div className="company_info_wrapper">
+    <div className="title_section">
+      <h2 className="full-width text-center">Welcome to Speedo Loan</h2>
+    </div>
+    <p className="text-center company_info_content">
+      Speedo Loan is your trusted provider of personal loans for salaried professionals in India, offering quick and flexible financial solutions for unexpected expenses, medical emergencies, and home improvements—all at your fingertips! As part of an RBI-registered NBFC, we are committed to empowering millennials with innovative loan options, ensuring fast approvals with customer-friendly terms. Our experienced leadership and skilled team have positioned us as one of the fastest-growing and most trusted fintech companies, dedicated to providing seamless and reliable financial support.
+    </p>
+  </div>
+</section>
 
-        <div className="company_info_section">
-          <div className="company_info_wrapper">
-            <div className="title_section">
-              <h2 className="full-width text-center">Speedoloan</h2>
+              {/* Why Choose Us Section */}
+      <section className="why-choose-us">
+        <div className="container">
+          <h3>Why Choose Speedo Loan for their Services?</h3>
+          <div className="why-choose-us__items">
+            <div className="choose-us__item">
+              <h4>Trusted by Thousands</h4>
+              <p>
+              Speedo Loan is a trusted digital lending partner for thousands of salaried individuals in India, known for the fast, fair, and reliable service.              </p>
             </div>
-            <p className="text-center  company_info_content">
-              Speedoloan empowers millennials to achieve their desired
-              lifestyle through innovative loan solutions. <br />
-              We stand out in the crowded personal loan market by offering the
-              fastest loans with customer-friendly terms. <br /> As an
-              RBI-registered NBFC, we take pride in delighting our customers
-              with the best loan products available. <br />
-              Our experienced leadership and highly skilled team have
-              established us as one of the fastest-growing and most trusted
-              fintech companies in the industry.
-            </p>
-            <div className="button_container">
-               <button >
-                   Meet Our Leaders
-               </button>
-               <button>
-                Join Our Team
-               </button>
+            <div className="choose-us__item">
+              <h4>Security and Privacy</h4>
+              <p>
+              At Speedo Loan, your data security is our priority. We use advanced encryption and security measures to protect your information, fully complying with India’s data privacy laws.              </p>
+            </div>
+            <div className="choose-us__item">
+              <h4>Customer-Centric Approach</h4>
+              <p>
+              At Speedo Loan, we prioritize our customers with dedicated support for applications, repayments, and financial advice, ensuring exceptional service at every step. </p>
+            </div>
+            <div className="choose-us__item">
+              <h4>Flexible and Inclusive</h4>
+              <p>
+              We believe in financial access for all. Our inclusive criteria offer loan options for young professionals and experienced workers alike, accommodating various credit scores, including those with less-than-perfect histories.  </p>
             </div>
           </div>
         </div>
-        <div className="about_us_section_1" data-aos="fade-down">
-          <div className="about_us_section_1_left">
-            <img src={about_us_img_1} alt="" />
-          </div>
-          <div className="about_us_section_1_right">
-            <div className="title_section">
-              <p className="sub_title flex flex-center">
-                <img src={title_icon} alt="" className="mr10" />
-                <span>About us</span>
-              </p>
-              <h2 className="mt20">
-                Discover Speedoloan: Your Partner in{" "}
-                <span>Financial Growth</span>
-              </h2>
-            </div>
-            <p className="mt30">
-              At Speedoloan, we redefine financial empowerment through
-              personalized solutions designed to meet your unique needs. With a
-              commitment to excellence and innovation, we guide individuals and
-              businesses towards their financial goals with expertise and
-              integrity. Backed by a team of seasoned professionals,
-              Speedoloan ensures transparency and reliability in every
-              interaction, fostering lasting relationships built on trust.
-              Whether you're seeking loans or strategic financial advice,
-              Speedoloan is dedicated to securing your financial future and
-              driving success in an ever-evolving market landscape.
-            </p>
+      </section>
+      <section className="join-Speedoloan">
+  <div
+    className="container text-center"
+    style={{
+      border: '2px solid gray',
+      borderRadius: '50px',
+      padding: '20px',
+      marginBottom: '20px', // Adjusted bottom margin for all screens
+    }}
+  >
+    <img
+      src={familyImage}
+      alt="Join Speedoloan Family"
+      className="rounded-circle"
+      style={{
+        width: '100px',
+        height: '100px',
+        border: '2px solid gray',
+        borderRadius: '50%',
+      }}
+    />
+    <Typography variant="h4" gutterBottom>
+      Join the Speedo Loan Family Today
+    </Typography>
+    <Typography variant="body1" paragraph>
+      Experience convenient personal lending with Speedo Loan. Whether you need a quick loan for unexpected expenses or a long-term solution, we’re here to help.
+    </Typography>
+    <Typography variant="body1" paragraph>
+      Apply today and take control of your financial future with Speedo Loan.
+    </Typography>
+  </div>
+</section>
 
-            <div className="about_features_section">
-              <div className="about_features_item flex flex-center">
-                <div>
-                  <img src={img1} alt="" />
-                </div>
-                <div className="ml10">
-                  <h3>Certified Company</h3>
-                  <p style={{ minWidth: "fit-content" }}>
-                    All products certified by RBI
-                  </p>
-                </div>
-              </div>
-              <div className="about_features_item flex flex-center">
-                <div>
-                  <img src={img2} alt="" />
-                </div>
-                <div className="ml10" style={{ minWidth: "fit-content" }}>
-                  <h3>Experienced Team</h3>
-                  <p>Certified Professionals</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Number_Statistics />
-        <div className="about_us_section_1 pt90">
-          <div className="about_us_section_1_right">
-            <div className="title_section">
-              <p className="sub_title flex flex-center">
-                <img src={title_icon} alt="" className="mr10" />
-                <span>Why Choose Us</span>
-              </p>
-              <h2 className="mt20">
-                We Deal With the Aspects of
-                <br />
-                <span>Financial Solutions</span>
-              </h2>
-            </div>
-            <p className="mt30">
-              Flexible and realible financial solutions for your emergency
-              needs. With Speedoloan, your financial future is in secure
-              hands.
-            </p>
+<section className="loan-process-section">
+          <Typography variant="h3" align="center" gutterBottom sx={{ color: 'black' }}  className="loan-process-title">
+            Our Loan Process
+          </Typography>
 
-            <div className="about_features_section_2">
-              <div className="flex flex-center space-between mt20 full-width">
-                <div className="about_features_item flex flex-center">
-                  <FaCheck className="check_icon mr10" />
-                  <h3>Emergency Loans</h3>
-                </div>
-                <div className="about_features_item flex flex-center">
-                  <FaCheck className="check_icon mr10" />
-                  <h3>High Quality Security</h3>
-                </div>
-              </div>
-              <div className="flex flex-center space-between mt20 full-width">
-                <div className="about_features_item flex flex-center">
-                  <FaCheck className="check_icon mr10" />
-                  <h3>Online Loans</h3>
-                </div>
-                <div className="about_features_item flex flex-center">
-                  <FaCheck className="check_icon mr10" />
-                  <h3>Instant Loans</h3>
-                </div>
-              </div>
-              <div className="flex flex-center space-between mt20 full-width">
-                <div className="about_features_item flex flex-center">
-                  <FaCheck className="check_icon mr10" />
-                  <h3>24/7 Support</h3>
-                </div>
-                <div className="about_features_item flex flex-center">
-                  <FaCheck className="check_icon mr10" />
-                  <h3>Short Term Loans</h3>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="about_us_section_1_2_left">
-            <div className="img1">
-              <img src={img3} alt="" />
-            </div>
-          </div>
-        </div>
+          <Typography
+            variant="body1"
+            align="center"
+            sx={{ color: 'black', mb: 2 }} // Adding margin-bottom of 2 (8px)
+          >
+            At Speedo Loan, we have simplified the loan process to make it as easy and straightforward as possible. Here’s how it works:
+          </Typography>
 
-        <div className="about_us_section_1">
-          <div className="about_us_section_1_right">
-            <div className="title_section">
-              <p className="sub_title flex flex-center">
-                <img src={title_icon} alt="" className="mr10" />
-                <span>Why Choose Us</span>
-              </p>
-              <h2 className="mt20">
-                Our
-                <span> Partners</span>
-              </h2>
-              <div className="partner_image">
-                <Link to="https://moneybip.com/" target="_blank">
-              <img src={moneybip} alt="" className="mr10"  style={{width:"65%",padding:"30px",marginBottom:"45px"}}/>
-              </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+       {/* Process Steps */}
+      <Container sx={{ padding: 4 }}>
+      <Grid container spacing={4} justifyContent="center">
+        <Grid item xs={12} md={4}>
+          <Paper elevation={4} className="process-card">
+            <Box className="icon-box">
+              <ApplicationIcon className="process-icon" />
+            </Box>
+            <Typography variant="h5" align="center" className="process-title">
+              Online Application
+            </Typography>
+            <Typography variant="body2" align="center">
+              Start by filling out our quick and easy loan application form online. You’ll need to provide some basic personal information, employment details, and the loan amount you wish to apply for.
+            </Typography>
+          </Paper>
+        </Grid>
+
+      
+
+        <Grid item xs={12} md={4}>
+          <Paper elevation={4} className="process-card">
+            <Box className="icon-box">
+              <VerificationIcon className="process-icon" />
+            </Box>
+            <Typography variant="h5" align="center" className="process-title">
+              Instant Verification
+            </Typography>
+            <Typography variant="body2" align="center">
+              Our advanced technology allows us to verify your documents and creditworthiness immediately. Within minutes, you will receive a preliminary decision on your loan application.
+            </Typography>
+          </Paper>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <Paper elevation={4} className="process-card">
+            <Box className="icon-box">
+              <ApprovalIcon className="process-icon" />
+            </Box>
+            <Typography variant="h5" align="center" className="process-title">
+              Approval and Disbursal
+            </Typography>
+            <Typography variant="body2" align="center">
+            Once your loan is approved, the funds will be transferred directly to your bank account. In most cases, this happens within 24-48 hours of approval, but with us, you can get it in mere 5 minutes.            </Typography>
+          </Paper>
+        </Grid>
+
+        {/* <Grid item xs={12} md={4}>
+          <Paper elevation={4} className="process-card">
+            <Box className="icon-box">
+              <RepaymentIcon className="process-icon" />
+            </Box>
+            <Typography variant="h5" align="center" className="process-title">
+              Easy Repayment
+            </Typography>
+            <Typography variant="body2" align="center">
+            Repaying your loan is as easy as applying. Choose a repayment schedule that suits your budget, and make payments through our website or mobile app. We offer various options, including NACH, bank transfers, UPIs, and online payment gateways.         </Typography>
+          </Paper>
+        </Grid> */}
+        </Grid>
+        </Container>
+        <Box
+            className="call-to-action"
+            sx={{
+              backgroundColor: 'white',
+              borderRadius:'40px',
+              padding: { xs: '10px', sm: '20px' }, // Reduced padding
+              textAlign: 'center',
+              minHeight: { xs: '80px', sm: 'auto' }, // Adjust minimum height
+            }}
+          >
+          <Typography
+  variant="h3"
+  sx={{
+    fontSize: { xs: '1.5rem', sm: '2rem' },
+    mx: { xs: '1rem', sm: '2rem', md: '3rem' } // Adjust as per screen size
+  }}
+>
+  Enquire for Loan
+</Typography>
+
+            <Typography variant="body1" sx={{ fontSize: { xs: '0.9rem', sm: '1rem' } }}>
+            We're here to help you out! Contact us for any queries or concerns about our services. Your feedback is important to us.
+                        </Typography>
+            <Link to="/contact" style={{ textDecoration: 'none' }}>
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: '#333', // Button color
+                  color: 'white', // Text color
+                  borderRadius:'50px',
+                  padding: '10px 20px', // Button padding
+                  '&:hover': {
+                    backgroundColor: 'orange', // Hover color
+                  },
+                }}
+              >
+                Contact Us
+              </Button>
+            </Link>
+          </Box>
+        </section>
+
       </div>
       <ChatButton />
     </>

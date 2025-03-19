@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../css/Common.css";
 import "../css/RepaymentDetails.css"; // Assuming the CSS is defined here
-import qr_image from "../images/qr_company.jpg";
+import qr_image from "../images/speedoqr.png";
 import qr2 from "../images/qr2.png";
 import ChatButton from "../components/ChatButton";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ const RepayLoan = (props) => {
     const sendOtp = async () => {
         setLoading(true);
         try {
-            const resp = await fetch("https://api.salaryontime.in/Api/CustomerDetails/Sendotp", {
+            const resp = await fetch("https://crm.speedoloan.com/api/Api/CustomerDetails/Sendotp", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json; charset=UTF-8",
@@ -54,7 +54,7 @@ const RepayLoan = (props) => {
     const verifyOtp = async () => {  
         setLoading(true);
         try {
-            const resp = await fetch("https://api.salaryontime.in/Api/CustomerDetails/verifyOtp", {
+            const resp = await fetch("https://crm.speedoloan.com/api/Api/CustomerDetails/verifyOtp", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json; charset=UTF-8",
@@ -94,12 +94,12 @@ const RepayLoan = (props) => {
           }
   
           const options = {
-              key: "rzp_live_3XXwpvgLtdYIh3",
+              key: "rzp_live_gSedwg0IRWdr5a",
               amount: (total_due_amount * 100).toString(),
               currency: "INR",
-              name: "SalaryOnTime",
+              name: "Speedoloan",
               description: getPancard,
-              image: "https://web.salaryontime.in/public/images/final_logo.png",
+              image: "https://crm.speedoloan.com/public/images/18-BK_kixu8.png",
               order_id: orderId,
               prefill: {
                   name: "Hidden",
@@ -114,7 +114,7 @@ const RepayLoan = (props) => {
                       razorpay_signature: response.razorpay_signature,
                   };
   
-                  fetch("https://api.salaryontime.in/Api/CustomerDetails/verifyRazorPayCheckPaymentStatus", {
+                  fetch("https://crm.speedoloan.com/api/Api/CustomerDetails/verifyRazorPayCheckPaymentStatus", {
                       method: "POST",
                       headers: {
                           "Content-Type": "application/json; charset=UTF-8",
@@ -176,7 +176,7 @@ const RepayLoan = (props) => {
           const email = repaymentData.email;
           const phone = repaymentData.mobile;
   
-          const response = await fetch("https://api.salaryontime.in/Api/RepayLoanApi/payuOrders", {
+          const response = await fetch("https://crm.speedoloan.com/api/Api/RepayLoanApi/payuOrders", {
               method: "POST",
               headers: {
                   "Content-Type": "application/json; charset=UTF-8",
@@ -206,8 +206,8 @@ const RepayLoan = (props) => {
                   firstname: fullname,
                   email: email,
                   phone: phone,
-                  surl: "https://salaryontime.com/thanku",
-                  furl: "https://salaryontime.com/fail",
+                  surl: "https://speedoloan.com/thanku",
+                  furl: "https://speedoloan.com/fail",
                   hash: hashData.hash,
                   udf5:repaymentData.lead_id
               };
@@ -424,7 +424,7 @@ const RepayLoan = (props) => {
                   <PaymentModal 
                     onClose={handleCloseModal} 
                     onRazorpay={handleRazorpay} 
-                    onPayU={handlePayU} 
+                    // onPayU={handlePayU} 
                     isLoading={getLoading} 
                   />
                 )}
@@ -445,19 +445,19 @@ const RepayLoan = (props) => {
               </tr>
               <tr>
                 <td><span className="account_field_value">Company Name</span></td>
-                <td><span className="account_data_value">KASAR CREDIT AND CAPITAL PRIVATE LIMITED</span></td>
+                <td><span className="account_data_value">Agrim Fincap Pvt Ltd Collection A/c</span></td>
               </tr>
               <tr>
                 <td><span className="account_field_value">Account No.</span></td>
-                <td><span className="account_data_value">071805004842</span></td>
+                <td><span className="account_data_value">802105000125</span></td>
               </tr>
               <tr>
                 <td><span className="account_field_value">IFSC Code</span></td>
-                <td><span className="account_data_value">ICIC0000718</span></td>
+                <td><span className="account_data_value">ICIC0008021</span></td>
               </tr>
               <tr>
                 <td><span className="account_field_value">Branch Address</span></td>
-                <td><span className="account_data_value">Vaibhav Khand, Indirapuram, Ghaziabad, UP - 201012</span></td>
+                <td><span className="account_data_value">Jagatpuri Branch </span></td>
               </tr>
               <tr>
                 <td><span className="account_field_value">Account Type</span></td>
@@ -469,7 +469,7 @@ const RepayLoan = (props) => {
             </div>
           </div>
 
-          <div className="bank_details_section flex flex-center space-between">
+          {/* <div className="bank_details_section flex flex-center space-between">
             <table className="details_table">
               <tr>
                 <td><span className="account_field_value">Bank Name</span></td>
@@ -477,7 +477,7 @@ const RepayLoan = (props) => {
               </tr>
               <tr>
                 <td><span className="account_field_value">Company Name</span></td>
-                <td><span className="account_data_value">KASAR CREDIT AND CAPITAL PRIVATE LIMITED</span></td>
+                <td><span className="account_data_value">Agrim Fincap Pvt Ltd Collection A/c</span></td>
               </tr>
               <tr>
                 <td><span className="account_field_value">Account No.</span></td>
@@ -485,7 +485,8 @@ const RepayLoan = (props) => {
               </tr>
               <tr>
                 <td><span className="account_field_value">IFSC Code</span></td>
-                <td><span className="account_data_value">IDFB0020234</span></td>
+                <td><span className="account_data_value">ICIC0008021
+                </span></td>
               </tr>
               <tr>
                 <td><span className="account_field_value">Branch Address</span></td>
@@ -499,7 +500,7 @@ const RepayLoan = (props) => {
             <div className="qr_details">
               <img src={qr2} alt="QR Code" />
             </div>
-          </div>
+          </div> */}
            <br/>
           <div className="repay_loan_section">
             <div className="pan_number">
@@ -514,7 +515,7 @@ const RepayLoan = (props) => {
 
             <div className="pan_number">
               <h2>What is the maximum and minimum repayment period at Speedoloan?</h2><br />
-              <p>At Speedoloan, we allow you enough time and flexibility to repay your loan. This is done to ensure that repayments don’t feel like a burden. However, when it comes to the precise duration, the minimum repayment period is 60 days, and the maximum repayment period is 90 days.</p>
+              <p>At Speedoloan, we allow you enough time and flexibility to repay your loan. This is done to ensure that repayments don’t feel like a burden. However, when it comes to the precise duration, the minimum repayment period is 60 days, and the maximum repayment period is 40 days.</p>
             </div>
           </div>
 

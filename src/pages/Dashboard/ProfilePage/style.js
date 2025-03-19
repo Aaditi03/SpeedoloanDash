@@ -124,12 +124,12 @@ img{
 export const DetailBoxWrapper = styled.div`
 
 background: #FFFFFF 0% 0% no-repeat padding-box;
-box-shadow: 10px 2px 5px 2px #6e718f;
+box-shadow: 8px 4px 12px 2px rgba(255, 126, 95, 0.4); /* Soft warm shadow */
 border-radius: 15px;
 opacity: 1;
 padding: 22px;
 &:hover{
-   box-shadow: 10px 2px 5px 2px #26b9db;
+box-shadow: 4px 4px 10px rgba(255, 136, 96, 0.3);
    }
 
 .header{
