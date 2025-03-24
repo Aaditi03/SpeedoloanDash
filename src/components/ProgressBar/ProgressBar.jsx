@@ -9,8 +9,9 @@ function ProgressBar({children,value="0%", title="Profile Registration"}) {
          <ProgressBarBox value={value} />
          {children}
       </div>
-      <p>Register now 
-        to explore a range of tailored services just for you. Once registered, our loan service will be available to meet your financial needs.</p>
+      <p>Register now. 
+        {/* to explore a range of tailored services just for you. Once registered, our loan service will be available to meet your financial needs. */}
+        </p>
     </ProgressBarWrapper>
   );
 }

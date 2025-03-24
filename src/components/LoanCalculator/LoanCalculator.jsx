@@ -96,9 +96,10 @@ function LoanCalculator() {
   };
 
   useEffect(() => {
-    let si = (principal * tenure) / 100;
+    let si = (principal * tenure * 0.0075);  // 0.75% rate
     setEmi(si);
   }, [principal, tenure]);
+  
 
   return (
     <>

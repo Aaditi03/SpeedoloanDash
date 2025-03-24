@@ -20,6 +20,10 @@ function DocumentUpload() {
     const [isLoadingDocs, setIsLoadingDocs] = useState(true); // Loading state for docs
     const navigate = useNavigate();
     const { logout, handleEvent } = useContext(ContextDashboard);
+    const [password, setPassword] = useState("");
+    const [isPDF, setIsPDF] = useState(false);
+    const allDocsUploaded = documentsRequired.every(doc => uploadedDocuments[doc.name]);
+
 
     // Fetch required documents when the component mounts
     useEffect(() => {
@@ -44,6 +48,14 @@ function DocumentUpload() {
     // Handle file change (image or document)
     const handleFileChange = (docName, file) => {
         setUploadedDocuments(prev => ({ ...prev, [docName]: file }));
+
+         if (docName === "Bank Statement" && file?.type === "application/pdf") {
+            setIsPDF(true);
+         }
+         else if (docName === "Bank Statement") {
+            setIsPDF(false);
+         }
+
     };
 
     // Convert file to base64 for upload
@@ -78,7 +90,7 @@ function DocumentUpload() {
                     const param = {
                         profile_id: getStorage("cust_profile_id") || "",
                         file_ext: ext,
-                        password: "N/A",
+                        password: doc.name === "Bank Statement" ? (password || "N/A") : "N/A",
                         event_name: doc.event_name,
                         doc_type: doc.doc_type,
                         file: base64File,
@@ -112,59 +124,96 @@ function DocumentUpload() {
 
     return (
         <>
-       
-        <BoxWrapper className="w100">
-            <div className="formmainBox flex">
-                <div className="left">
-                    {/* <div className='center gap4 pointer' onClick={() => goBack(navigate, "/my-dashboard/about-your-company")}>
+
+            <BoxWrapper className="w100">
+                <div className="formmainBox flex">
+                    <div className="left">
+                        {/* <div className='center gap4 pointer' onClick={() => goBack(navigate, "/my-dashboard/about-your-company")}>
                         <img src={arrowIcon} alt="" /> <span>Back</span>
                     </div> */}
-                </div>
-                <div className="right">
-                    <h2>Upload Your Documents</h2>
-                    <p>Upload your documents to verify your details</p>
+                    </div>
+                    <div className="right">
+                        <h2>Upload Your Documents</h2>
+                        <p>Upload your documents to verify your details</p>
 
-                    <FormWrapper2>
-                        <Alert setMessage={setMessage} message={message} />
+                        <FormWrapper2>
+                            <Alert setMessage={setMessage} message={message} />
 
-                        {isLoadingDocs ? (  // Show loading spinner when documents are being fetched
-                            <p>Loading required documents...</p>
-                        ) : (
-                            documentsRequired.length > 0 ? (
-                                documentsRequired.map(doc => (
-                                    <div key={doc.name} className="inputBox">
-                                        <h2 className="subheading small">{doc.name} <span style={{color:"red"}}>*</span> </h2>
-
-                                        {/* Render PictureUpload dynamically based on allowed format */}
-                                        <PictureUpload
-                                            setImage={(file) => handleFileChange(doc.name, file)}
-                                            image={uploadedDocuments[doc.name] || ""}
-                                            accept={doc.allowed_format === "image" ? "image/*" : "application/pdf"}
-                                            type="file"
-                                            
-                                        />
-                                    </div>
-                                ))
+                            {isLoadingDocs ? (  // Show loading spinner when documents are being fetched
+                                <p>Loading required documents...</p>
                             ) : (
-                                <p>No documents are required at this moment.</p>
-                            )
-                        )}
+                                documentsRequired.length > 0 ? (
+                                    documentsRequired.map(doc => (
+                                        <div key={doc.name} className="inputBox">
+                                            <h2 className="subheading small">{doc.name} <span style={{ color: "red" }}>*</span> </h2>
 
-                        {/* Conditionally render the button only if documents are loaded */}
-                        {!isLoadingDocs && documentsRequired.length > 0 && (
-                            <div className="button">
-                                <Button 
-                                    title="Continue" 
-                                    onClick={submitDocuments} 
-                                    loading={loading} 
-                                    disabled={loading || isLoadingDocs}  // Disable button while uploading or fetching
-                                />
-                            </div>
-                        )}
-                    </FormWrapper2>
+                                            {/* Render PictureUpload dynamically based on allowed format */}
+                                            <PictureUpload
+                                                setImage={(file) => handleFileChange(doc.name, file)}
+                                                image={uploadedDocuments[doc.name] || ""}
+                                                accept={doc.allowed_format === "image" ? "image/*" : "application/pdf"}
+                                                type="file"
+
+                                            />
+     {doc.name === "Bank Statement" && isPDF && (
+   <div style={{ marginTop: "15px", marginBottom: "20px" }}>
+   <label 
+       style={{ 
+           display: "block", 
+           marginBottom: "8px", 
+           fontWeight: "bold", 
+           fontSize: "14px", 
+           color: "#333" 
+       }}
+   >
+       Password for PDF (if any):
+   </label>
+   <input
+       type="password"
+       value={password}
+       onChange={(e) => setPassword(e.target.value)}
+       placeholder="Enter PDF password"
+       style={{
+           width: "100%",
+           padding: "10px 12px",
+           borderRadius: "8px",
+           border: "1px solid #ccc",
+           fontSize: "14px",
+           outline: "none",
+           boxShadow: "none",
+           transition: "0.3s",
+       }}
+       onFocus={(e) => (e.target.style.borderColor = "#007bff")}
+       onBlur={(e) => (e.target.style.borderColor = "#ccc")}
+   />
+</div>
+     )}
+                          
+                                            {doc.name === 'Bank Statement' && (
+                                                <p style={{ color: "red", margin: "5px 0", textAlign: "center"}}>3 Months statement required.</p>
+                                            )}
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p>No documents are required at this moment.</p>
+                                )
+                            )}
+
+                            {/* Conditionally render the button only if documents are loaded */}
+                            {!isLoadingDocs && documentsRequired.length > 0 && (
+                                <div className="button">
+                                    <Button
+                                        title="Continue"
+                                        onClick={submitDocuments}
+                                        loading={loading}
+                                        disabled={loading || isLoadingDocs}  // Disable button while uploading or fetching
+                                    />
+                                </div>
+                            )}
+                        </FormWrapper2>
+                    </div>
                 </div>
-            </div>
-        </BoxWrapper>
+            </BoxWrapper>
         </>
     );
 }
